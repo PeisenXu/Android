@@ -1,13 +1,16 @@
 package com.lcgsen.utils;
 
+import android.content.Context;
 import android.support.design.internal.BottomNavigationItemView;
 import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
 import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
 
 import java.lang.reflect.Field;
 
-public class BottomNavigationViewHelper {
+public class ViewHelper {
     public static void disableShiftMode(BottomNavigationView view) {
         //获取子View BottomNavigationMenuView的对象
         BottomNavigationMenuView menuView = (BottomNavigationMenuView) view.getChildAt(0);
@@ -28,5 +31,22 @@ public class BottomNavigationViewHelper {
         } catch (IllegalAccessException e) {
             Log.e("BNVHelper", "无法修改mShiftingMode的值", e);
         }
+    }
+
+    public static void setMargins(View v, int l, int t, int r, int b) {
+        if (v.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
+            ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
+            p.setMargins(l, t, r, b);
+            v.requestLayout();
+        }
+    }
+
+    public static int getStatusBarHeight(Context context) {
+        int result = 0;
+        int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = context.getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
     }
 }

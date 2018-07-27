@@ -27,7 +27,7 @@
         <android.support.v4.view.ViewPager
             android:id="@+id/viewPager"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:overScrollMode="never"
             android:scrollbars="none">
@@ -51,6 +51,7 @@
             app:itemTextColor="@layout/bottom_navigation_selector"
             app:menu="@menu/bottom_menu"></android.support.design.widget.BottomNavigationView>
     </RelativeLayout>
+
 
     <android.support.design.widget.NavigationView xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/nav"

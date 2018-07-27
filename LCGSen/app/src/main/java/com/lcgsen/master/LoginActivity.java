@@ -50,11 +50,11 @@ public class LoginActivity extends AppCompatActivity {
     //获取界面控件
     private void init() {
 
-        if ((Boolean) SharedUtils.getParam(LoginActivity.this, "USER_STATUS", false)) {
+        /*if ((Boolean) SharedUtils.getParam(LoginActivity.this, "USER_STATUS", false)) {
             Toast.makeText(LoginActivity.this, "检测到已经登录", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
             return;
-        }
+        }*/
 
         //从main_title_bar中获取的id
         tv_main_title = findViewById(R.id.tv_main_title);
@@ -129,6 +129,8 @@ public class LoginActivity extends AppCompatActivity {
                                 //保存登录状态，在界面保存登录的用户名 定义个方法 saveLoginStatus boolean 状态 , userName 用户名;
                                 SharedUtils.setParam(LoginActivity.this, "USER_STATUS", true);
                                 SharedUtils.setParam(LoginActivity.this, "USER_NAME", userName);
+                                SharedUtils.setParam(LoginActivity.this, "USER_CREATE_TIME", "加入时间:2018-07-25");
+
                                 Toast.makeText(LoginActivity.this, DBServiceError.DB_SERVICE_LOGIN_SUCCESS.getMsg(), Toast.LENGTH_SHORT).show();
 
                                 //登录成功后关闭此页面进入主页

@@ -1,7 +1,6 @@
 package com.lcgsen.master;
 
 import android.animation.ObjectAnimator;
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -9,28 +8,36 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
-import android.support.v4.view.ViewConfigurationCompat;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.lcgsen.model.FragmentUtils;
+import com.lcgsen.model.ViewPagerAdapter;
 import com.lcgsen.utils.SharedUtils;
+import com.lcgsen.utils.ViewHelper;
+import com.lcgsen.utils.viewstyle.DepthPageTransformer;
 
-public class MainActivity extends Activity implements View.OnClickListener {
+import java.util.ArrayList;
+import java.util.List;
+
+public class MainActivity extends FragmentActivity implements View.OnClickListener {
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private View headerView;
     private TextView userName;
+    private TextView userCreateTime;
+    private ImageView personImage;
 
     private ListView listview;
     private float mFirstY;
@@ -42,6 +49,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private ViewPager viewPager;
     private String[] data;
 
+    private ViewPagerAdapter viewPagerAdapter;
     private BottomNavigationView navigation;
 
     @Override
@@ -50,41 +58,39 @@ public class MainActivity extends Activity implements View.OnClickListener {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         setContentView(R.layout.main_view);
-        initWindow();
-
-        // 加载数据
-        // init();
 
         navigationView = (NavigationView) findViewById(R.id.nav);
         headerView = navigationView.getHeaderView(0);
         userName = headerView.findViewById(R.id.user_name);
+        userCreateTime = headerView.findViewById(R.id.user_create_time);
 
         viewPager = (ViewPager) findViewById(R.id.viewPager);
         drawerLayout = (DrawerLayout) findViewById(R.id.activity_na);
         // listview = (ListView) findViewById(R.id.list);
         navigation = (BottomNavigationView) findViewById(R.id.bottomSelectView);
 
-
-        // 设置侧滑菜单宽度
-        ViewGroup.LayoutParams params = navigationView.getLayoutParams();
-        params.width = getResources().getDisplayMetrics().widthPixels * 1 / 2;
-        navigationView.setLayoutParams(params);
-        navigationView.setBackgroundColor(Color.argb(120, 200, 200, 200));
+        // 加载数据
+        init();
+        initWindow();
 
         // 设置侧滑栏动态信息
         userName.setText(SharedUtils.getParam(MainActivity.this, "USER_NAME", "未知登陆").toString());
+        userCreateTime.setText(SharedUtils.getParam(MainActivity.this, "USER_CREATE_TIME", "加入时间:未来").toString());
 
         // 设置侧滑菜单监听
         navigationView.setNavigationItemSelectedListener(navigationListener);
 
-        mTouchSlop = ViewConfigurationCompat.getScaledPagingTouchSlop(new ViewConfiguration());
+        // 设置主页面监听滑动
+        viewPager.addOnPageChangeListener(viewPagerOnPageChange);
 
+        // mTouchSlop = ViewConfigurationCompat.getScaledPagingTouchSlop(new ViewConfiguration());
         // 设置列表监听
         // listview.setOnTouchListener(listViewListener);
 
         // 设置底部菜单监听
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -97,30 +103,40 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 break;
         }
     }
-    private void initWindow() {
-        // 初始化窗口属性，让状态栏和导航栏透明
-        if (Build.VERSION.SDK_INT >= 21) {
-            View decorView = getWindow().getDecorView();
-            decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-            getWindow().setStatusBarColor(Color.TRANSPARENT);
+
+    private ViewPager.OnPageChangeListener viewPagerOnPageChange = new ViewPager.OnPageChangeListener() {
+        @Override
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
         }
 
-        // finish掉登陆界面
-        if (LoginActivity.instance != null) {
-            LoginActivity.instance.finish();
+        @Override
+        public void onPageSelected(int position) {
+            String[] titles = new String[]{"微信", "通讯录", "发现", "我"};
+            /* 此方法在页面被选中时调用 */
+            // title.setText(titles[position]);
+            changeTextColor(position);
         }
-    }
+
+        @Override
+        public void onPageScrollStateChanged(int state) {
+                /*此方法是在状态改变的时候调用，其中arg0这个参数有三种状态（0，1，2）。
+                arg0 ==1的时辰默示正在滑动，
+                arg0==2的时辰默示滑动完毕了，
+                arg0==0的时辰默示什么都没做。*/
+        }
+    };
 
     private NavigationView.OnNavigationItemSelectedListener navigationListener = new NavigationView.OnNavigationItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.file:
-                    SharedUtils.clearLoginStatus(MainActivity.this, "USER_NAME");
+                case R.id.navigation_login_out:
+                    SharedUtils.clearLoginStatus(MainActivity.this, "ALL");
                     Toast.makeText(MainActivity.this, "退出成功", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(MainActivity.this, LoginActivity.class));
                     break;
-                case R.id.favorite:
+                case R.id.navigation_about:
                     startActivity(new Intent(MainActivity.this, AboutActivity.class));
                     break;
             }
@@ -131,7 +147,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         }
     };
 
-    private View.OnTouchListener listViewListener = new View.OnTouchListener() {
+    /*private View.OnTouchListener listViewListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
             switch (event.getAction()) {
@@ -147,27 +163,29 @@ public class MainActivity extends Activity implements View.OnClickListener {
                     }
                     break;
                 case MotionEvent.ACTION_UP:
-
                     break;
                 default:
                     break;
             }
             return false;
         }
-    };
+    };*/
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.favorite:
+                case R.id.bottom_home:
                     viewPager.setCurrentItem(0);
                     return true;
-                case R.id.dress:
+                case R.id.bottom_tools:
                     viewPager.setCurrentItem(1);
                     return true;
-                case R.id.file:
+                case R.id.bottom_me:
                     viewPager.setCurrentItem(2);
+                    return true;
+                case R.id.test:
+                    viewPager.setCurrentItem(3);
                     return true;
             }
             return false;
@@ -179,10 +197,47 @@ public class MainActivity extends Activity implements View.OnClickListener {
      * 初始化数据
      */
     private void init() {
-        data = new String[]{"暹罗猫", "布偶猫", "折耳猫", "短毛猫", "波斯猫", "蓝猫", "森林猫", "孟买猫", "缅因猫", "埃及猫", "伯曼猫", "缅甸猫", "新加坡猫", "美国短尾猫", "巴厘猫"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1, data);
-       // ((ListView) findViewById(R.id.list)).setAdapter(adapter);
+        viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(viewPagerAdapter);
 
+        List<Fragment> list = new ArrayList<>();
+        list.add(FragmentUtils.newInstance("首页"));
+        list.add(FragmentUtils.newInstance("工具"));
+        list.add(FragmentUtils.newInstance("我"));
+        list.add(FragmentUtils.newInstance("TEST"));
+        viewPagerAdapter.setList(list);
+
+        // data = new String[]{"暹罗猫", "布偶猫", "折耳猫", "短毛猫", "波斯猫", "蓝猫", "森林猫", "孟买猫", "缅因猫", "埃及猫", "伯曼猫", "缅甸猫", "新加坡猫", "美国短尾猫", "巴厘猫"};
+        // ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1, data);
+        // ((ListView) findViewById(R.id.list)).setAdapter(adapter);
+
+    }
+
+    private void initWindow() {
+        // 初始化窗口属性，让状态栏和导航栏透明
+        if (Build.VERSION.SDK_INT >= 21) {
+            View decorView = getWindow().getDecorView();
+            decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+            getWindow().setStatusBarColor(Color.TRANSPARENT);
+
+            // 如果是高版本手机， 侧滑栏图标会被状态栏遮挡， 向下移动
+            personImage = (ImageView) headerView.findViewById(R.id.person);
+            ViewHelper.setMargins(personImage, 10, ViewHelper.getStatusBarHeight(MainActivity.this), 0, 0);
+        }
+
+        // finish掉登陆界面
+        if (LoginActivity.instance != null) {
+            LoginActivity.instance.finish();
+        }
+
+        // 设置页面滑动效果
+        viewPager.setPageTransformer(true, new DepthPageTransformer());
+
+        // 设置侧滑菜单宽度
+        ViewGroup.LayoutParams params = navigationView.getLayoutParams();
+        params.width = getResources().getDisplayMetrics().widthPixels * 1 / 2;
+        navigationView.setLayoutParams(params);
+        navigationView.setBackgroundColor(Color.argb(120, 200, 200, 200));
     }
 
     protected void showHideTitlebar(boolean tag) {
@@ -208,5 +263,12 @@ public class MainActivity extends Activity implements View.OnClickListener {
         }
         mAnimatorContent.start();
         mAnimatorTitle.start();
+    }
+
+    /*
+     *由ViewPager的滑动修改底部导航Text的颜色
+     */
+    private void changeTextColor(int position) {
+        navigation.getMenu().getItem(position).setChecked(true);
     }
 }

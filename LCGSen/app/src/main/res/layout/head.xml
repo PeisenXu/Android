@@ -22,12 +22,12 @@
         android:textSize="15sp" />
 
     <TextView
+        android:id="@+id/user_create_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="0dp"
         android:layout_marginBottom="10dp"
-        android:text="加入时间: 2018-07-25"
         android:textColor="#dad6d6"
         android:textSize="12sp" />
 

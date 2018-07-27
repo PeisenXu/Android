@@ -2,23 +2,19 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/favorite"
+            android:id="@+id/navigation_about"
             android:checkable="true"
             android:icon="@drawable/about"
             android:title="关于" />
         <item
-            android:id="@+id/dress"
+            android:id="@+id/navigation_setting"
             android:icon="@drawable/setting"
             android:title="设置" />
-        <item
-            android:id="@+id/file"
-            android:icon="@drawable/out"
-            android:title="退出登录" />
 
         <item
-            android:id="@+id/action_other"
+            android:id="@+id/navigation_feedback"
             android:checked="false"
-            android:title="其他操作">
+            android:title="反馈">
             <menu>
                 <group
                     android:checkableBehavior="single">
@@ -26,14 +22,20 @@
                         android:id="@+id/action_qq"
                         android:checked="false"
                         android:icon="@drawable/qq"
-                        android:title="QQ好友"/>
-
+                        android:title="QQ"/>
+                </group>
+            </menu>
+        </item>
+        <item
+            android:checked="false"
+            android:title="其它操作">
+            <menu>
+                <group
+                    android:checkableBehavior="single">
                     <item
-                        android:id="@+id/action_weixin"
-                        android:checked="false"
-                        android:icon="@drawable/wechat"
-                        android:title="微信好友"/>
-
+                        android:id="@+id/navigation_login_out"
+                        android:icon="@drawable/out"
+                        android:title="切换账号" />
                 </group>
             </menu>
         </item>
