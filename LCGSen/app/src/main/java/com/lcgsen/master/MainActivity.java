@@ -184,9 +184,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                 case R.id.bottom_me:
                     viewPager.setCurrentItem(2);
                     return true;
-                case R.id.test:
-                    viewPager.setCurrentItem(3);
-                    return true;
             }
             return false;
         }
