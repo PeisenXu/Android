@@ -13,9 +13,5 @@
             android:id="@+id/bottom_me"
             android:icon="@drawable/me2"
             android:title="我" />
-        <item
-            android:id="@+id/test"
-            android:icon="@drawable/me2"
-            android:title="TEST" />
     </group>
 </menu>

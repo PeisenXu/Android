@@ -204,7 +204,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         list.add(FragmentUtils.newInstance("首页"));
         list.add(FragmentUtils.newInstance("工具"));
         list.add(FragmentUtils.newInstance("我"));
-        list.add(FragmentUtils.newInstance("TEST"));
         viewPagerAdapter.setList(list);
 
         // data = new String[]{"暹罗猫", "布偶猫", "折耳猫", "短毛猫", "波斯猫", "蓝猫", "森林猫", "孟买猫", "缅因猫", "埃及猫", "伯曼猫", "缅甸猫", "新加坡猫", "美国短尾猫", "巴厘猫"};
