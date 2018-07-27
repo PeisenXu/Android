@@ -22,8 +22,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.lcgsen.model.FragmentUtils;
-import com.lcgsen.model.ViewPagerAdapter;
+import com.lcgsen.doview.FragmentUtils;
+import com.lcgsen.doview.ViewPagerAdapter;
 import com.lcgsen.utils.SharedUtils;
 import com.lcgsen.utils.ViewHelper;
 import com.lcgsen.utils.viewstyle.DepthPageTransformer;
@@ -40,9 +40,9 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     private ImageView personImage;
 
     private ListView listview;
-    private float mFirstY;
+   /* private float mFirstY;
     private float mCurrentY;
-    protected float mTouchSlop;
+    protected float mTouchSlop;*/
     private ObjectAnimator mAnimatorTitle;
     private ObjectAnimator mAnimatorContent;
 

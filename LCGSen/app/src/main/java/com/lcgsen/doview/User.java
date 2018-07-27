@@ -1,4 +1,4 @@
-package com.lcgsen.model;
+package com.lcgsen.doview;
 
 public class User {
     private String id;

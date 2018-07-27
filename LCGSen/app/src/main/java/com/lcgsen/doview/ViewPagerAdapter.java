@@ -1,4 +1,4 @@
-package com.lcgsen.model;
+package com.lcgsen.doview;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

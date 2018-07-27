@@ -1,4 +1,4 @@
-package com.lcgsen.model;
+package com.lcgsen.doview;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

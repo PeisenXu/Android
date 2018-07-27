@@ -1,4 +1,4 @@
-package com.lcgsen.model;
+package com.lcgsen.doview;
 
 import java.util.List;
 

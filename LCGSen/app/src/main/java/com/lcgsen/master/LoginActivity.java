@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.lcgsen.enums.DBServiceError;
-import com.lcgsen.model.LoginResponse;
+import com.lcgsen.doview.LoginResponse;
 import com.lcgsen.utils.HttpUtils;
 import com.lcgsen.utils.MD5Utils;
 import com.lcgsen.utils.SharedUtils;
