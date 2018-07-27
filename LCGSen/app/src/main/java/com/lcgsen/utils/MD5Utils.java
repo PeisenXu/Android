@@ -6,9 +6,8 @@ import java.security.NoSuchAlgorithmException;
 public class MD5Utils {
     //md5 加密算法
     public static String md5(String text) {
-        MessageDigest digest = null;
         try {
-            digest = MessageDigest.getInstance("md5");
+            MessageDigest digest = MessageDigest.getInstance("md5");
             // 数组 byte[] result -> digest.digest( );  文本 text.getBytes();
             byte[] result = digest.digest(text.getBytes());
             //创建StringBuilder对象 然后建议StringBuffer，安全性高
@@ -22,7 +21,7 @@ public class MD5Utils {
                 // number值 转换 字符串 Integer.toHexString( );
                 String hex = Integer.toHexString(number);
                 if (hex.length() == 1) {
-                    sb.append("0" + hex);
+                    sb.append("0").append(hex);
                 } else {
                     sb.append(hex);
                 }

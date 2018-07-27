@@ -68,8 +68,7 @@ public class SharedUtils {
         } else if ("Long".equals(type)) {
             return sp.getLong(key, (Long) defaultObject);
         }
-
-        return null;
+        return "";
     }
 
     public static void clearLoginStatus(Context context, String key){

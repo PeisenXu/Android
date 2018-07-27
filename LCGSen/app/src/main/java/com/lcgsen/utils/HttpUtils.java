@@ -32,8 +32,8 @@ import java.util.concurrent.Executors;
  * 可以直接更新UI
  */
 public class HttpUtils {
-    static ExecutorService threadPool = Executors.newCachedThreadPool();
-    static Gson gson = new Gson();
+    private static ExecutorService threadPool = Executors.newCachedThreadPool();
+    private static Gson gson = new Gson();
 
     /**
      * GET方法 返回数据会解析成字符串String
@@ -67,8 +67,8 @@ public class HttpUtils {
                         InputStream is = httpURLConnection.getInputStream();
                         BufferedReader bf = new BufferedReader(new InputStreamReader(is, "UTF-8"));
                         //最好在将字节流转换为字符流的时候 进行转码
-                        StringBuffer buffer = new StringBuffer();
-                        String line = "";
+                        StringBuilder buffer = new StringBuilder();
+                        String line;
                         while ((line = bf.readLine()) != null) {
                             buffer.append(line);
                         }
@@ -113,7 +113,7 @@ public class HttpUtils {
         threadPool.execute(new Runnable() {
             @Override
             public void run() {
-                URL url = null;
+                URL url;
                 HttpURLConnection httpURLConnection = null;
                 try {
                     // 根据URL地址创建URL对象
@@ -138,7 +138,7 @@ public class HttpUtils {
                         BufferedInputStream bis = new BufferedInputStream(is);
                         ByteArrayOutputStream baos = new ByteArrayOutputStream();
                         byte[] bytes = new byte[1024];
-                        int len = -1;
+                        int len;
                         while ((len = bis.read(bytes)) != -1) {
                             baos.write(bytes, 0, len);
                         }
@@ -202,8 +202,8 @@ public class HttpUtils {
                         InputStream is = httpURLConnection.getInputStream();
                         BufferedReader bf = new BufferedReader(new InputStreamReader(is, "UTF-8"));
                         //最好在将字节流转换为字符流的时候 进行转码
-                        StringBuffer buffer = new StringBuffer();
-                        String line = "";
+                        StringBuilder buffer = new StringBuilder();
+                        String line;
                         while ((line = bf.readLine()) != null) {
                             buffer.append(line);
                         }
@@ -250,7 +250,7 @@ public class HttpUtils {
     public static void doPost(final Context context,
                               final String urlString, final HttpCallbackStringListener listener,
                               final Map<String, Object> params) {
-        final StringBuffer out = new StringBuffer();
+        final StringBuilder out = new StringBuilder();
         // 组织请求参数
         for (String key : params.keySet()) {
             if (out.length() != 0) {
@@ -293,8 +293,8 @@ public class HttpUtils {
                         InputStream is = httpURLConnection.getInputStream();
                         BufferedReader bf = new BufferedReader(new InputStreamReader(is, "UTF-8"));
                         //最好在将字节流转换为字符流的时候 进行转码
-                        StringBuffer buffer = new StringBuffer();
-                        String line = "";
+                        StringBuilder buffer = new StringBuilder();
+                        String line;
                         while ((line = bf.readLine()) != null) {
                             buffer.append(line);
                         }
@@ -383,7 +383,7 @@ public class HttpUtils {
                         BufferedInputStream bis = new BufferedInputStream(is);
                         ByteArrayOutputStream baos = new ByteArrayOutputStream();
                         byte[] bytes = new byte[1024];
-                        int len = -1;
+                        int len;
                         while ((len = bis.read(bytes)) != -1) {
                             baos.write(bytes, 0, len);
                         }
@@ -476,8 +476,8 @@ public class HttpUtils {
                         InputStream is = httpURLConnection.getInputStream();
                         BufferedReader bf = new BufferedReader(new InputStreamReader(is, "UTF-8"));
                         //最好在将字节流转换为字符流的时候 进行转码
-                        StringBuffer buffer = new StringBuffer();
-                        String line = "";
+                        StringBuilder buffer = new StringBuilder();
+                        String line;
                         while ((line = bf.readLine()) != null) {
                             buffer.append(line);
                         }

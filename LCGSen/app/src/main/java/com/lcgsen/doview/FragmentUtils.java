@@ -36,7 +36,7 @@ public class FragmentUtils extends Fragment {
         tv = (TextView) view.findViewById(R.id.fragment_test_tv);
 
         Bundle bundle = getArguments();
-        if (bundle != null) {
+        if (bundle != null && bundle.get("name") != null) {
             String name = bundle.get("name").toString();
             tv.setText(name);
         }

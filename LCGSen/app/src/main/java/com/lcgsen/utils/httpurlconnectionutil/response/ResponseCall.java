@@ -15,7 +15,7 @@ import com.lcgsen.utils.httpurlconnectionutil.HttpCallbackStringListener;
 
 public class ResponseCall<T> {
     //用于在子线程和主线程的数据交换
-    Handler mHandler;
+    private Handler mHandler;
 
     public ResponseCall(Context context, final HttpCallbackModelListener listener) {
         Looper looper = context.getMainLooper();
