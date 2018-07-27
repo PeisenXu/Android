@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:background="@drawable/timg"
+    tools:context=".LoginActivity">
+
+    <!--标题栏-->
+    <include layout="@layout/main_title_bar"></include>
+    <!--显示头像，记得加入id iv_head -->
+    <ImageView
+        android:id="@+id/iv_head"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="100dp"
+        android:background="@drawable/default_icon" />
+    <!--输入框-->
+    <EditText
+        android:id="@+id/et_user_name"
+        android:layout_width="300dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="35dp"
+        android:layout_marginRight="35dp"
+        android:layout_marginTop="40dp"
+
+        android:top="-2dp"
+        android:right="-2dp"
+        android:left="-2dp"
+        android:drawablePadding="10dp"
+        android:gravity="center_vertical"
+        android:hint="@string/prompt_email"
+        android:singleLine="true"
+        android:textColor="#a3a3a3"
+        android:textColorHint="#a3a3a3"
+        android:textSize="14sp" />
+
+        <!-- android:background="@null"
+        android:textCursorDrawable="@null"
+        -->
+
+    <!--输入框-->
+    <EditText
+        android:id="@+id/et_psw"
+        android:layout_width="300dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="35dp"
+        android:layout_marginRight="35dp"
+        android:layout_marginTop="20dp"
+        android:drawablePadding="10dp"
+        android:gravity="center_vertical"
+        android:hint="@string/prompt_password"
+        android:inputType="textPassword"
+        android:singleLine="true"
+        android:textColor="#a3a3a3"
+        android:textColorHint="#a3a3a3"
+        android:textSize="14sp" />
+
+    <!--按钮-->
+    <Button
+        android:id="@+id/btn_login"
+        android:layout_width="120dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="35dp"
+        android:layout_marginRight="35dp"
+        android:layout_marginTop="30dp"
+        android:background="@null"
+        android:text="@string/action_sign_in"
+        android:textColor="@android:color/white"
+        android:textCursorDrawable="@null"
+        android:textSize="18sp" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="35dp"
+        android:layout_marginRight="35dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+        <TextView
+        android:id="@+id/tv_content"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:padding="10dp"
+        android:gravity="center_horizontal"
+        android:textColor="@android:color/white"
+        android:textSize="14sp" />
+    </LinearLayout>
+
+    <!--显示tv register , find_psw -->
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginLeft="35dp"
+        android:layout_marginRight="35dp"
+        android:layout_marginTop="10dp"
+        android:gravity="bottom"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_register"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:padding="10dp"
+            android:text="@string/registered"
+            android:textColor="@android:color/white"
+            android:textSize="14sp" />
+        <!--layout_weight="1" layout_width="0dp"实现均分效果-->
+        <TextView
+            android:id="@+id/tv_find_psw"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:padding="10dp"
+            android:text="@string/forget_password"
+            android:textColor="@android:color/white"
+            android:textSize="14sp" />
+    </LinearLayout>
+</LinearLayout>

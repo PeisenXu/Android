@@ -1,0 +1,194 @@
+package com.lcgsen.master;
+
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.gson.Gson;
+import com.lcgsen.enums.DBServiceError;
+import com.lcgsen.model.LoginResponse;
+import com.lcgsen.utils.HttpUtils;
+import com.lcgsen.utils.MD5Utils;
+import com.lcgsen.utils.SharedUtils;
+import com.lcgsen.utils.httpurlconnectionutil.HttpCallbackStringListener;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
+public class LoginActivity extends AppCompatActivity {
+    public static LoginActivity instance = null;
+    private TextView tv_main_title;//标题
+    private TextView tv_register, tv_find_psw;//显示的注册，找回密码
+    private Button btn_login;//登录按钮
+    private String userName, psw, spPsw;//获取的用户名，密码，加密密码
+    private EditText et_user_name, et_psw;//编辑框
+    private static Gson gson = new Gson();
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
+        setContentView(R.layout.activity_login);
+
+        instance = this;
+
+        //设置此界面为竖屏
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        init();
+    }
+
+
+    /* SharedUtils.clearLoginStatus(LoginActivity.this, "USER_STATUS");*/
+
+    //获取界面控件
+    private void init() {
+
+        if ((Boolean) SharedUtils.getParam(LoginActivity.this, "USER_STATUS", false)) {
+            Toast.makeText(LoginActivity.this, "检测到已经登录", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+            return;
+        }
+
+        //从main_title_bar中获取的id
+        tv_main_title = findViewById(R.id.tv_main_title);
+        tv_main_title.setText("登录");
+        //从activity_login.xml中获取的
+        tv_register = findViewById(R.id.tv_register);
+        tv_find_psw = findViewById(R.id.tv_find_psw);
+        btn_login = findViewById(R.id.btn_login);
+        et_user_name = findViewById(R.id.et_user_name);
+        et_psw = findViewById(R.id.et_psw);
+
+        //立即注册控件的点击事件
+        tv_register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if ("立即注册".equalsIgnoreCase(tv_register.getText().toString())) {
+                    tv_main_title.setText("注册");
+                    btn_login.setText("注册");
+                    tv_register.setText("返回登陆");
+                } else {
+                    tv_main_title.setText("登录");
+                    btn_login.setText("登录");
+                    tv_register.setText("立即注册");
+                }
+                //为了跳转到注册界面，并实现注册功能
+                //Intent intent=new Intent(LoginActivity.this.RegisterActivity.class);
+                // startActivityForResult(intent, 1);
+            }
+        });
+        //找回密码控件的点击事件
+        tv_find_psw.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //跳转到找回密码界面（此页面暂未创建）
+                Toast.makeText(LoginActivity.this, "点击了忘记密码", Toast.LENGTH_SHORT).show();
+            }
+        });
+        //登录按钮的点击事件
+        btn_login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if ("注册".equalsIgnoreCase(btn_login.getText().toString())) {
+                    Toast.makeText(LoginActivity.this, "抱歉,暂时不开放注册", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                //开始登录，获取用户名和密码 getText().toString().trim();
+                userName = et_user_name.getText().toString().trim();
+                psw = et_psw.getText().toString().trim();
+
+                if (TextUtils.isEmpty(userName)) {
+                    Toast.makeText(LoginActivity.this, DBServiceError.DB_SERVICE_LOGIN_NO_NAME.getMsg(), Toast.LENGTH_SHORT).show();
+                    return;
+                } else if (TextUtils.isEmpty(psw)) {
+                    Toast.makeText(LoginActivity.this, DBServiceError.DB_SERVICE_LOGIN_NO_PWD.getMsg(), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                // MD5加密
+                spPsw = MD5Utils.md5(psw);
+
+                //返回字符串
+                try {
+                    String url = DBServiceError.DB_SERVICE_URL.getMsg() + "/app/driver/driver.login.php?phone=" + URLEncoder.encode(userName, "UTF-8") + "&password=" + URLEncoder.encode(spPsw, "UTF-8");
+                    HttpUtils.doGet(LoginActivity.this, url, new HttpCallbackStringListener() {
+                        @Override
+                        public void onFinish(String response) {
+                            LoginResponse reponseData = new LoginResponse();
+                            LoginResponse mapObj = gson.fromJson(response, reponseData.getClass());
+                            if (!mapObj.getData().isEmpty()) {
+                                //保存登录状态，在界面保存登录的用户名 定义个方法 saveLoginStatus boolean 状态 , userName 用户名;
+                                SharedUtils.setParam(LoginActivity.this, "USER_STATUS", true);
+                                SharedUtils.setParam(LoginActivity.this, "USER_NAME", userName);
+                                Toast.makeText(LoginActivity.this, DBServiceError.DB_SERVICE_LOGIN_SUCCESS.getMsg(), Toast.LENGTH_SHORT).show();
+
+                                //登录成功后关闭此页面进入主页
+                                Intent data = new Intent();
+                                //datad.putExtra( ); name , value ;
+                                data.putExtra("isLogin", true);
+                                //RESULT_OK为Activity系统常量，状态码为-1
+                                // 表示此页面下的内容操作成功将data返回到上一页面，如果是用back返回过去的则不存在用setResult传递data值
+                                setResult(RESULT_OK, data);
+                                //销毁登录界面
+                                LoginActivity.this.finish();
+                                //跳转到主界面，登录成功的状态传递到 MainActivity 中
+                                Toast.makeText(LoginActivity.this, "登陆成功", Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                return;
+                            }
+                            Toast.makeText(LoginActivity.this, DBServiceError.DB_SERVICE_LOGIN_ERROR.getMsg(), Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onError(Exception e) {
+                            Toast.makeText(LoginActivity.this, DBServiceError.DB_SERVICE_LOGIN_ERROR.getMsg(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Toast.makeText(LoginActivity.this, DBServiceError.DB_SERVICE_LOGIN_ERROR.getMsg(), Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+    }
+
+    /**
+     * 注册成功的数据返回至此
+     *
+     * @param requestCode 请求码
+     * @param resultCode  结果码
+     * @param data        数据
+     */
+    @Override
+    //显示数据， onActivityResult
+    //startActivityForResult(intent, 1); 从注册界面中获取数据
+    //int requestCode , int resultCode , Intent data
+    // LoginActivity -> startActivityForResult -> onActivityResult();
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //super.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
+        if (data != null) {
+            //是获取注册界面回传过来的用户名
+            // getExtra().getString("***");
+            String userName = data.getStringExtra("userName");
+            if (!TextUtils.isEmpty(userName)) {
+                //设置用户名到 et_user_name 控件
+                et_user_name.setText(userName);
+                //et_user_name控件的setSelection()方法来设置光标位置
+                et_user_name.setSelection(userName.length());
+            }
+        }
+    }
+}
