@@ -268,4 +268,32 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     private void changeTextColor(int position) {
         navigation.getMenu().getItem(position).setChecked(true);
     }
+
+//    public void onClick(View view) {
+//        switch (view.getId()) {
+//            case R.id.floatBtn:
+//
+//                PopupMenu popupMenu=new PopupMenu(this,view);
+//                getMenuInflater().inflate(R.menu.pop_item,popupMenu.getMenu());
+//                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+//                    @Override
+//                    public boolean onMenuItemClick(MenuItem menuItem) {
+//                        switch (menuItem.getItemId()){
+//                            case R.id.action_last:
+//                                Toast.makeText(TestActivity.this,""+menuItem.getItemId(),Toast.LENGTH_SHORT).show();
+//                                break;
+//                            case R.id.action_next:
+//                                Toast.makeText(TestActivity.this,""+menuItem.getItemId(),Toast.LENGTH_SHORT).show();
+//                                break;
+//                        }
+//
+//                        return false;
+//                    }
+//                });
+//                popupMenu.show();
+//                Log.e("****--->","float");
+//                // Toast.makeText(this,"flaot---",Toast.LENGTH_SHORT).show();
+//                break;
+//        }
+//    }
 }
