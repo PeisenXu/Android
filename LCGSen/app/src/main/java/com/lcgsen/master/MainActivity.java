@@ -40,9 +40,9 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     private ImageView personImage;
 
     private ListView listview;
-   /* private float mFirstY;
-    private float mCurrentY;
-    protected float mTouchSlop;*/
+    /* private float mFirstY;
+     private float mCurrentY;
+     protected float mTouchSlop;*/
     private ObjectAnimator mAnimatorTitle;
     private ObjectAnimator mAnimatorContent;
 
@@ -198,6 +198,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         viewPager.setAdapter(viewPagerAdapter);
 
         List<Fragment> list = new ArrayList<>();
+
         list.add(FragmentUtils.newInstance("首页"));
         list.add(FragmentUtils.newInstance("工具"));
         list.add(FragmentUtils.newInstance("我"));
