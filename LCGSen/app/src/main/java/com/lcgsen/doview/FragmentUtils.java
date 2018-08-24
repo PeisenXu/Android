@@ -1,6 +1,7 @@
 package com.lcgsen.doview;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -66,9 +67,15 @@ public class FragmentUtils extends Fragment {
                 });
 
                 linearLayout = (LinearLayout) view.findViewById(R.id.home_line);
-                for (int i = 0; i < 10; i++) {
-                    addRecyclerView(view, 0, 0, 0);
-                }
+                addRecyclerView(view, 0, 0, Color.RED);
+                addRecyclerView(view, 0, 0, Color.BLACK);
+                addRecyclerView(view, 0, 0, Color.BLUE);
+                addRecyclerView(view, 0, 0, Color.RED);
+                addRecyclerView(view, 0, 0, Color.BLACK);
+                addRecyclerView(view, 0, 0, Color.BLUE);
+                addRecyclerView(view, 0, 0, Color.RED);
+                addRecyclerView(view, 0, 0, Color.BLACK);
+                addRecyclerView(view, 0, 0, Color.BLUE);
             } else {
                 tv = (TextView) view.findViewById(R.id.fragment_test_tv);
                 String name = nameObj.toString();
@@ -77,27 +84,29 @@ public class FragmentUtils extends Fragment {
         }
     }
 
-    private void addRecyclerView(final View view, int height, int width, int color) {
+    private LinearLayout addRecyclerView(final View view, int height, int width, int color) {
         RecyclerView recyclerView = new RecyclerView(view.getContext());
+        if (color == 0) {
+            color = android.graphics.Color.RED;
+        }
+        recyclerView.setBackgroundColor(color);
         linearLayout.addView(recyclerView);
 
         //设置recyclerView高度
         ViewGroup.LayoutParams layoutParams = recyclerView.getLayoutParams();
         WindowManager wm = (WindowManager) getActivity().getSystemService(Context.WINDOW_SERVICE);
 
-        if (height != 0) {
-            height = ScreenUtils.getScreenHeight(view.getContext()) / 4;
+        if (height == 0) {
+            height = ScreenUtils.getScreenHeight(view.getContext()) / 8;
         }
         if (width != 0) {
             layoutParams.width = width;
         }
-        if (color == 0) {
-            color = android.graphics.Color.RED;
-        }
 
         layoutParams.height = height;
         recyclerView.setLayoutParams(layoutParams);
-        recyclerView.setBackgroundColor(color);
+
+        return linearLayout;
     }
 
 }
