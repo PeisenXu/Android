@@ -11,11 +11,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.lcgsen.master.R;
+import com.lcgsen.utils.DragFloatActionButton;
 
 public class FragmentUtils extends Fragment {
 
     private TextView tv;
-    private FloatingActionButton floatingView;
+    private DragFloatActionButton floatingView;
 
     public static FragmentUtils newInstance(String name) {
 
@@ -51,7 +52,7 @@ public class FragmentUtils extends Fragment {
         Object nameObj = bundle.get("name");
         if (bundle != null && nameObj != null) {
             if ("首页".equalsIgnoreCase(nameObj.toString())) {
-                floatingView = (FloatingActionButton) view.findViewById(R.id.fab);
+                floatingView = (DragFloatActionButton)(FloatingActionButton) view.findViewById(R.id.fab);
                 floatingView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
