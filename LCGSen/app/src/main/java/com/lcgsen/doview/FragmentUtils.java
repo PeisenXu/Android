@@ -1,7 +1,6 @@
 package com.lcgsen.doview;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -67,15 +66,14 @@ public class FragmentUtils extends Fragment {
                 });
 
                 linearLayout = (LinearLayout) view.findViewById(R.id.home_line);
-                addRecyclerView(view, 0, 0, Color.RED);
-                addRecyclerView(view, 0, 0, Color.BLACK);
-                addRecyclerView(view, 0, 0, Color.BLUE);
-                addRecyclerView(view, 0, 0, Color.RED);
-                addRecyclerView(view, 0, 0, Color.BLACK);
-                addRecyclerView(view, 0, 0, Color.BLUE);
-                addRecyclerView(view, 0, 0, Color.RED);
-                addRecyclerView(view, 0, 0, Color.BLACK);
-                addRecyclerView(view, 0, 0, Color.BLUE);
+                addRecyclerView(view, 0, 0, 0xFFF0F8FF);
+                addRecyclerView(view, 0, 0, 0xFFFFFACD);
+                addRecyclerView(view, 0, 0, 0xFF8B8B83);
+                addRecyclerView(view, 0, 0, 0xFFCDC8B1);
+                addRecyclerView(view, 0, 0, 0xFFF0F8FF);
+                addRecyclerView(view, 0, 0, 0xFFFFFACD);
+                addRecyclerView(view, 0, 0, 0xFF8B8B83);
+                addRecyclerView(view, 0, 0, 0xFFCDC8B1);
             } else {
                 tv = (TextView) view.findViewById(R.id.fragment_test_tv);
                 String name = nameObj.toString();
@@ -90,6 +88,7 @@ public class FragmentUtils extends Fragment {
             color = android.graphics.Color.RED;
         }
         recyclerView.setBackgroundColor(color);
+        recyclerView.setPadding(5, 5, 5, 5);
         linearLayout.addView(recyclerView);
 
         //设置recyclerView高度
@@ -97,13 +96,14 @@ public class FragmentUtils extends Fragment {
         WindowManager wm = (WindowManager) getActivity().getSystemService(Context.WINDOW_SERVICE);
 
         if (height == 0) {
-            height = ScreenUtils.getScreenHeight(view.getContext()) / 8;
+            height = ScreenUtils.getScreenHeight(view.getContext()) / 9;
         }
         if (width != 0) {
             layoutParams.width = width;
         }
 
         layoutParams.height = height;
+
         recyclerView.setLayoutParams(layoutParams);
 
         return linearLayout;
