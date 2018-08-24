@@ -1,22 +1,27 @@
 package com.lcgsen.doview;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.lcgsen.master.R;
 import com.lcgsen.utils.DragFloatActionButton;
+import com.lcgsen.utils.ScreenUtils;
 
 public class FragmentUtils extends Fragment {
 
     private TextView tv;
     private DragFloatActionButton floatingView;
+    private LinearLayout linearLayout;
 
     public static FragmentUtils newInstance(String name) {
 
@@ -52,20 +57,47 @@ public class FragmentUtils extends Fragment {
         Object nameObj = bundle.get("name");
         if (bundle != null && nameObj != null) {
             if ("首页".equalsIgnoreCase(nameObj.toString())) {
-                floatingView = (DragFloatActionButton)(FloatingActionButton) view.findViewById(R.id.fab);
+                floatingView = (DragFloatActionButton) view.findViewById(R.id.fab);
                 floatingView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(view.getContext(),"FAB clicked",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(view.getContext(), "FAB clicked", Toast.LENGTH_SHORT).show();
                     }
                 });
 
+                linearLayout = (LinearLayout) view.findViewById(R.id.home_line);
+                for (int i = 0; i < 10; i++) {
+                    addRecyclerView(view, 0, 0, 0);
+                }
             } else {
                 tv = (TextView) view.findViewById(R.id.fragment_test_tv);
                 String name = nameObj.toString();
                 tv.setText(name);
             }
         }
+    }
+
+    private void addRecyclerView(final View view, int height, int width, int color) {
+        RecyclerView recyclerView = new RecyclerView(view.getContext());
+        linearLayout.addView(recyclerView);
+
+        //设置recyclerView高度
+        ViewGroup.LayoutParams layoutParams = recyclerView.getLayoutParams();
+        WindowManager wm = (WindowManager) getActivity().getSystemService(Context.WINDOW_SERVICE);
+
+        if (height != 0) {
+            height = ScreenUtils.getScreenHeight(view.getContext()) / 4;
+        }
+        if (width != 0) {
+            layoutParams.width = width;
+        }
+        if (color == 0) {
+            color = android.graphics.Color.RED;
+        }
+
+        layoutParams.height = height;
+        recyclerView.setLayoutParams(layoutParams);
+        recyclerView.setBackgroundColor(color);
     }
 
 }
