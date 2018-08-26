@@ -1,6 +1,7 @@
 package com.lcgsen.master;
 
 import android.animation.ObjectAnimator;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -12,10 +13,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -24,6 +27,7 @@ import android.widget.Toast;
 
 import com.lcgsen.doview.FragmentUtils;
 import com.lcgsen.doview.ViewPagerAdapter;
+import com.lcgsen.utils.DragFloatActionButton;
 import com.lcgsen.utils.SharedUtils;
 import com.lcgsen.utils.ViewHelper;
 import com.lcgsen.utils.viewstyle.DepthPageTransformer;
@@ -89,6 +93,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
         // 设置底部菜单监听
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
     }
 
     @Override
@@ -147,30 +152,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         }
     };
 
-    /*private View.OnTouchListener listViewListener = new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View v, MotionEvent event) {
-            switch (event.getAction()) {
-                case MotionEvent.ACTION_DOWN:
-                    mFirstY = event.getY();
-                    break;
-                case MotionEvent.ACTION_MOVE:
-                    mCurrentY = event.getY();
-                    if (mCurrentY - mFirstY > mTouchSlop) { // 下滑 显示titleBar
-                        showHideTitlebar(true);
-                    } else if (mFirstY - mCurrentY > mTouchSlop) {
-                        showHideTitlebar(false);
-                    }
-                    break;
-                case MotionEvent.ACTION_UP:
-                    break;
-                default:
-                    break;
-            }
-            return false;
-        }
-    };*/
-
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -202,12 +183,8 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         list.add(FragmentUtils.newInstance("首页"));
         list.add(FragmentUtils.newInstance("工具"));
         list.add(FragmentUtils.newInstance("我"));
+
         viewPagerAdapter.setList(list);
-
-        // data = new String[]{"暹罗猫", "布偶猫", "折耳猫", "短毛猫", "波斯猫", "蓝猫", "森林猫", "孟买猫", "缅因猫", "埃及猫", "伯曼猫", "缅甸猫", "新加坡猫", "美国短尾猫", "巴厘猫"};
-        // ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1, data);
-        // ((ListView) findViewById(R.id.list)).setAdapter(adapter);
-
     }
 
     private void initWindow() {
@@ -269,31 +246,4 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         navigation.getMenu().getItem(position).setChecked(true);
     }
 
-//    public void onClick(View view) {
-//        switch (view.getId()) {
-//            case R.id.floatBtn:
-//
-//                PopupMenu popupMenu=new PopupMenu(this,view);
-//                getMenuInflater().inflate(R.menu.pop_item,popupMenu.getMenu());
-//                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-//                    @Override
-//                    public boolean onMenuItemClick(MenuItem menuItem) {
-//                        switch (menuItem.getItemId()){
-//                            case R.id.action_last:
-//                                Toast.makeText(TestActivity.this,""+menuItem.getItemId(),Toast.LENGTH_SHORT).show();
-//                                break;
-//                            case R.id.action_next:
-//                                Toast.makeText(TestActivity.this,""+menuItem.getItemId(),Toast.LENGTH_SHORT).show();
-//                                break;
-//                        }
-//
-//                        return false;
-//                    }
-//                });
-//                popupMenu.show();
-//                Log.e("****--->","float");
-//                // Toast.makeText(this,"flaot---",Toast.LENGTH_SHORT).show();
-//                break;
-//        }
-//    }
 }

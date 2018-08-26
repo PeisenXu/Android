@@ -1,21 +1,19 @@
 package com.lcgsen.doview;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.lcgsen.master.R;
 import com.lcgsen.utils.DragFloatActionButton;
-import com.lcgsen.utils.ScreenUtils;
+import com.lcgsen.utils.ViewHelper;
+import com.lcgsen.utils.custom.EllipsizingTextView;
 
 public class FragmentUtils extends Fragment {
 
@@ -65,15 +63,22 @@ public class FragmentUtils extends Fragment {
                     }
                 });
 
-                linearLayout = (LinearLayout) view.findViewById(R.id.home_line);
-                addRecyclerView(view, 0, 0, 0xFFF0F8FF);
-                addRecyclerView(view, 0, 0, 0xFFFFFACD);
-                addRecyclerView(view, 0, 0, 0xFF8B8B83);
-                addRecyclerView(view, 0, 0, 0xFFCDC8B1);
-                addRecyclerView(view, 0, 0, 0xFFF0F8FF);
-                addRecyclerView(view, 0, 0, 0xFFFFFACD);
-                addRecyclerView(view, 0, 0, 0xFF8B8B83);
-                addRecyclerView(view, 0, 0, 0xFFCDC8B1);
+                addTextView(view, 0, 0, 0xFF4F94CD);
+                addTextView(view, 0, 0, 0xFFFFFACD);
+                addTextView(view, 0, 0, 0xFF8B8B83);
+                addTextView(view, 0, 0, 0xFF4F94CD);
+                addTextView(view, 0, 0, 0xFFFFFACD);
+                addTextView(view, 0, 0, 0xFF8B8B83);
+                addTextView(view, 0, 0, 0xFF4F94CD);
+                addTextView(view, 0, 0, 0xFFFFFACD);
+                addTextView(view, 0, 0, 0xFF8B8B83);
+                addTextView(view, 0, 0, 0xFF4F94CD);
+                addTextView(view, 0, 0, 0xFFFFFACD);
+                addTextView(view, 0, 0, 0xFF8B8B83);
+                addTextView(view, 0, 0, 0xFF4F94CD);
+                addTextView(view, 0, 0, 0xFFFFFACD);
+                addTextView(view, 0, 0, 0xFF8B8B83);
+
             } else {
                 tv = (TextView) view.findViewById(R.id.fragment_test_tv);
                 String name = nameObj.toString();
@@ -82,31 +87,39 @@ public class FragmentUtils extends Fragment {
         }
     }
 
-    private LinearLayout addRecyclerView(final View view, int height, int width, int color) {
-        RecyclerView recyclerView = new RecyclerView(view.getContext());
-        if (color == 0) {
-            color = android.graphics.Color.RED;
-        }
-        recyclerView.setBackgroundColor(color);
-        recyclerView.setPadding(5, 5, 5, 5);
-        linearLayout.addView(recyclerView);
+    private LinearLayout addTextView(final View view, int height, int width, int color) {
+
+        LinearLayout linearLayout = (LinearLayout) view.findViewById(R.id.home_line);
+
+        EllipsizingTextView textView = new EllipsizingTextView(view.getContext());
+        textView.setMaxLines(10);
+        textView.setText("\t海军蓝\t#000080\t0,0,128\n" +
+                "　\tRoyalBlue\t皇家蓝\t#4169E1\t65,105,225\n" +
+                "　\tCornflowerBlue\t矢车菊的蓝色\t#6495ED\t100,149,237\n" +
+                "　\tLightSteelBlue\t淡钢蓝\t#B0C4DE\t176,196,222\n" +
+                "　\tLightSlateGray\t浅石板灰\t#778899\t119,136,153\n" +
+                "　\tSlateGray\t石板灰\t#708090\t112,128,144\n" +
+                "　\tDoderBlue\t道奇蓝\t#1E90FF\t30,144,255\n" +
+                "　\tAliceBlue\t爱丽丝蓝\t#F0F8FF\t240,248,255\n" +
+                "　\tSteelBlue\t钢蓝\t#4682B4\t70,130,180\n" +
+                "　\tLightSkyBlue\t淡蓝色\t#87CEFA\t135,206,250\n" +
+                "　\tSkyBlue\t天蓝色\t#87CEEB\t135,206,235\n" +
+                "　\tDeepSkyBlue\t深天蓝\t#00BFFF\t0,191,255\n" +
+                "　\tLightBLue\t淡蓝\t#ADD8E6\t173,216,230\n" +
+                "　\tPowDerBlue\t火药蓝\t#B0E0E6");
+        textView.setBackgroundColor(color);
+        textView.setPadding(5, 5, 5, 5);
+        // recyclerView.addView(view.findViewById(R.id.fragment_test_tv));
+        linearLayout.addView(textView);
+
+        ViewHelper.setMargins(textView, ViewHelper.getScreenWidth(view.getContext()) / 10, 0, ViewHelper.getScreenWidth(view.getContext()) / 10, ViewHelper.getScreenHeight(view.getContext()) / 9 / 3);
 
         //设置recyclerView高度
-        ViewGroup.LayoutParams layoutParams = recyclerView.getLayoutParams();
-        WindowManager wm = (WindowManager) getActivity().getSystemService(Context.WINDOW_SERVICE);
-
-        if (height == 0) {
-            height = ScreenUtils.getScreenHeight(view.getContext()) / 9;
-        }
-        if (width != 0) {
-            layoutParams.width = width;
-        }
-
-        layoutParams.height = height;
-
-        recyclerView.setLayoutParams(layoutParams);
+        ViewGroup.LayoutParams layoutParams = textView.getLayoutParams();
+        textView.setLayoutParams(layoutParams);
 
         return linearLayout;
     }
+
 
 }

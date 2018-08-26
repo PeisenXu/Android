@@ -32,11 +32,11 @@ public class DragFloatActionButton extends FloatingActionButton {
     }
 
     private void init() {
-        screenWidth = ScreenUtils.getScreenWidth(getContext());
+        screenWidth = ViewHelper.getScreenWidth(getContext());
         screenWidthHalf = screenWidth / 2;
-        screenHeight = ScreenUtils.getScreenHeight(getContext());
-        statusHeight = ScreenUtils.getStatusHeight(getContext());
-        virtualHeight = ScreenUtils.getVirtualBarHeigh(getContext());
+        screenHeight = ViewHelper.getScreenHeight(getContext());
+        statusHeight = ViewHelper.getStatusHeight(getContext());
+        virtualHeight = ViewHelper.getVirtualBarHeigh(getContext());
     }
 
     private int lastX;
