@@ -28,6 +28,7 @@ import android.widget.Toast;
 import com.lcgsen.doview.FragmentUtils;
 import com.lcgsen.doview.ViewPagerAdapter;
 import com.lcgsen.utils.DragFloatActionButton;
+import com.lcgsen.utils.NewStatusBarUtil;
 import com.lcgsen.utils.SharedUtils;
 import com.lcgsen.utils.ViewHelper;
 import com.lcgsen.utils.viewstyle.DepthPageTransformer;
@@ -56,6 +57,9 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     private ViewPagerAdapter viewPagerAdapter;
     private BottomNavigationView navigation;
 
+    private DrawerLayout main_view;
+    private LinearLayout titleBar = (LinearLayout) findViewById(R.id.titlebar);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,15 +67,16 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
         setContentView(R.layout.main_view);
 
-        navigationView = (NavigationView) findViewById(R.id.nav);
+        navigationView = findViewById(R.id.nav);
         headerView = navigationView.getHeaderView(0);
         userName = headerView.findViewById(R.id.user_name);
         userCreateTime = headerView.findViewById(R.id.user_create_time);
 
-        viewPager = (ViewPager) findViewById(R.id.viewPager);
-        drawerLayout = (DrawerLayout) findViewById(R.id.activity_na);
-        // listview = (ListView) findViewById(R.id.list);
-        navigation = (BottomNavigationView) findViewById(R.id.bottomSelectView);
+        viewPager = findViewById(R.id.viewPager);
+        drawerLayout = findViewById(R.id.activity_na);
+        // listview = findViewById(R.id.list);
+        navigation = findViewById(R.id.bottomSelectView);
+        main_view = findViewById(R.id.activity_na);
 
         // 加载数据
         init();
@@ -188,20 +193,14 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     }
 
     private void initWindow() {
-        // 初始化窗口属性，让状态栏和导航栏透明
-        if (Build.VERSION.SDK_INT >= 21) {
-            View decorView = getWindow().getDecorView();
-            decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-            getWindow().setStatusBarColor(Color.TRANSPARENT);
+        // 初始化窗口属性，让状态栏和导航栏沉浸
+        NewStatusBarUtil.transparencyBar(this);
 
+        if (Build.VERSION.SDK_INT >= 21) {
             // 如果是高版本手机， 侧滑栏图标会被状态栏遮挡， 向下移动
             personImage = (ImageView) headerView.findViewById(R.id.person);
             ViewHelper.setMargins(personImage, 10, ViewHelper.getStatusBarHeight(MainActivity.this), 0, 0);
-        }
-
-        // finish掉登陆界面
-        if (LoginActivity.instance != null) {
-            LoginActivity.instance.finish();
+            getWindow().setNavigationBarColor(0xFF8B8B83);
         }
 
         // 设置页面滑动效果
@@ -212,10 +211,12 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         params.width = getResources().getDisplayMetrics().widthPixels * 1 / 2;
         navigationView.setLayoutParams(params);
         navigationView.setBackgroundColor(Color.argb(120, 200, 200, 200));
+
+        main_view.setBackgroundColor(Color.argb(120, 17, 0, 0));
+        navigation.setBackgroundColor(Color.argb(120, 17, 0, 0));
     }
 
     protected void showHideTitlebar(boolean tag) {
-        LinearLayout titleBar = (LinearLayout) findViewById(R.id.titlebar);
         if (mAnimatorTitle != null && mAnimatorTitle.isRunning()) {
             mAnimatorTitle.cancel();
         }

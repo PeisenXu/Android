@@ -1,5 +1,6 @@
 package com.lcgsen.doview;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -63,21 +64,20 @@ public class FragmentUtils extends Fragment {
                     }
                 });
 
-                addTextView(view, 0, 0, 0xFF4F94CD);
-                addTextView(view, 0, 0, 0xFFFFFACD);
-                addTextView(view, 0, 0, 0xFF8B8B83);
-                addTextView(view, 0, 0, 0xFF4F94CD);
-                addTextView(view, 0, 0, 0xFFFFFACD);
-                addTextView(view, 0, 0, 0xFF8B8B83);
-                addTextView(view, 0, 0, 0xFF4F94CD);
-                addTextView(view, 0, 0, 0xFFFFFACD);
-                addTextView(view, 0, 0, 0xFF8B8B83);
-                addTextView(view, 0, 0, 0xFF4F94CD);
-                addTextView(view, 0, 0, 0xFFFFFACD);
-                addTextView(view, 0, 0, 0xFF8B8B83);
-                addTextView(view, 0, 0, 0xFF4F94CD);
-                addTextView(view, 0, 0, 0xFFFFFACD);
-                addTextView(view, 0, 0, 0xFF8B8B83);
+                addTextView(view, 0, 0, Color.argb(60, 200, 200, 200));
+                addTextView(view, 0, 0, Color.argb(70, 200, 200, 200));
+                addTextView(view, 0, 0, Color.argb(80, 200, 200, 200));
+                addTextView(view, 0, 0, Color.argb(90, 200, 200, 200));
+                addTextView(view, 0, 0, Color.argb(100, 200, 200, 200));
+                addTextView(view, 0, 0, Color.argb(110, 200, 200, 200));
+                addTextView(view, 0, 0, Color.argb(120, 200, 200, 200));
+                addTextView(view, 0, 0, Color.argb(100, 200, 200, 200));
+                addTextView(view, 0, 0, Color.argb(110, 200, 200, 200));
+                addTextView(view, 0, 0, Color.argb(120, 200, 200, 200));
+                addTextView(view, 0, 0, Color.argb(130, 200, 200, 200));
+                addTextView(view, 0, 0, Color.argb(140, 200, 200, 200));
+                addTextView(view, 0, 0, Color.argb(150, 200, 200, 200));
+                addTextView(view, 0, 0, Color.argb(160, 200, 200, 200));
 
             } else {
                 tv = (TextView) view.findViewById(R.id.fragment_test_tv);
@@ -92,7 +92,7 @@ public class FragmentUtils extends Fragment {
         LinearLayout linearLayout = (LinearLayout) view.findViewById(R.id.home_line);
 
         EllipsizingTextView textView = new EllipsizingTextView(view.getContext());
-        textView.setMaxLines(10);
+        textView.setMaxLines(5);
         textView.setText("\t海军蓝\t#000080\t0,0,128\n" +
                 "　\tRoyalBlue\t皇家蓝\t#4169E1\t65,105,225\n" +
                 "　\tCornflowerBlue\t矢车菊的蓝色\t#6495ED\t100,149,237\n" +
@@ -107,12 +107,12 @@ public class FragmentUtils extends Fragment {
                 "　\tDeepSkyBlue\t深天蓝\t#00BFFF\t0,191,255\n" +
                 "　\tLightBLue\t淡蓝\t#ADD8E6\t173,216,230\n" +
                 "　\tPowDerBlue\t火药蓝\t#B0E0E6");
-        textView.setBackgroundColor(color);
-        textView.setPadding(5, 5, 5, 5);
+        // textView.setBackgroundColor(color);
+        textView.setPadding(10, 10, 10, 10);
         // recyclerView.addView(view.findViewById(R.id.fragment_test_tv));
         linearLayout.addView(textView);
 
-        ViewHelper.setMargins(textView, ViewHelper.getScreenWidth(view.getContext()) / 10, 0, ViewHelper.getScreenWidth(view.getContext()) / 10, ViewHelper.getScreenHeight(view.getContext()) / 9 / 3);
+        ViewHelper.setMargins(textView, 0, 0, 0, ViewHelper.getScreenHeight(view.getContext()) / 9 / 3);
 
         //设置recyclerView高度
         ViewGroup.LayoutParams layoutParams = textView.getLayoutParams();
