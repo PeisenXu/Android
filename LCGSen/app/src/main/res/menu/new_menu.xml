@@ -5,37 +5,35 @@
             android:id="@+id/navigation_about"
             android:checkable="true"
             android:icon="@drawable/about"
-            android:title="关于" />
+            android:title="@string/about" />
         <item
             android:id="@+id/navigation_setting"
             android:icon="@drawable/setting"
-            android:title="设置" />
+            android:title="@string/setting" />
 
         <item
             android:id="@+id/navigation_feedback"
             android:checked="false"
-            android:title="反馈">
+            android:title="@string/feedback">
             <menu>
-                <group
-                    android:checkableBehavior="single">
+                <group android:checkableBehavior="single">
                     <item
                         android:id="@+id/action_qq"
                         android:checked="false"
                         android:icon="@drawable/qq"
-                        android:title="QQ"/>
+                        android:title="@string/qq" />
                 </group>
             </menu>
         </item>
         <item
             android:checked="false"
-            android:title="其它操作">
+            android:title="@string/other_operations">
             <menu>
-                <group
-                    android:checkableBehavior="single">
+                <group android:checkableBehavior="single">
                     <item
                         android:id="@+id/navigation_login_out"
                         android:icon="@drawable/out"
-                        android:title="切换账号" />
+                        android:title="@string/switch_user" />
                 </group>
             </menu>
         </item>

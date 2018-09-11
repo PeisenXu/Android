@@ -8,4 +8,10 @@
     <string name="action_sign_in">登陆</string>
     <string name="forget_password">忘记密码?</string>
     <string name="registered">立即注册</string>
+    <string name="setting">设置</string>
+    <string name="feedback">反馈</string>
+    <string name="other_operations">其它操作</string>
+    <string name="switch_user">切换用户</string>
+    <string name="qq">QQ</string>
+    <string name="about">关于</string>
 </resources>

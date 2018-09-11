@@ -13,7 +13,7 @@ public class AboutActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         View aboutPage = new AboutPage(this)
                 .isRTL(false)
-                .setImage(R.mipmap.ic_launcher)//图片
+                .setImage(R.drawable.favicon)//图片
                 .setDescription("不怕路远，就怕志短。")//介绍
                 .addItem(new Element().setTitle("Version 1.0"))
                 .addGroup("与我联系")

@@ -3,4 +3,5 @@
     <color name="colorTextLine">#FF4081</color>
     <color name="tab_checked">#ED6A2C</color>
     <color name="tab_unchecked">#757575</color>
+    <color name="ic_launcher_background">#E7EC4D</color>
 </resources>
