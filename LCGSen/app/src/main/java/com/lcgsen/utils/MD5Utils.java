@@ -12,7 +12,7 @@ public class MD5Utils {
             byte[] result = digest.digest(text.getBytes());
             //创建StringBuilder对象 然后建议StringBuffer，安全性高
             //StringBuilder sb = new StringBuilder();
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             // result数组，digest.digest ( ); -> text.getBytes();
             // for 循环数组byte[] result;
             for (byte b : result) {
