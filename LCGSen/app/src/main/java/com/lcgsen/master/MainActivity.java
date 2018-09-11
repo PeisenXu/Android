@@ -58,7 +58,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     private BottomNavigationView navigation;
 
     private DrawerLayout main_view;
-    private LinearLayout titleBar = (LinearLayout) findViewById(R.id.titlebar);
+    private LinearLayout titleBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +77,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         // listview = findViewById(R.id.list);
         navigation = findViewById(R.id.bottomSelectView);
         main_view = findViewById(R.id.activity_na);
+        titleBar = (LinearLayout) findViewById(R.id.titlebar);
 
         // 加载数据
         init();
@@ -197,10 +198,27 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         NewStatusBarUtil.transparencyBar(this);
 
         if (Build.VERSION.SDK_INT >= 21) {
+            boolean isLight = true;
+            Window window = getWindow();
             // 如果是高版本手机， 侧滑栏图标会被状态栏遮挡， 向下移动
             personImage = (ImageView) headerView.findViewById(R.id.person);
             ViewHelper.setMargins(personImage, 10, ViewHelper.getStatusBarHeight(MainActivity.this), 0, 0);
-            getWindow().setNavigationBarColor(0xFF8B8B83);
+            window.setNavigationBarColor(0xFF8B8B83);
+
+            //取消设置透明状态栏,使 ContentView 内容不再覆盖状态栏
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            //需要设置这个 flag 才能调用 setStatusBarColor 来设置状态栏颜色
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            View decor = window.getDecorView();
+            int ui = decor.getSystemUiVisibility();
+            if (isLight) {
+                //light --> a|=b的意思就是把a和b按位或然后赋值给a,   按位或的意思就是先把a和b都换成2进制，然后用或操作，相当于a=a|b
+                ui |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+            } else {
+                //dark  --> &是位运算里面，与运算,  a&=b相当于 a = a&b,  ~非运算符
+                ui &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+            }
+            decor.setSystemUiVisibility(ui);
         }
 
         // 设置页面滑动效果
@@ -210,10 +228,13 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         ViewGroup.LayoutParams params = navigationView.getLayoutParams();
         params.width = getResources().getDisplayMetrics().widthPixels * 1 / 2;
         navigationView.setLayoutParams(params);
-        navigationView.setBackgroundColor(Color.argb(120, 200, 200, 200));
+        navigationView.setBackgroundColor(Color.argb(200, 200, 200, 200));
 
-        main_view.setBackgroundColor(Color.argb(120, 17, 0, 0));
-        navigation.setBackgroundColor(Color.argb(120, 17, 0, 0));
+
+        // main_view.setBackgroundColor(Color.argb(120, 17, 0, 0));
+        // viewPager.setBackgroundColor(Color.argb(0, 200, 200, 200));
+        // navigation.setBackgroundColor(Color.argb(120, 20, 0, 0));
+
     }
 
     protected void showHideTitlebar(boolean tag) {

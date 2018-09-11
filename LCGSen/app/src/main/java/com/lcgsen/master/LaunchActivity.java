@@ -13,7 +13,7 @@ public class LaunchActivity extends Activity {
         //加载启动图片
         setContentView(R.layout.launch_view);
 
-        Integer time = 2000;    //设置等待时间，单位为毫秒
+        Integer time = 1500;    //设置等待时间，单位为毫秒
         Handler handler = new Handler();
         //当计时结束时，跳转至主界面
         handler.postDelayed(new Runnable() {
