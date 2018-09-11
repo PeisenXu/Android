@@ -1,11 +1,13 @@
 package com.lcgsen.doview;
 
 import android.content.ClipData;
+import android.content.Context;
 import android.database.DataSetObserver;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.ClipboardManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +30,8 @@ import com.lcgsen.utils.custom.EllipsizingTextView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.support.v4.content.ContextCompat.getSystemService;
 
 public class FragmentUtils extends Fragment {
 
@@ -179,7 +183,10 @@ public class FragmentUtils extends Fragment {
             vh.hide_1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(getContext(), list.get(position) + "被点了复制", Toast.LENGTH_SHORT).show();
+                    ClipboardManager cm = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
+                    // 将文本内容放到系统剪贴板里。
+                    cm.setText(list.get(position));
+                    Toast.makeText(getContext(), "复制成功，快去粘贴吧", Toast.LENGTH_SHORT).show();
                     oldPosition = position;//记录点击的position
                     notifyDataSetChanged();//刷新adapter重新填充条目。在重新填充的过程中，被记录的position会做展开或隐藏的动作，具体的判断看上面代码
                     //在此处需要明确的一点是，当adapter执行刷新操作时，整个getview方法会重新执行，也就是条目重新做一次初始化被填充数据。
@@ -187,7 +194,7 @@ public class FragmentUtils extends Fragment {
                     //明确这一点后，每次点击代码执行逻辑就是 onclick（）---》getview（）
                 }
             });
-            
+
             vh.hide_2.setOnClickListener(this);
             vh.hide_3.setOnClickListener(this);
             vh.hide_4.setOnClickListener(this);

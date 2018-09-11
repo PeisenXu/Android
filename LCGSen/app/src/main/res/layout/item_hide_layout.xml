@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
-        android:text="加密" />
+        android:text="复制" />
 
     <TextView
         android:id="@+id/hide_2"
@@ -20,7 +20,7 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
-        android:text="解密" />
+        android:text="❤" />
 
     <TextView
         android:id="@+id/hide_3"
