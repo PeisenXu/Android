@@ -25,7 +25,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * Created by cretin on 2018/07/24.
+ * Created by lcgsen on 2018/07/24.
  * HttpURLConnection 网络请求工具类
  * <p>
  * 数据的请求都是基于HttpURLConnection的 请求成功与失败的回调都是在主线程
@@ -42,8 +42,7 @@ public class HttpUtils {
      * @param urlString 请求的url
      * @param listener  回调监听
      */
-    public static void doGet(final Context context, final String urlString,
-                             final HttpCallbackStringListener listener) {
+    public static void doGet(final Context context, final String urlString, final HttpCallbackStringListener listener) {
         // 因为网络请求是耗时操作，所以需要另外开启一个线程来执行该任务。
         threadPool.execute(new Runnable() {
             @Override

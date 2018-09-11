@@ -1,7 +1,5 @@
 package com.lcgsen.master;
 
-import android.animation.ObjectAnimator;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -13,21 +11,17 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.lcgsen.doview.FragmentUtils;
 import com.lcgsen.doview.ViewPagerAdapter;
-import com.lcgsen.utils.DragFloatActionButton;
 import com.lcgsen.utils.NewStatusBarUtil;
 import com.lcgsen.utils.SharedUtils;
 import com.lcgsen.utils.ViewHelper;
@@ -43,22 +37,9 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     private TextView userName;
     private TextView userCreateTime;
     private ImageView personImage;
-
-    private ListView listview;
-    /* private float mFirstY;
-     private float mCurrentY;
-     protected float mTouchSlop;*/
-    private ObjectAnimator mAnimatorTitle;
-    private ObjectAnimator mAnimatorContent;
-
     private ViewPager viewPager;
-    private String[] data;
-
     private ViewPagerAdapter viewPagerAdapter;
     private BottomNavigationView navigation;
-
-    private DrawerLayout main_view;
-    private LinearLayout titleBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,13 +52,9 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         headerView = navigationView.getHeaderView(0);
         userName = headerView.findViewById(R.id.user_name);
         userCreateTime = headerView.findViewById(R.id.user_create_time);
-
         viewPager = findViewById(R.id.viewPager);
         drawerLayout = findViewById(R.id.activity_na);
-        // listview = findViewById(R.id.list);
         navigation = findViewById(R.id.bottomSelectView);
-        main_view = findViewById(R.id.activity_na);
-        titleBar = (LinearLayout) findViewById(R.id.titlebar);
 
         // 加载数据
         init();
@@ -92,10 +69,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
         // 设置主页面监听滑动
         viewPager.addOnPageChangeListener(viewPagerOnPageChange);
-
-        // mTouchSlop = ViewConfigurationCompat.getScaledPagingTouchSlop(new ViewConfiguration());
-        // 设置列表监听
-        // listview.setOnTouchListener(listViewListener);
 
         // 设置底部菜单监听
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -118,15 +91,12 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     private ViewPager.OnPageChangeListener viewPagerOnPageChange = new ViewPager.OnPageChangeListener() {
         @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
         }
 
         @Override
         public void onPageSelected(int position) {
-            String[] titles = new String[]{"微信", "通讯录", "发现", "我"};
-            /* 此方法在页面被选中时调用 */
-            // title.setText(titles[position]);
-            changeTextColor(position);
+            // 设置底部菜单被选中样式
+            navigation.getMenu().getItem(position).setChecked(true);
         }
 
         @Override
@@ -229,43 +199,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         params.width = getResources().getDisplayMetrics().widthPixels * 1 / 2;
         navigationView.setLayoutParams(params);
         navigationView.setBackgroundColor(Color.argb(200, 200, 200, 200));
-
-
-        // main_view.setBackgroundColor(Color.argb(120, 17, 0, 0));
-        // viewPager.setBackgroundColor(Color.argb(0, 200, 200, 200));
-        // navigation.setBackgroundColor(Color.argb(120, 20, 0, 0));
-
-    }
-
-    protected void showHideTitlebar(boolean tag) {
-        if (mAnimatorTitle != null && mAnimatorTitle.isRunning()) {
-            mAnimatorTitle.cancel();
-        }
-        if (mAnimatorContent != null && mAnimatorContent.isRunning()) {
-            mAnimatorContent.cancel();
-        }
-        if (tag) {
-            mAnimatorTitle = ObjectAnimator.ofFloat(titleBar, "translationY", titleBar.getTranslationY(), 0);
-            float y = listview.getTranslationY();
-            int height = titleBar.getHeight();
-            mAnimatorContent = ObjectAnimator.ofFloat(listview, "translationY", listview.getTranslationY(), 0);
-            float theY = listview.getY();
-            System.out.println(theY);
-        } else {
-            mAnimatorTitle = ObjectAnimator.ofFloat(titleBar, "translationY", titleBar.getTranslationY(), -titleBar.getHeight());
-            mAnimatorContent = ObjectAnimator.ofFloat(listview, "translationY", listview.getTranslationY(), 0);
-            float theY = listview.getY();
-            System.out.println(theY);
-        }
-        mAnimatorContent.start();
-        mAnimatorTitle.start();
-    }
-
-    /*
-     *由ViewPager的滑动修改底部导航Text的颜色
-     */
-    private void changeTextColor(int position) {
-        navigation.getMenu().getItem(position).setChecked(true);
     }
 
 }

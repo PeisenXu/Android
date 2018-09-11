@@ -45,19 +45,8 @@ public class LoginActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         init();
     }
-
-
-    /* SharedUtils.clearLoginStatus(LoginActivity.this, "USER_STATUS");*/
-
     //获取界面控件
     private void init() {
-
-        /*if ((Boolean) SharedUtils.getParam(LoginActivity.this, "USER_STATUS", false)) {
-            Toast.makeText(LoginActivity.this, "检测到已经登录", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(LoginActivity.this, MainActivity.class));
-            return;
-        }*/
-
         //从main_title_bar中获取的id
         tv_main_title = findViewById(R.id.tv_main_title);
         tv_main_title.setText("登录");
@@ -166,33 +155,5 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         });
-    }
-
-    /**
-     * 注册成功的数据返回至此
-     *
-     * @param requestCode 请求码
-     * @param resultCode  结果码
-     * @param data        数据
-     */
-    @Override
-    //显示数据， onActivityResult
-    //startActivityForResult(intent, 1); 从注册界面中获取数据
-    //int requestCode , int resultCode , Intent data
-    // LoginActivity -> startActivityForResult -> onActivityResult();
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        //super.onActivityResult(requestCode, resultCode, data);
-        super.onActivityResult(requestCode, resultCode, data);
-        if (data != null) {
-            //是获取注册界面回传过来的用户名
-            // getExtra().getString("***");
-            String userName = data.getStringExtra("userName");
-            if (!TextUtils.isEmpty(userName)) {
-                //设置用户名到 et_user_name 控件
-                et_user_name.setText(userName);
-                //et_user_name控件的setSelection()方法来设置光标位置
-                et_user_name.setSelection(userName.length());
-            }
-        }
     }
 }
