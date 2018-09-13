@@ -25,9 +25,7 @@ import com.lcgsen.utils.HttpUtils;
 import com.lcgsen.utils.httpurlconnectionutil.HttpCallbackStringListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class FragmentUtils extends Fragment {
 
@@ -38,7 +36,6 @@ public class FragmentUtils extends Fragment {
     private List<AccountTask> list;
 
     public static FragmentUtils newInstance(String name) {
-
         Bundle args = new Bundle();
         args.putString("name", name);
         FragmentUtils fragment = new FragmentUtils();
