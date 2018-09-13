@@ -1,9 +1,6 @@
 package com.lcgsen.doview;
 
-import android.content.ClipData;
 import android.content.Context;
-import android.database.DataSetObserver;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,36 +9,33 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.lcgsen.master.MainActivity;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.lcgsen.entity.AccountTask;
+import com.lcgsen.enums.DBServiceError;
 import com.lcgsen.master.R;
 import com.lcgsen.utils.DragFloatActionButton;
-import com.lcgsen.utils.ViewHelper;
-import com.lcgsen.utils.custom.EllipsizingTextView;
+import com.lcgsen.utils.HttpUtils;
+import com.lcgsen.utils.httpurlconnectionutil.HttpCallbackStringListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-
-import static android.support.v4.content.ContextCompat.getSystemService;
+import java.util.Map;
 
 public class FragmentUtils extends Fragment {
 
     private TextView tv;
     private DragFloatActionButton floatingView;
     private ListView lv;
-    private LinearLayout linearLayout;
     private int oldPosition;
-    private ArrayList<String> list;
-
+    private List<AccountTask> list;
 
     public static FragmentUtils newInstance(String name) {
 
@@ -97,36 +91,32 @@ public class FragmentUtils extends Fragment {
 
     private ListView addTextView(final View view) {
         lv = view.findViewById(R.id.lv); // 初始化控件
-
         list = new ArrayList<>();
-        String[] data = new String[]{"暹罗猫", "布偶猫", "折耳猫", "短毛猫", "波斯猫", "蓝猫", "森林猫", "孟买猫", "缅因猫", "埃及猫", "伯曼猫", "缅甸猫", "新加坡猫", "美国短尾猫", "巴厘猫"};
-        for (String name : data) {
-            list.add(name);
+
+        //返回字符串
+        try {
+            String url = DBServiceError.DB_SERVICE_URL.getMsg() + "/app/driver/driver.select.php?select=SELECT * FROM account_task";
+            HttpUtils.doGet(getContext(), url, new HttpCallbackStringListener() {
+                @Override
+                public void onFinish(String response) {
+                    Gson gson = new Gson();
+                    list = gson.fromJson(response,  new TypeToken<List<AccountTask>>(){}.getType());
+
+                    adapter = new MyAdapter();
+                    lv.setAdapter(adapter);
+                    return;
+                }
+
+                @Override
+                public void onError(Exception e) {
+                    Log.e("错误", e.toString());
+                    Toast.makeText(getContext(), DBServiceError.DB_SERVICE_ERROR.getMsg(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(getContext(), DBServiceError.DB_SERVICE_ERROR.getMsg(), Toast.LENGTH_SHORT).show();
         }
-
-        adapter = new MyAdapter();
-        lv.setAdapter(adapter);
-
-
-        // 实例化 adapter
-        /*
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(view.getContext(), R.layout.item_layout, data);
-        lv.setAdapter(adapter);
-
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long id) {
-                *//*
-         * 点击列表项时触发onItemClick方法，四个参数含义分别为
-         * arg0：发生单击事件的AdapterView
-         * arg1：AdapterView中被点击的View
-         * position：当前点击的行在adapter的下标
-         * id：当前点击的行的id
-         *//*
-                Toast.makeText(view.getContext(), "您选择的是" + lv.getAdapter().getItem(position), Toast.LENGTH_SHORT).show();
-            }
-        });*/
         return lv;
     }
 
@@ -166,7 +156,9 @@ public class FragmentUtils extends Fragment {
             } else {
                 vh = (MyViewHolder) convertView.getTag();
             }
-            vh.tv_test.setText(list.get(position));
+
+            final String text = list.get(position) == null ? "" : list.get(position).getTitle();
+            vh.tv_test.setText(text);
 
             //刷新adapter的时候，getview重新执行，此时对在点击中标记的position做处理
             if (oldPosition == position) {//当条目为刚才点击的条目时
@@ -183,10 +175,11 @@ public class FragmentUtils extends Fragment {
             vh.hide_1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    // 兼容旧版Android复制剪贴板
                     ClipboardManager cm = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
                     // 将文本内容放到系统剪贴板里。
-                    cm.setText(list.get(position));
-                    Toast.makeText(getContext(), "复制成功，快去粘贴吧", Toast.LENGTH_SHORT).show();
+                    cm.setText(text);
+                    Toast.makeText(getContext(), DBServiceError.COPY_SUCCESS.getMsg(), Toast.LENGTH_SHORT).show();
                     oldPosition = position;//记录点击的position
                     notifyDataSetChanged();//刷新adapter重新填充条目。在重新填充的过程中，被记录的position会做展开或隐藏的动作，具体的判断看上面代码
                     //在此处需要明确的一点是，当adapter执行刷新操作时，整个getview方法会重新执行，也就是条目重新做一次初始化被填充数据。
@@ -202,7 +195,7 @@ public class FragmentUtils extends Fragment {
             vh.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(getContext(), list.get(position) + "被点了", Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(getContext(), list.get(position) + "被点了", Toast.LENGTH_SHORT).show();
                     oldPosition = position;//记录点击的position
                     notifyDataSetChanged();//刷新adapter重新填充条目。在重新填充的过程中，被记录的position会做展开或隐藏的动作，具体的判断看上面代码
                     //在此处需要明确的一点是，当adapter执行刷新操作时，整个getview方法会重新执行，也就是条目重新做一次初始化被填充数据。
@@ -221,18 +214,17 @@ public class FragmentUtils extends Fragment {
             View itemView;
             TextView tv_test;
             TextView hide_1, hide_2, hide_3, hide_4, hide_5;
-            ImageView selectorImg;
             LinearLayout ll_hide;
 
             public MyViewHolder(View itemView) {
                 this.itemView = itemView;
-                tv_test = (TextView) itemView.findViewById(R.id.text1);
-                hide_1 = (TextView) itemView.findViewById(R.id.hide_1);
-                hide_2 = (TextView) itemView.findViewById(R.id.hide_2);
-                hide_3 = (TextView) itemView.findViewById(R.id.hide_3);
-                hide_4 = (TextView) itemView.findViewById(R.id.hide_4);
-                hide_5 = (TextView) itemView.findViewById(R.id.hide_5);
-                ll_hide = (LinearLayout) itemView.findViewById(R.id.ll_hide);
+                tv_test = itemView.findViewById(R.id.text1);
+                hide_1 = itemView.findViewById(R.id.hide_1);
+                hide_2 = itemView.findViewById(R.id.hide_2);
+                hide_3 = itemView.findViewById(R.id.hide_3);
+                hide_4 = itemView.findViewById(R.id.hide_4);
+                hide_5 = itemView.findViewById(R.id.hide_5);
+                ll_hide = itemView.findViewById(R.id.ll_hide);
             }
         }
     }

@@ -1,8 +1,9 @@
-package com.lcgsen.doview;
+package com.lcgsen.entity;
 
 public class User {
     private String id;
     private String name;
+    private String createDate;
 
     public String getId() {
         return id;
@@ -18,5 +19,13 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(String createDate) {
+        this.createDate = createDate;
     }
 }

@@ -5,6 +5,7 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -120,7 +121,7 @@ public class LoginActivity extends AppCompatActivity {
                                 //保存登录状态，在界面保存登录的用户名 定义个方法 saveLoginStatus boolean 状态 , userName 用户名;
                                 SharedUtils.setParam(LoginActivity.this, "USER_STATUS", true);
                                 SharedUtils.setParam(LoginActivity.this, "USER_NAME", userName);
-                                SharedUtils.setParam(LoginActivity.this, "USER_CREATE_TIME", "加入时间:2018-07-25");
+                                SharedUtils.setParam(LoginActivity.this, "USER_CREATE_TIME", mapObj.getData().get(0).getCreateDate());
 
                                 Toast.makeText(LoginActivity.this, DBServiceError.DB_SERVICE_LOGIN_SUCCESS.getMsg(), Toast.LENGTH_SHORT).show();
 
@@ -143,6 +144,7 @@ public class LoginActivity extends AppCompatActivity {
 
                         @Override
                         public void onError(Exception e) {
+                            Log.e("错误", e.toString());
                             Toast.makeText(LoginActivity.this, DBServiceError.DB_SERVICE_LOGIN_ERROR.getMsg(), Toast.LENGTH_SHORT).show();
                         }
                     });
