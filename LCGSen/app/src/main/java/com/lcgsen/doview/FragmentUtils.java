@@ -1,5 +1,7 @@
 package com.lcgsen.doview;
 
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -7,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.text.ClipboardManager;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
@@ -14,6 +17,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -70,7 +74,7 @@ public class FragmentUtils extends Fragment {
         Object nameObj = bundle.get("name");
         if (bundle != null && nameObj != null) {
             if ("首页".equalsIgnoreCase(nameObj.toString())) {
-                floatingView = (DragFloatActionButton) view.findViewById(R.id.fab);
+                floatingView = view.findViewById(R.id.fab);
                 floatingView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -93,59 +97,21 @@ public class FragmentUtils extends Fragment {
     private int mLastFirstTop;
     private int mLastFirstPostion;
     private int touchSlop;
+
+    private int mTouchShop;//最小滑动距离
+    protected float mFirstY;//触摸下去的位置
+    protected float mCurrentY;//滑动时Y的位置
+    protected int direction;//判断是否上滑或者下滑的标志
+    protected boolean mShow;//判断是否执行了上滑动画
+    private Animator mAnimator;//动画属性
+    private RelativeLayout top_rl;
+
     private ImageView mainView;
 
     private ListView addTextView(final View view) {
         lv = view.findViewById(R.id.lv); // 初始化控件
         lv.setDivider(null);
-        mainView = ((ViewGroup)view.getParent().getParent()).findViewById(R.id.main_menu);
-
-        lv.setOnScrollListener(new AbsListView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(AbsListView absListView, int i) {
-            }
-
-            @Override
-            public void onScroll(AbsListView absListView, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                int currentTop;
-
-                View firstChildView = absListView.getChildAt(0);
-                if (firstChildView != null) {
-                    currentTop = absListView.getChildAt(0).getTop();
-                } else {
-                    //ListView初始化的时候会回调onScroll方法，此时getChildAt(0)仍是为空的
-                    return;
-                }
-                //判断上次可见的第一个位置和这次可见的第一个位置
-                if (firstVisibleItem != mLastFirstPostion) {
-                    //不是同一个位置
-                    if (firstVisibleItem > mLastFirstPostion) {
-                        if (mainView.getVisibility() != View.GONE) {
-                            mainView.setVisibility(View.GONE);
-                        }
-                    } else {
-                        if (mainView.getVisibility() != View.VISIBLE) {
-                            mainView.setVisibility(View.VISIBLE);
-                        }
-                    }
-                    mLastFirstTop = currentTop;
-                } else {
-                    //是同一个位置
-                    if (Math.abs(currentTop - mLastFirstTop) > touchSlop) {
-                        //避免动作执行太频繁或误触，加入touchSlop判断，具体值可进行调整
-                        if (currentTop > mLastFirstTop) {
-                            //TODO do up
-                            Log.i("cs", "equals--->up");
-                        } else if (currentTop < mLastFirstTop) {
-                            //TODO do down
-                            Log.i("cs", "equals--->down");
-                        }
-                        mLastFirstTop = currentTop;
-                    }
-                }
-                mLastFirstPostion = firstVisibleItem;
-            }
-        });
+        mainView = ((ViewGroup) view.getParent().getParent()).findViewById(R.id.main_menu);
 
         list = new ArrayList<>();
         //返回字符串
@@ -181,6 +147,19 @@ public class FragmentUtils extends Fragment {
         view.setVisibility(View.VISIBLE);
         // 隐藏
         view.setVisibility(View.INVISIBLE);
+    }
+
+
+    private void tolbarAnim(int flag) {
+        if (mAnimator != null && mAnimator.isRunning()) {//判断动画存在  如果启动了,则先关闭
+            mAnimator.cancel();
+        }
+        if (flag == 0) {
+            mAnimator = ObjectAnimator.ofFloat(top_rl, "translationY", top_rl.getTranslationY(), 0);//从当前位置位移到0位置
+        } else {
+            mAnimator = ObjectAnimator.ofFloat(top_rl, "translationY", top_rl.getTranslationY(), -top_rl.getHeight());//从当前位置移动到布局负高度的wiz
+        }
+        mAnimator.start();//执行动画
     }
 
 

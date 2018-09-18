@@ -1,5 +1,6 @@
 package com.lcgsen.master;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -144,7 +145,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             }
             return false;
         }
-
     };
 
     /**
@@ -157,28 +157,30 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         List<Fragment> list = new ArrayList<>();
 
         list.add(FragmentUtils.newInstance("首页"));
-        list.add(FragmentUtils.newInstance("工具"));
-        list.add(FragmentUtils.newInstance("我"));
+        list.add(FragmentUtils.newInstance("内测"));
+        list.add(FragmentUtils.newInstance("内测"));
 
         viewPagerAdapter.setList(list);
     }
 
     private void initWindow() {
-        // 初始化窗口属性，让状态栏和导航栏沉浸
-        NewStatusBarUtil.transparencyBar(this);
-
-        if (Build.VERSION.SDK_INT >= 21) {
-            boolean isLight = true;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            /** 修改状态栏为全透明开始 **/
             Window window = getWindow();
-            // 如果是高版本手机， 侧滑栏图标会被状态栏遮挡， 向下移动
-            personImage = (ImageView) headerView.findViewById(R.id.person);
-            ViewHelper.setMargins(personImage, 10, ViewHelper.getStatusBarHeight(MainActivity.this), 0, 0);
-            window.setNavigationBarColor(0xFF8B8B83);
-
-            //取消设置透明状态栏,使 ContentView 内容不再覆盖状态栏
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            //需要设置这个 flag 才能调用 setStatusBarColor 来设置状态栏颜色
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(Color.TRANSPARENT);
+            window.setNavigationBarColor(Color.TRANSPARENT);
+            /** 修改状态栏为全透明结束 **/
+
+
+            // 如果是高版本手机， 侧滑栏图标会被状态栏遮挡， 向下移动
+            personImage = headerView.findViewById(R.id.person);
+            ViewHelper.setMargins(personImage, 10, ViewHelper.getStatusBarHeight(MainActivity.this), 0, 0);
+
+
+            boolean isLight = true;
             View decor = window.getDecorView();
             int ui = decor.getSystemUiVisibility();
             if (isLight) {
@@ -200,5 +202,4 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         navigationView.setLayoutParams(params);
         navigationView.setBackgroundColor(Color.argb(200, 200, 200, 200));
     }
-
 }
