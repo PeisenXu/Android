@@ -9,7 +9,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -72,32 +74,89 @@ public class FragmentUtils extends Fragment {
                 floatingView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(view.getContext(), "FAB clicked", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(view.getContext(), "请等待", Toast.LENGTH_SHORT).show();
+                        addTextView(view);
+                        Toast.makeText(view.getContext(), "刷新成功", Toast.LENGTH_SHORT).show();
                     }
                 });
 
                 addTextView(view);
 
             } else {
-                tv = (TextView) view.findViewById(R.id.fragment_test_tv);
+                tv = view.findViewById(R.id.fragment_test_tv);
                 String name = nameObj.toString();
                 tv.setText(name);
             }
         }
     }
 
+    private int mLastFirstTop;
+    private int mLastFirstPostion;
+    private int touchSlop;
+    private ImageView mainView;
+
     private ListView addTextView(final View view) {
         lv = view.findViewById(R.id.lv); // 初始化控件
-        list = new ArrayList<>();
+        lv.setDivider(null);
+        mainView = ((ViewGroup)view.getParent().getParent()).findViewById(R.id.main_menu);
 
+        lv.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView absListView, int i) {
+            }
+
+            @Override
+            public void onScroll(AbsListView absListView, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                int currentTop;
+
+                View firstChildView = absListView.getChildAt(0);
+                if (firstChildView != null) {
+                    currentTop = absListView.getChildAt(0).getTop();
+                } else {
+                    //ListView初始化的时候会回调onScroll方法，此时getChildAt(0)仍是为空的
+                    return;
+                }
+                //判断上次可见的第一个位置和这次可见的第一个位置
+                if (firstVisibleItem != mLastFirstPostion) {
+                    //不是同一个位置
+                    if (firstVisibleItem > mLastFirstPostion) {
+                        if (mainView.getVisibility() != View.GONE) {
+                            mainView.setVisibility(View.GONE);
+                        }
+                    } else {
+                        if (mainView.getVisibility() != View.VISIBLE) {
+                            mainView.setVisibility(View.VISIBLE);
+                        }
+                    }
+                    mLastFirstTop = currentTop;
+                } else {
+                    //是同一个位置
+                    if (Math.abs(currentTop - mLastFirstTop) > touchSlop) {
+                        //避免动作执行太频繁或误触，加入touchSlop判断，具体值可进行调整
+                        if (currentTop > mLastFirstTop) {
+                            //TODO do up
+                            Log.i("cs", "equals--->up");
+                        } else if (currentTop < mLastFirstTop) {
+                            //TODO do down
+                            Log.i("cs", "equals--->down");
+                        }
+                        mLastFirstTop = currentTop;
+                    }
+                }
+                mLastFirstPostion = firstVisibleItem;
+            }
+        });
+
+        list = new ArrayList<>();
         //返回字符串
         try {
-            String url = DBServiceError.DB_SERVICE_URL.getMsg() + "/app/driver/driver.select.php?select=SELECT * FROM account_task";
+            String url = DBServiceError.DB_SERVICE_URL.getMsg() + "/app/driver/driver.select.php?select=SELECT * FROM account_task ORDER BY RAND() LIMIT 20";
             HttpUtils.doGet(getContext(), url, new HttpCallbackStringListener() {
                 @Override
                 public void onFinish(String response) {
                     Gson gson = new Gson();
-                    list = gson.fromJson(response,  new TypeToken<List<AccountTask>>(){}.getType());
+                    list = gson.fromJson(response, new TypeToken<List<AccountTask>>() {
+                    }.getType());
 
                     adapter = new MyAdapter();
                     lv.setAdapter(adapter);
@@ -216,6 +275,7 @@ public class FragmentUtils extends Fragment {
             public MyViewHolder(View itemView) {
                 this.itemView = itemView;
                 tv_test = itemView.findViewById(R.id.text1);
+
                 hide_1 = itemView.findViewById(R.id.hide_1);
                 hide_2 = itemView.findViewById(R.id.hide_2);
                 hide_3 = itemView.findViewById(R.id.hide_3);
