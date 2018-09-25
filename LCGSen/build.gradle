@@ -4,8 +4,17 @@ buildscript {
     ext.kotlin_version = '1.2.61'
 
     repositories {
-        google()
+        mavenCentral()
+        maven { url "https://jitpack.io" }
+        maven { url "http://maven.aliyun.com/nexus/content/groups/public/" }
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+        maven { url "http://maven.springframework.org/release" }
+        maven { url "http://maven.restlet.org" }
+        maven {
+            url "http://repo.baichuan-android.taobao.com/content/groups/BaichuanRepositories/"
+        }
         jcenter()
+        google()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.1.4'
