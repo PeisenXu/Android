@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
@@ -40,12 +39,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     private ViewPager viewPager;
     private ViewPagerAdapter viewPagerAdapter;
     private BottomNavigationView navigation;
-
-
-    // TODO
-    private Handler handler = new Handler(){
-
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -165,9 +158,9 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         List<Fragment> list = new ArrayList<>();
 
         // 目前所有操作全部在FragmentUtils处理
-        list.add(FragmentUtils.newInstance("首页"));
-        list.add(FragmentUtils.newInstance("内测"));
-        list.add(FragmentUtils.newInstance("内测"));
+        list.add(FragmentUtils.newInstance(this,"首页"));
+        list.add(FragmentUtils.newInstance(this,"内测"));
+        list.add(FragmentUtils.newInstance(this,"内测"));
 
         viewPagerAdapter.setList(list);
     }

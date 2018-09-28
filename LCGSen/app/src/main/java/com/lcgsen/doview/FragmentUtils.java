@@ -1,7 +1,6 @@
 package com.lcgsen.doview;
 
-import android.animation.Animator;
-import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,15 +8,12 @@ import android.support.v4.app.Fragment;
 import android.text.ClipboardManager;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,7 +29,11 @@ import com.lcgsen.utils.httpurlconnectionutil.HttpCallbackStringListener;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressLint("ValidFragment")
 public class FragmentUtils extends Fragment {
+
+    private LayoutInflater mInflater;
+    private Context mainContext;
 
     private TextView tv;
     private DragFloatActionButton floatingView;
@@ -41,10 +41,16 @@ public class FragmentUtils extends Fragment {
     private int oldPosition;
     private List<AccountTask> list;
 
-    public static FragmentUtils newInstance(String name) {
+    private FragmentUtils(Context context) {
+        this.mainContext = context;
+        this.mInflater = LayoutInflater.from(context);
+    }
+
+    // 传递主页面View对象调用构造函数赋值
+    public static FragmentUtils newInstance(Context context, String name) {
         Bundle args = new Bundle();
         args.putString("name", name);
-        FragmentUtils fragment = new FragmentUtils();
+        FragmentUtils fragment = new FragmentUtils(context);
         fragment.setArguments(args);
         return fragment;
     }
@@ -74,6 +80,7 @@ public class FragmentUtils extends Fragment {
         Object nameObj = bundle.get("name");
         if (bundle != null && nameObj != null) {
             if ("首页".equalsIgnoreCase(nameObj.toString())) {
+                // 设置首页悬浮刷新按钮的监听事件
                 floatingView = view.findViewById(R.id.fab);
                 floatingView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -83,9 +90,7 @@ public class FragmentUtils extends Fragment {
                         Toast.makeText(view.getContext(), "刷新成功", Toast.LENGTH_SHORT).show();
                     }
                 });
-
                 addTextView(view);
-
             } else {
                 tv = view.findViewById(R.id.fragment_test_tv);
                 String name = nameObj.toString();
@@ -93,18 +98,6 @@ public class FragmentUtils extends Fragment {
             }
         }
     }
-
-    private int mLastFirstTop;
-    private int mLastFirstPostion;
-    private int touchSlop;
-
-    private int mTouchShop;//最小滑动距离
-    protected float mFirstY;//触摸下去的位置
-    protected float mCurrentY;//滑动时Y的位置
-    protected int direction;//判断是否上滑或者下滑的标志
-    protected boolean mShow;//判断是否执行了上滑动画
-    private Animator mAnimator;//动画属性
-    private RelativeLayout top_rl;
 
     private ImageView mainView;
 
@@ -116,7 +109,7 @@ public class FragmentUtils extends Fragment {
         list = new ArrayList<>();
         //返回字符串
         try {
-            String url = DBServiceError.DB_SERVICE_URL.getMsg() + "/app/driver/driver.select.php?select=SELECT * FROM account_task ORDER BY RAND() LIMIT 20";
+            String url = DBServiceError.DB_SERVICE_URL.getMsg() + "/app/driver/driver.select.php?select=SELECT%20*%20FROM%20account_task%20ORDER%20BY%20RAND()%20LIMIT%2020";
             HttpUtils.doGet(getContext(), url, new HttpCallbackStringListener() {
                 @Override
                 public void onFinish(String response) {
@@ -149,23 +142,9 @@ public class FragmentUtils extends Fragment {
         view.setVisibility(View.INVISIBLE);
     }
 
-
-    private void tolbarAnim(int flag) {
-        if (mAnimator != null && mAnimator.isRunning()) {//判断动画存在  如果启动了,则先关闭
-            mAnimator.cancel();
-        }
-        if (flag == 0) {
-            mAnimator = ObjectAnimator.ofFloat(top_rl, "translationY", top_rl.getTranslationY(), 0);//从当前位置位移到0位置
-        } else {
-            mAnimator = ObjectAnimator.ofFloat(top_rl, "translationY", top_rl.getTranslationY(), -top_rl.getHeight());//从当前位置移动到布局负高度的wiz
-        }
-        mAnimator.start();//执行动画
-    }
-
-
     private MyAdapter adapter;
 
-    class MyAdapter extends BaseAdapter implements View.OnClickListener {
+    private class MyAdapter extends BaseAdapter implements View.OnClickListener {
         @Override
         public int getCount() {
             return list.size();
