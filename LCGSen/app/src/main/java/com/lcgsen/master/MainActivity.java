@@ -1,10 +1,10 @@
 package com.lcgsen.master;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
@@ -23,7 +23,6 @@ import android.widget.Toast;
 
 import com.lcgsen.doview.FragmentUtils;
 import com.lcgsen.doview.ViewPagerAdapter;
-import com.lcgsen.utils.NewStatusBarUtil;
 import com.lcgsen.utils.SharedUtils;
 import com.lcgsen.utils.ViewHelper;
 import com.lcgsen.utils.viewstyle.DepthPageTransformer;
@@ -42,6 +41,12 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     private ViewPagerAdapter viewPagerAdapter;
     private BottomNavigationView navigation;
 
+
+    // TODO
+    private Handler handler = new Handler(){
+
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +62,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         drawerLayout = findViewById(R.id.activity_na);
         navigation = findViewById(R.id.bottomSelectView);
 
-        // 加载数据
+        // 加载数据 首页逻辑于 init()
         init();
         initWindow();
 
@@ -159,6 +164,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
         List<Fragment> list = new ArrayList<>();
 
+        // 目前所有操作全部在FragmentUtils处理
         list.add(FragmentUtils.newInstance("首页"));
         list.add(FragmentUtils.newInstance("内测"));
         list.add(FragmentUtils.newInstance("内测"));
