@@ -8,6 +8,9 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.animation.DecelerateInterpolator;
 
+/**
+ * 重写悬浮按钮, 设置移动监听
+ */
 public class DragFloatActionButton extends FloatingActionButton {
 
     private int screenWidth;

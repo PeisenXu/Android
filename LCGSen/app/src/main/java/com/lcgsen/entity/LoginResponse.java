@@ -1,10 +1,12 @@
-package com.lcgsen.doview;
+package com.lcgsen.entity;
+
+import com.lcgsen.entity.User;
 
 import java.util.List;
 
-public class ResultData<T> {
+public class LoginResponse {
     private String code;
-    private List<T> data;
+    private List<User> data;
 
     public String getCode() {
         return code;
@@ -14,11 +16,11 @@ public class ResultData<T> {
         this.code = code;
     }
 
-    public List<T> getData() {
+    public List<User> getData() {
         return data;
     }
 
-    public void setData(List<T> data) {
+    public void setData(List<User> data) {
         this.data = data;
     }
 }

@@ -20,8 +20,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.lcgsen.doview.FragmentUtils;
-import com.lcgsen.doview.ViewPagerAdapter;
+import com.lcgsen.master.service.FragmentUtils;
+import com.lcgsen.master.adapter.ViewPagerAdapter;
 import com.lcgsen.utils.SharedUtils;
 import com.lcgsen.utils.ViewHelper;
 import com.lcgsen.utils.viewstyle.DepthPageTransformer;
@@ -158,9 +158,9 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         List<Fragment> list = new ArrayList<>();
 
         // 目前所有操作全部在FragmentUtils处理
-        list.add(FragmentUtils.newInstance(this,"首页"));
+        list.add(FragmentUtils.newInstance(this,"One"));
         list.add(FragmentUtils.newInstance(this,"内测"));
-        list.add(FragmentUtils.newInstance(this,"内测"));
+        list.add(FragmentUtils.newInstance(this,"Three"));
 
         viewPagerAdapter.setList(list);
     }

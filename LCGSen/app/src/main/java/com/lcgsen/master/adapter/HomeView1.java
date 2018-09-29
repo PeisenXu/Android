@@ -1,4 +1,4 @@
-package com.lcgsen.view;
+package com.lcgsen.master.adapter;
 
 import android.content.Context;
 import android.text.ClipboardManager;
