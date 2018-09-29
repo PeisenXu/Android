@@ -50,8 +50,14 @@ public class FragmentUtils extends Fragment {
                     // 先画指定显示的页面布局, 然后再加载数据
                     HomeView1 homeView1 = new HomeView1(mainContext, view);
                     homeView1.start();
-                } else if ("Three".equalsIgnoreCase(nameObj.toString())) {
+                } else if ("Two".equalsIgnoreCase(nameObj.toString())) {
                     view = inflater.inflate(R.layout.fragment_two, container, false);
+                    // 先画指定显示的页面布局, 然后再加载数据
+                    HomeView2 homeView2 = new HomeView2(mainContext, view);
+                    homeView2.start();
+                } else if ("Three".equalsIgnoreCase(nameObj.toString())) {
+                    view = inflater.inflate(R.layout.fragment_three, container, false);
+                    // 先画指定显示的页面布局, 然后再加载数据
                     HomeView3 homeView3 = new HomeView3(mainContext, view);
                     homeView3.start();
                 } else {

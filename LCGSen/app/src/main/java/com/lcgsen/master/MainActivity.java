@@ -119,9 +119,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                 case R.id.navigation_about:
                     startActivity(new Intent(MainActivity.this, AboutActivity.class));
                     break;
-                case R.id.sen_book:
-                    startActivity(new Intent(MainActivity.this, BookActivity.class));
-                    break;
             }
             item.setChecked(true);
 

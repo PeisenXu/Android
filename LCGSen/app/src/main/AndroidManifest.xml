@@ -32,9 +32,6 @@
         <activity android:name=".MainActivity">
 
         </activity>
-        <activity android:name=".BookActivity">
-
-        </activity>
 
     </application>
 
