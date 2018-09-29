@@ -2,7 +2,9 @@ package com.lcgsen.master.adapter;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -82,9 +84,19 @@ public class HomeView3 extends AppCompatActivity {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             Log.i("ansen", "拦截url:" + url);
-            if (url.equals("http://www.google.com/")) {
-                Toast.makeText(mainContext, "国内不能访问google,拦截该url", Toast.LENGTH_LONG).show();
-                return true;//表示我已经处理过了
+            try {
+                if (url.equals("http://www.google.com/")) {
+                    Toast.makeText(mainContext, "国内不能访问google,拦截该url", Toast.LENGTH_LONG).show();
+                    return true;//表示我已经处理过了
+                }
+                // 如果链接开头不是http https 开头的, 单独处理 否则ERR_UNKNOWN_URL_SCHEME
+                if (!(url.startsWith("http://") || url.startsWith("https://"))) {
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                    startActivity(intent);
+                    return true;
+                }
+            } catch (Exception e) {
+                return false;
             }
             return super.shouldOverrideUrlLoading(view, url);
         }
@@ -122,16 +134,6 @@ public class HomeView3 extends AppCompatActivity {
             progressBar.setProgress(newProgress);
         }
     };
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        Log.i("ansen", "是否有上一个页面:" + webView.canGoBack());
-        if (webView.canGoBack() && keyCode == KeyEvent.KEYCODE_BACK) {//点击返回按钮的时候判断有没有上一页
-            webView.goBack(); // goBack()表示返回webView的上一页面
-            return true;
-        }
-        return super.onKeyDown(keyCode, event);
-    }
 
     /**
      * JS调用android的方法

@@ -11,11 +11,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -87,6 +90,36 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         }
     }
 
+    private long exitTime = 0;
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        WebView webView = findViewById(R.id.home_3_web_view);
+        if (webView != null) {
+            if (keyCode == KeyEvent.KEYCODE_BACK) {//点击返回按钮的时候判断有没有上一页 webView.canGoBack() &&
+                if (!webView.canGoBack()) {
+                    exit();
+                }
+                webView.goBack(); // goBack()表示返回webView的上一页面
+                return true;
+            }
+        } else {
+            exit();
+        }
+        return true;
+    }
+
+    private void exit() {
+        if ((System.currentTimeMillis() - exitTime) > 2000) {
+            Toast.makeText(getApplicationContext(), "再按一次退出程序", Toast.LENGTH_SHORT).show();
+            exitTime = System.currentTimeMillis();
+        } else {
+            finish();
+            System.exit(0);
+        }
+    }
+
+
     private ViewPager.OnPageChangeListener viewPagerOnPageChange = new ViewPager.OnPageChangeListener() {
         @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -155,9 +188,9 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         List<Fragment> list = new ArrayList<>();
 
         // 目前所有操作全部在FragmentUtils处理
-        list.add(FragmentUtils.newInstance(this,"One"));
-        list.add(FragmentUtils.newInstance(this,"内测"));
-        list.add(FragmentUtils.newInstance(this,"Three"));
+        list.add(FragmentUtils.newInstance(this, "One"));
+        list.add(FragmentUtils.newInstance(this, "内测"));
+        list.add(FragmentUtils.newInstance(this, "Three"));
 
         viewPagerAdapter.setList(list);
     }
