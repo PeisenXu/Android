@@ -13,6 +13,9 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * TextView超过指定长度省略
+ */
 @SuppressLint("AppCompatCustomView")
 public class EllipsizingTextView extends TextView {
 

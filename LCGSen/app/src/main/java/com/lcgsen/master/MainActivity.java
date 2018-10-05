@@ -1,7 +1,11 @@
 package com.lcgsen.master;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -23,6 +27,8 @@ import android.widget.Toast;
 import com.lcgsen.master.adapter.HomeView;
 import com.lcgsen.utils.SharedUtils;
 import com.lcgsen.utils.ViewHelper;
+
+import java.util.List;
 
 public class MainActivity extends FragmentActivity implements View.OnClickListener {
     private DrawerLayout drawerLayout;
@@ -101,6 +107,14 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                 case R.id.navigation_about:
                     startActivity(new Intent(MainActivity.this, AboutActivity.class));
                     break;
+                case R.id.action_qq:
+                    if (isQQClientAvailable(MainActivity.this)) {
+                        final String qqUrl = "mqqwpa://im/chat?chat_type=wpa&uin=75037664&version=1";
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(qqUrl)));
+                    } else {
+                        Toast.makeText(MainActivity.this, "请安装QQ客户端", Toast.LENGTH_SHORT).show();
+                    }
+                    break;
             }
             item.setChecked(true);
 
@@ -157,4 +171,19 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         navigationView.setLayoutParams(params);
         navigationView.setBackgroundColor(Color.argb(200, 200, 200, 200));
     }
+
+    public static boolean isQQClientAvailable(Context context) {
+        final PackageManager packageManager = context.getPackageManager();
+        List<PackageInfo> pinfo = packageManager.getInstalledPackages(0);
+        if (pinfo != null) {
+            for (int i = 0; i < pinfo.size(); i++) {
+                String pn = pinfo.get(i).packageName;
+                if (pn.equals("com.tencent.mobileqq")) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
 }

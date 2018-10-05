@@ -13,14 +13,14 @@ public class AboutActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         View aboutPage = new AboutPage(this)
                 .isRTL(false)
-                .setImage(R.drawable.favicon)//图片
-                .setDescription("不怕路远，就怕志短。")//介绍
-                .addItem(new Element().setTitle("Version 1.0"))
+                .setImage(R.drawable.favicon)// 图片
+                .setDescription("不怕路远，就怕志短。\n（应用市场请在酷安打开）")// 介绍
+                .addItem(new Element().setTitle("Version 1.1"))
                 .addGroup("与我联系")
                 .addEmail("admin@xupeisen.com")//邮箱
-                .addWebsite("http://www.xupeisen.com")//网站
-                .addPlayStore("com.lcgsen.master")//应用商店
-                .addGitHub("PeisenXu")//github
+                .addWebsite("http://www.xupeisen.com")// 网站
+                .addPlayStore("com.lcgsen.master")// 应用商店
+                .addGitHub("PeisenXu")// github
                 .create();
         setContentView(aboutPage);
     }

@@ -53,7 +53,7 @@ public class HomeView {
 
     private ListView addTextView(final View view) {
         listView = view.findViewById(R.id.lv); // 初始化控件
-        listView.setDivider(null);
+        // listView.setDivider(null); // 设置边框
         // 通过子页面查找父页面上的元素
         // mainView = ((ViewGroup) view.getParent().getParent()).findViewById(R.id.main_menu);
 
@@ -119,12 +119,12 @@ public class HomeView {
             final String text = list.get(position) == null ? "" : list.get(position).getTitle();
             vh.tv_test.setText(text);
 
-            //刷新adapter的时候，getview重新执行，此时对在点击中标记的position做处理
-            if (oldPosition == position) {//当条目为刚才点击的条目时
-                if (vh.ll_hide.getVisibility() == View.VISIBLE) {//当条目状态图标为选中时，说明该条目处于展开状态，此时让它隐藏，并切换状态图标的状态。
+            // 刷新adapter的时候，getview重新执行，此时对在点击中标记的position做处理
+            if (oldPosition == position) {// 当条目为刚才点击的条目时
+                if (vh.ll_hide.getVisibility() == View.VISIBLE && position != 0) {// 当条目状态图标为选中时，说明该条目处于展开状态，此时让它隐藏，并切换状态图标的状态。
                     vh.ll_hide.setVisibility(View.GONE);
-                    oldPosition = -1;//隐藏布局后需要把标记的position去除掉，否则，滑动listview让该条目划出屏幕范围.
-                } else {//当状态条目处于未选中时，说明条目处于未展开状态，此时让他展开。同时切换状态图标的状态。
+                    oldPosition = -1;// 隐藏布局后需要把标记的position去除掉，否则，滑动listview让该条目划出屏幕范围.
+                } else {// 当状态条目处于未选中时，说明条目处于未展开状态，此时让他展开。同时切换状态图标的状态。
                     vh.ll_hide.setVisibility(View.VISIBLE);
                 }
             } else {
