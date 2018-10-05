@@ -23,7 +23,7 @@ import com.lcgsen.utils.httpurlconnectionutil.HttpCallbackStringListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeView1 {
+public class HomeView {
 
     private Context mainContext;
     private View tempView;
@@ -32,7 +32,7 @@ public class HomeView1 {
     private int oldPosition;
     private List<AccountTask> list;
 
-    public HomeView1(Context mainContext, View tempView) {
+    public HomeView(Context mainContext, View tempView) {
         this.mainContext = mainContext;
         this.tempView = tempView;
     }

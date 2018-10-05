@@ -5,43 +5,29 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.webkit.WebView;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.lcgsen.master.service.FragmentUtils;
-import com.lcgsen.master.adapter.ViewPagerAdapter;
+import com.lcgsen.master.adapter.HomeView;
 import com.lcgsen.utils.SharedUtils;
 import com.lcgsen.utils.ViewHelper;
-import com.lcgsen.utils.viewstyle.DepthPageTransformer;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends FragmentActivity implements View.OnClickListener {
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private View headerView;
-    private TextView userName;
-    private TextView userCreateTime;
-    private ImageView personImage;
-    private ViewPager viewPager;
-    private ViewPagerAdapter viewPagerAdapter;
-    private BottomNavigationView navigation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,11 +38,9 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
         navigationView = findViewById(R.id.nav);
         headerView = navigationView.getHeaderView(0);
-        userName = headerView.findViewById(R.id.user_name);
-        userCreateTime = headerView.findViewById(R.id.user_create_time);
-        viewPager = findViewById(R.id.viewPager);
+        TextView userName = headerView.findViewById(R.id.user_name);
+        TextView userCreateTime = headerView.findViewById(R.id.user_create_time);
         drawerLayout = findViewById(R.id.activity_na);
-        navigation = findViewById(R.id.bottomSelectView);
 
         // 加载数据 首页逻辑于 init()
         init();
@@ -68,12 +52,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
         // 设置侧滑菜单监听
         navigationView.setNavigationItemSelectedListener(navigationListener);
-
-        // 设置主页面监听滑动
-        viewPager.addOnPageChangeListener(viewPagerOnPageChange);
-
-        // 设置底部菜单监听
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
     }
 
@@ -94,17 +72,9 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        WebView webView = findViewById(R.id.home_3_web_view);
-        if (webView != null) {
-            if (keyCode == KeyEvent.KEYCODE_BACK) {//点击返回按钮的时候判断有没有上一页 webView.canGoBack() &&
-                if (!webView.canGoBack()) {
-                    exit();
-                }
-                webView.goBack(); // goBack()表示返回webView的上一页面
-                return true;
-            }
-        } else {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {//点击返回按钮
             exit();
+            return true;
         }
         return true;
     }
@@ -118,27 +88,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             System.exit(0);
         }
     }
-
-
-    private ViewPager.OnPageChangeListener viewPagerOnPageChange = new ViewPager.OnPageChangeListener() {
-        @Override
-        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-        }
-
-        @Override
-        public void onPageSelected(int position) {
-            // 设置底部菜单被选中样式
-            navigation.getMenu().getItem(position).setChecked(true);
-        }
-
-        @Override
-        public void onPageScrollStateChanged(int state) {
-                /*此方法是在状态改变的时候调用，其中arg0这个参数有三种状态（0，1，2）。
-                arg0 ==1的时辰默示正在滑动，
-                arg0==2的时辰默示滑动完毕了，
-                arg0==0的时辰默示什么都没做。*/
-        }
-    };
 
     private NavigationView.OnNavigationItemSelectedListener navigationListener = new NavigationView.OnNavigationItemSelectedListener() {
         @Override
@@ -160,39 +109,16 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         }
     };
 
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.bottom_home:
-                    viewPager.setCurrentItem(0);
-                    return true;
-                case R.id.bottom_tools:
-                    viewPager.setCurrentItem(1);
-                    return true;
-                case R.id.bottom_me:
-                    viewPager.setCurrentItem(2);
-                    return true;
-            }
-            return false;
-        }
-    };
-
     /**
      * 初始化数据
      */
     private void init() {
-        viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
-        viewPager.setAdapter(viewPagerAdapter);
+        FrameLayout v = (FrameLayout) getLayoutInflater().inflate(R.layout.home_view, null);
+        LinearLayout linearLayout = findViewById(R.id.titlebar);
+        linearLayout.addView(v);
 
-        List<Fragment> list = new ArrayList<>();
-
-        // 目前所有操作全部在FragmentUtils处理
-        list.add(FragmentUtils.newInstance(this, "One"));
-        list.add(FragmentUtils.newInstance(this, "内测"));
-        list.add(FragmentUtils.newInstance(this, "Three"));
-
-        viewPagerAdapter.setList(list);
+        HomeView homeView = new HomeView(this, linearLayout);
+        homeView.start();
     }
 
     private void initWindow() {
@@ -208,7 +134,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
 
             // 如果是高版本手机， 侧滑栏图标会被状态栏遮挡， 向下移动
-            personImage = headerView.findViewById(R.id.person);
+            ImageView personImage = headerView.findViewById(R.id.person);
             ViewHelper.setMargins(personImage, 10, ViewHelper.getStatusBarHeight(MainActivity.this), 0, 0);
 
 
@@ -224,9 +150,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             }
             decor.setSystemUiVisibility(ui);
         }
-
-        // 设置页面滑动效果
-        viewPager.setPageTransformer(true, new DepthPageTransformer());
 
         // 设置侧滑菜单宽度
         ViewGroup.LayoutParams params = navigationView.getLayoutParams();
