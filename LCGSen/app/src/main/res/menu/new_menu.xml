@@ -2,6 +2,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
         <item
+            android:id="@+id/video"
+            android:icon="@mipmap/book"
+            android:title="@string/book" />
+        <item
             android:id="@+id/navigation_about"
             android:checkable="true"
             android:icon="@drawable/about"

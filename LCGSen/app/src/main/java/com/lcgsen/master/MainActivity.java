@@ -115,6 +115,9 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                         Toast.makeText(MainActivity.this, "请安装QQ客户端", Toast.LENGTH_SHORT).show();
                     }
                     break;
+                case R.id.video:
+                    startActivity(new Intent(MainActivity.this, HomeActivity.class));
+                    break;
             }
             item.setChecked(true);
 
