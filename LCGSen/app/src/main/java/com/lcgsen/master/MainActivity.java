@@ -34,6 +34,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private View headerView;
+    private ImageView imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +48,8 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         TextView userName = headerView.findViewById(R.id.user_name);
         TextView userCreateTime = headerView.findViewById(R.id.user_create_time);
         drawerLayout = findViewById(R.id.activity_na);
+        imageView = findViewById(R.id.main_menu);
+
 
         // 加载数据 首页逻辑于 init()
         init();
@@ -59,22 +62,22 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         // 设置侧滑菜单监听
         navigationView.setNavigationItemSelectedListener(navigationListener);
 
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.main_menu://点击菜单，跳出侧滑菜单
+        View.OnClickListener onClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 if (drawerLayout.isDrawerOpen(navigationView)) {
                     drawerLayout.closeDrawer(navigationView);
                 } else {
                     drawerLayout.openDrawer(navigationView);
                 }
-                break;
-        }
+            }
+        };
+
+        imageView.setOnClickListener(onClickListener);
     }
 
-    private long exitTime = 0;
+
+    private long exitTime = 0; // 返回按钮连续点击时间
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -189,4 +192,8 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         return false;
     }
 
+    @Override
+    public void onClick(View v) {
+
+    }
 }

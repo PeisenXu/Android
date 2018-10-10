@@ -17,12 +17,22 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-            <ImageView
-                android:id="@+id/main_menu"
-                android:layout_width="30dp"
+
+            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/layout_home_pager_bar"
+                android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_marginLeft="10dp"
-                android:src="@drawable/default_icon" />
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/main_menu"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginLeft="20dp"
+                    android:src="@mipmap/menu"
+                    android:layout_marginStart="20dp" />
+            </RelativeLayout>
         </LinearLayout>
     </RelativeLayout>
 
