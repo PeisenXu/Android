@@ -114,9 +114,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                         startActivity(intent);
                     }
                 });
-
-                //Log.e(TAG, response);
-
             }
         }, new Response.ErrorListener() {
             @Override

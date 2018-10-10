@@ -1,22 +1,29 @@
 package com.lcgsen.master;
 
 import android.annotation.SuppressLint;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.webkit.JsResult;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -26,6 +33,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.lcgsen.utils.EscapeUtils;
 import com.lcgsen.utils.MyStringRequest;
+import com.lcgsen.utils.ViewHelper;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -33,11 +41,7 @@ import java.util.regex.Pattern;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-/**
- * Created by tq on 2018/8/16.
- */
-
-public class PlayActivity extends AppCompatActivity {
+public class PlayActivity extends FragmentActivity {
     private static final String TAG = "PlayActivity";
     @BindView(R.id.webView)
     WebView mWebView;
@@ -50,7 +54,16 @@ public class PlayActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.video_play);
+        initWindow();
+
+        // 设置横屏
+        if (getRequestedOrientation() != ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
+
         ButterKnife.bind(this);
         initView();
         initData();
@@ -196,6 +209,31 @@ public class PlayActivity extends AppCompatActivity {
         /*//释放资源
         mWebView.destroy();
         mWebView = null;*/
+    }
+
+    private void initWindow() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            /** 修改状态栏为全透明开始 **/
+            Window window = getWindow();
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(Color.TRANSPARENT);
+            window.setNavigationBarColor(Color.TRANSPARENT);
+            /** 修改状态栏为全透明结束 **/
+
+            boolean isLight = true;
+            View decor = window.getDecorView();
+            int ui = decor.getSystemUiVisibility();
+            if (isLight) {
+                //light --> a|=b的意思就是把a和b按位或然后赋值给a,   按位或的意思就是先把a和b都换成2进制，然后用或操作，相当于a=a|b
+                ui |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+            } else {
+                //dark  --> &是位运算里面，与运算,  a&=b相当于 a = a&b,  ~非运算符
+                ui &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+            }
+            decor.setSystemUiVisibility(ui);
+        }
     }
 
 

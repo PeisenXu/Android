@@ -44,6 +44,7 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.5.2'
     // Volley适合进行数据量不大，但通信频繁的网络操作
     implementation 'com.android.volley:volley:1.1.0'
+
 }
 repositories {
     mavenCentral()

@@ -17,10 +17,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-/**
- * Created by tq on 2018/8/16.
- */
-
 public class VideoDetailAdapter extends RecyclerView.Adapter<VideoDetailAdapter.DetailHolder> implements View.OnClickListener {
 
 

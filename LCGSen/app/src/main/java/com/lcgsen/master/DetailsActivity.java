@@ -33,10 +33,6 @@ import java.util.regex.Pattern;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-/**
- * Created by tq on 2018/8/13.
- */
-
 public class DetailsActivity extends FragmentActivity {
     private static final String TAG = "DetailsActivity";
     @BindView(R.id.iv_da_img)
@@ -67,7 +63,6 @@ public class DetailsActivity extends FragmentActivity {
         ButterKnife.bind(this);
         initView();
 
-        //Toast.makeText(this,requestUrl, Toast.LENGTH_SHORT).show();
         initData();
     }
 
@@ -100,15 +95,9 @@ public class DetailsActivity extends FragmentActivity {
                     @Override
                     public void run() {
                         while (mMatcher.find()) {
-                            //Toast.makeText(DetailsActivity.this, mMatcher.group() + "", Toast.LENGTH_SHORT).show();
-                            //Log.e(TAG, mMatcher.group());
-                            //Log.e(TAG, mMatcher.group(1));
-                            //Log.e(TAG, mMatcher.group(2));
                             String url = mMatcher.group(1);
                             Log.e(TAG, url);
                             String title = mMatcher.group(2);
-                            //Log.e(TAG, mMatcher.group(3));
-                            //Log.e(TAG, mMatcher.group(4));
                             DetailsBean dataBean = new DetailsBean();
                             dataBean.setTitle(title);
                             dataBean.setUrl(url);
