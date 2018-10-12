@@ -15,7 +15,7 @@ public class AboutActivity extends AppCompatActivity {
                 .isRTL(false)
                 .setImage(R.drawable.favicon)// 图片
                 .setDescription("不怕路远，就怕志短。\n（应用市场请在酷安打开）")// 介绍
-                .addItem(new Element().setTitle("Version 1.1"))
+                .addItem(new Element().setTitle("Version 1.4"))
                 .addGroup("与我联系")
                 .addEmail("admin@xupeisen.com")//邮箱
                 .addWebsite("http://www.xupeisen.com")// 网站
