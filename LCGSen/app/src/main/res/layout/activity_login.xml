@@ -8,8 +8,6 @@
     android:background="@drawable/lauch"
     tools:context=".LoginActivity">
 
-    <!--标题栏-->
-    <include layout="@layout/main_title_bar"></include>
     <!--显示头像，记得加入id iv_head -->
     <ImageView
         android:id="@+id/iv_head"

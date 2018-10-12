@@ -3,7 +3,7 @@
 <!--我们设置RelativeLayout布局，id = "title_bar"-->
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/title_bar"
+    android:id="@+id/login_title_bar"
     android:layout_width="match_parent"
     android:layout_height="50dp"
     android:background="@android:color/transparent">

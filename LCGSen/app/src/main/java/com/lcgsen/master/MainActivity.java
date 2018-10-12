@@ -9,41 +9,51 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.text.ClipboardManager;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.lcgsen.master.adapter.HomeView;
-import com.lcgsen.master.adapter.MyGridAdapter;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.lcgsen.entity.AccountTask;
+import com.lcgsen.enums.DBServiceError;
 import com.lcgsen.master.adapter.MyRecyclerViewAdapter;
-import com.lcgsen.master.fragment.DividerGridViewItemDecoration;
+import com.lcgsen.master.adapter.MyStaggeredRecyclerAdapter;
+import com.lcgsen.utils.HttpUtils;
 import com.lcgsen.utils.SharedUtils;
 import com.lcgsen.utils.ViewHelper;
+import com.lcgsen.utils.httpurlconnectionutil.HttpCallbackStringListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends FragmentActivity implements View.OnClickListener {
     private DrawerLayout drawerLayout;
-    private NavigationView navigationView;
-    private View headerView;
-    private ImageView imageView;
+    private NavigationView navigationView; // 左滑动菜单
+    private View headerView; // 左滑动菜单 --> 侧滑顶部布局
+    private ImageView home_left_img; // 首页左上角菜单图标
+    private LinearLayout home_layout; // 首页主布局
+    private CoordinatorLayout home_recycler_view; // 首页嵌入布局
+    private LinearLayout layout_home_pager_bar; // 首页标题栏布局
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,11 +67,11 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         TextView userName = headerView.findViewById(R.id.user_name);
         TextView userCreateTime = headerView.findViewById(R.id.user_create_time);
         drawerLayout = findViewById(R.id.activity_na);
-        imageView = findViewById(R.id.main_menu);
-
+        home_left_img = findViewById(R.id.main_menu);
+        home_layout = findViewById(R.id.home_layout);
 
         // 加载数据 首页逻辑于 init()
-        init();
+        init2();
         initWindow();
 
         // 设置侧滑栏动态信息
@@ -82,7 +92,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             }
         };
 
-        imageView.setOnClickListener(onClickListener);
+        home_left_img.setOnClickListener(onClickListener);
     }
 
 
@@ -141,90 +151,45 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     /**
      * 初始化数据
      */
-    private void init() {
-        FrameLayout v = (FrameLayout) getLayoutInflater().inflate(R.layout.home_view, null);
-        LinearLayout linearLayout = findViewById(R.id.titlebar);
-        linearLayout.addView(v);
 
-        HomeView homeView = new HomeView(this, linearLayout);
-        homeView.start();
-    }
-
-    private RecyclerView mRecyclerView;
-    private MyRecyclerViewAdapter mAdapter;
     private List<String> list;
+    private RecyclerView mRecyclerView;
 
     private void init2() {
-        mRecyclerView = (RecyclerView) getLayoutInflater().inflate(R.layout.recycler_view, null);
-        LinearLayout linearLayout = findViewById(R.id.titlebar);
-        linearLayout.addView(mRecyclerView);
+        home_recycler_view = (CoordinatorLayout) getLayoutInflater().inflate(R.layout.recycler_view, null);
+        home_layout.addView(home_recycler_view);
 
-        list = new ArrayList<>();
-        for (int i = 0; i < 100; i++) {
-            list.add("item" + i);
-        }
+        mRecyclerView = findViewById(R.id.recycler_view);
 
-        //设置RecyclerView管理器
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+        addView();
 
-        //初始化适配器
-        mAdapter = new MyRecyclerViewAdapter(list);
-        mAdapter.setOnItemClickListener(new MyRecyclerViewAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position, String data) {
-                Toast.makeText(MainActivity.this, "您点击了：  " + data, Toast.LENGTH_SHORT).show();
-            }
-        });
-        mAdapter.setOnItemLongClickListener(new MyRecyclerViewAdapter.OnItemLongClickListener() {
-            @Override
-            public void onItemLongClick(View view, int position, String data) {
-                Toast.makeText(MainActivity.this, "您长按点击了：  " + data, Toast.LENGTH_SHORT).show();
-            }
-        });
         //设置添加或删除item时的动画，这里使用默认动画
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        //设置适配器
-        mRecyclerView.setAdapter(mAdapter);
+        //设置RecyclerView管理器
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this, LinearLayoutManager.VERTICAL, false));
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(MainActivity.this, LinearLayoutManager.VERTICAL));
+
+        setGestureListener();
     }
 
-    private MyGridAdapter mAdapter2;
     private void init3() {
-        mRecyclerView = (RecyclerView) getLayoutInflater().inflate(R.layout.recycler_view, null);
-        LinearLayout linearLayout = findViewById(R.id.titlebar);
-        linearLayout.addView(mRecyclerView);
+        home_recycler_view = (CoordinatorLayout) getLayoutInflater().inflate(R.layout.recycler_view, null);
+        home_layout.addView(home_recycler_view);
 
-        list = new ArrayList<>();
+        List<String> list = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
             list.add("item" + i);
         }
 
         //设置RecyclerView管理器
-        mRecyclerView.setLayoutManager(new GridLayoutManager(this, 3));
-        //设置分割线
-        mRecyclerView.addItemDecoration(new DividerGridViewItemDecoration(this));
+        mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL));
         //初始化适配器
-        mAdapter2 = new MyGridAdapter(list);
-        //设置点击长按监听
-        mAdapter2.setOnItemClickListener(new MyGridAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position, String data) {
-                Toast.makeText(MainActivity.this, "您点击了：  " + data, Toast.LENGTH_SHORT).show();
-            }
-        });
-        mAdapter2.setOnItemLongClickListener(new MyGridAdapter.OnItemLongClickListener() {
-            @Override
-            public void onItemLongClick(View view, int position, String data) {
-                Toast.makeText(MainActivity.this, "您长按点击了：  " + data, Toast.LENGTH_SHORT).show();
-            }
-        });
+        MyStaggeredRecyclerAdapter myStaggeredRecyclerAdapter = new MyStaggeredRecyclerAdapter(list);
         //设置添加或删除item时的动画，这里使用默认动画
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         //设置适配器
-        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.setAdapter(myStaggeredRecyclerAdapter);
     }
-
-
 
 
     private void initWindow() {
@@ -281,5 +246,88 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     @Override
     public void onClick(View v) {
 
+    }
+
+    private float mPosX = 0, mPosY = 0, mCurPosX = 0, mCurPosY = 0;
+
+    private void setGestureListener() {
+        // 是要监听的视图 mAlertImageViewD
+        // TODO
+        mRecyclerView.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                // TODO Auto-generated method stub
+                switch (event.getAction()) {
+
+                    case MotionEvent.ACTION_DOWN:
+                        mPosX = event.getX();
+                        mPosY = event.getY();
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        mCurPosX = event.getX();
+                        mCurPosY = event.getY();
+
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        if ((mPosX - mCurPosX) > 40) {
+                            addView();
+                        }
+                        break;
+                }
+                return true;
+            }
+
+        });
+    }
+
+    public void addView() {
+        //返回字符串
+        try {
+            String url = DBServiceError.DB_SERVICE_URL.getMsg() + "/app/driver/driver.select.php?select=SELECT%20*%20FROM%20account_task%20ORDER%20BY%20RAND()%20LIMIT%208";
+            HttpUtils.doGet(MainActivity.this, url, new HttpCallbackStringListener() {
+                @Override
+                public void onFinish(String response) {
+                    Gson gson = new Gson();
+                    List<AccountTask> accountTasks = gson.fromJson(response, new TypeToken<List<AccountTask>>() {
+                    }.getType());
+                    list = new ArrayList<String>();
+                    for (AccountTask accountTask : accountTasks) {
+                        list.add(accountTask.getTitle());
+                    }
+                    Toast.makeText(MainActivity.this, "加载成功", Toast.LENGTH_SHORT).show();
+
+
+                    //初始化适配器
+                    MyRecyclerViewAdapter mAdapter = new MyRecyclerViewAdapter(list);
+                    mAdapter.setOnItemClickListener(new MyRecyclerViewAdapter.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(View view, int position, String data) {
+                        }
+                    });
+                    mAdapter.setOnItemLongClickListener(new MyRecyclerViewAdapter.OnItemLongClickListener() {
+                        @Override
+                        public void onItemLongClick(View view, int position, String data) {
+                            // 兼容旧版Android复制剪贴板
+                            ClipboardManager cm = (ClipboardManager) MainActivity.this.getSystemService(Context.CLIPBOARD_SERVICE);
+                            // 将文本内容放到系统剪贴板里。
+                            cm.setText(data);
+                            Toast.makeText(MainActivity.this, DBServiceError.COPY_SUCCESS.getMsg(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    //设置适配器
+                    mRecyclerView.setAdapter(mAdapter);
+                }
+
+                @Override
+                public void onError(Exception e) {
+                    Log.e("错误", e.toString());
+                    Toast.makeText(MainActivity.this, DBServiceError.DB_SERVICE_ERROR.getMsg(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(MainActivity.this, DBServiceError.DB_SERVICE_ERROR.getMsg(), Toast.LENGTH_SHORT).show();
+        }
     }
 }

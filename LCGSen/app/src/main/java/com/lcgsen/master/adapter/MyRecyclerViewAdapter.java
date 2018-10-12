@@ -37,7 +37,6 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
         notifyItemRemoved(index);
     }
 
-
     /**
      * 设置点击事件
      */
