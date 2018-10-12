@@ -12,6 +12,11 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,9 +30,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.lcgsen.master.adapter.HomeView;
+import com.lcgsen.master.adapter.MyGridAdapter;
+import com.lcgsen.master.adapter.MyRecyclerViewAdapter;
+import com.lcgsen.master.fragment.DividerGridViewItemDecoration;
 import com.lcgsen.utils.SharedUtils;
 import com.lcgsen.utils.ViewHelper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends FragmentActivity implements View.OnClickListener {
@@ -140,6 +149,83 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         HomeView homeView = new HomeView(this, linearLayout);
         homeView.start();
     }
+
+    private RecyclerView mRecyclerView;
+    private MyRecyclerViewAdapter mAdapter;
+    private List<String> list;
+
+    private void init2() {
+        mRecyclerView = (RecyclerView) getLayoutInflater().inflate(R.layout.recycler_view, null);
+        LinearLayout linearLayout = findViewById(R.id.titlebar);
+        linearLayout.addView(mRecyclerView);
+
+        list = new ArrayList<>();
+        for (int i = 0; i < 100; i++) {
+            list.add("item" + i);
+        }
+
+        //设置RecyclerView管理器
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+
+        //初始化适配器
+        mAdapter = new MyRecyclerViewAdapter(list);
+        mAdapter.setOnItemClickListener(new MyRecyclerViewAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position, String data) {
+                Toast.makeText(MainActivity.this, "您点击了：  " + data, Toast.LENGTH_SHORT).show();
+            }
+        });
+        mAdapter.setOnItemLongClickListener(new MyRecyclerViewAdapter.OnItemLongClickListener() {
+            @Override
+            public void onItemLongClick(View view, int position, String data) {
+                Toast.makeText(MainActivity.this, "您长按点击了：  " + data, Toast.LENGTH_SHORT).show();
+            }
+        });
+        //设置添加或删除item时的动画，这里使用默认动画
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        //设置适配器
+        mRecyclerView.setAdapter(mAdapter);
+    }
+
+    private MyGridAdapter mAdapter2;
+    private void init3() {
+        mRecyclerView = (RecyclerView) getLayoutInflater().inflate(R.layout.recycler_view, null);
+        LinearLayout linearLayout = findViewById(R.id.titlebar);
+        linearLayout.addView(mRecyclerView);
+
+        list = new ArrayList<>();
+        for (int i = 0; i < 100; i++) {
+            list.add("item" + i);
+        }
+
+        //设置RecyclerView管理器
+        mRecyclerView.setLayoutManager(new GridLayoutManager(this, 3));
+        //设置分割线
+        mRecyclerView.addItemDecoration(new DividerGridViewItemDecoration(this));
+        //初始化适配器
+        mAdapter2 = new MyGridAdapter(list);
+        //设置点击长按监听
+        mAdapter2.setOnItemClickListener(new MyGridAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position, String data) {
+                Toast.makeText(MainActivity.this, "您点击了：  " + data, Toast.LENGTH_SHORT).show();
+            }
+        });
+        mAdapter2.setOnItemLongClickListener(new MyGridAdapter.OnItemLongClickListener() {
+            @Override
+            public void onItemLongClick(View view, int position, String data) {
+                Toast.makeText(MainActivity.this, "您长按点击了：  " + data, Toast.LENGTH_SHORT).show();
+            }
+        });
+        //设置添加或删除item时的动画，这里使用默认动画
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        //设置适配器
+        mRecyclerView.setAdapter(mAdapter);
+    }
+
+
+
 
     private void initWindow() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
