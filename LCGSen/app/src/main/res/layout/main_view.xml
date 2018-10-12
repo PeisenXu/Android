@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/main_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -18,7 +18,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/layout_home_pager_bar"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -32,9 +32,18 @@
                     android:layout_marginLeft="20dp"
                     android:src="@mipmap/menu"
                     android:layout_marginStart="20dp" />
-            </RelativeLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginStart="30dp"
+                    android:gravity="center_vertical|left"
+                    android:textSize="20sp"
+                    android:text="@string/title" />
+            </LinearLayout>
         </LinearLayout>
-    </RelativeLayout>
+    </LinearLayout>
 
 
     <android.support.design.widget.NavigationView xmlns:app="http://schemas.android.com/apk/res-auto"
