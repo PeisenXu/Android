@@ -78,6 +78,10 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         userName.setText(SharedUtils.getParam(MainActivity.this, "USER_NAME", "未知登陆").toString());
         userCreateTime.setText(SharedUtils.getParam(MainActivity.this, "USER_CREATE_TIME", "加入时间:未来").toString());
 
+        navigationView.getMenu().add(1,1,2,"日记");//需要获取id的话，id就等于1；
+        navigationView.getMenu().add(1,2,2,"图库");
+        navigationView.getMenu().add(1,3,2,"上传");
+
         // 设置侧滑菜单监听
         navigationView.setNavigationItemSelectedListener(navigationListener);
 
@@ -120,26 +124,28 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     private NavigationView.OnNavigationItemSelectedListener navigationListener = new NavigationView.OnNavigationItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.navigation_login_out:
-                    SharedUtils.clearLoginStatus(MainActivity.this, "ALL");
-                    Toast.makeText(MainActivity.this, "退出成功", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(MainActivity.this, LoginActivity.class));
-                    break;
-                case R.id.navigation_about:
-                    startActivity(new Intent(MainActivity.this, AboutActivity.class));
-                    break;
-                case R.id.action_qq:
-                    if (isQQClientAvailable(MainActivity.this)) {
-                        final String qqUrl = "mqqwpa://im/chat?chat_type=wpa&uin=75037664&version=1";
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(qqUrl)));
-                    } else {
-                        Toast.makeText(MainActivity.this, "请安装QQ客户端", Toast.LENGTH_SHORT).show();
-                    }
-                    break;
-                case R.id.video:
-                    startActivity(new Intent(MainActivity.this, HomeActivity.class));
-                    break;
+            String id = item.getItemId() + "";
+            if (id.equalsIgnoreCase(R.id.navigation_login_out + "")) {
+                SharedUtils.clearLoginStatus(MainActivity.this, "ALL");
+                Toast.makeText(MainActivity.this, "退出成功", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(MainActivity.this, LoginActivity.class));
+            } else if (id.equalsIgnoreCase(R.id.navigation_about + "")) {
+                startActivity(new Intent(MainActivity.this, AboutActivity.class));
+            } else if (id.equalsIgnoreCase(R.id.action_qq + "")) {
+                if (isQQClientAvailable(MainActivity.this)) {
+                    final String qqUrl = "mqqwpa://im/chat?chat_type=wpa&uin=75037664&version=1";
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(qqUrl)));
+                } else {
+                    Toast.makeText(MainActivity.this, "请安装QQ客户端", Toast.LENGTH_SHORT).show();
+                }
+            } else if (id.equalsIgnoreCase(R.id.video + "")) {
+                startActivity(new Intent(MainActivity.this, HomeActivity.class));
+            } else if (id.equalsIgnoreCase("1")) {
+                Toast.makeText(MainActivity.this, "日记", Toast.LENGTH_SHORT).show();
+            } else if (id.equalsIgnoreCase("2")) {
+                Toast.makeText(MainActivity.this, "图库", Toast.LENGTH_SHORT).show();
+            } else if (id.equalsIgnoreCase("3")) {
+                Toast.makeText(MainActivity.this, "上传", Toast.LENGTH_SHORT).show();
             }
             item.setChecked(true);
 
