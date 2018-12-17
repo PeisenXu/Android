@@ -71,8 +71,8 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         home_layout = findViewById(R.id.home_layout);
 
         // 加载数据 首页逻辑于 init()
-        init2();
         initWindow();
+        init2();
 
         // 设置侧滑栏动态信息
         userName.setText(SharedUtils.getParam(MainActivity.this, "USER_NAME", "未知登陆").toString());
