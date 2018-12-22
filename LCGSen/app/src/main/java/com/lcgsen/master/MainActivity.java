@@ -78,9 +78,9 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         userName.setText(SharedUtils.getParam(MainActivity.this, "USER_NAME", "未知登陆").toString());
         userCreateTime.setText(SharedUtils.getParam(MainActivity.this, "USER_CREATE_TIME", "加入时间:未来").toString());
 
-        navigationView.getMenu().add(1,1,2,"日记");//需要获取id的话，id就等于1；
-        navigationView.getMenu().add(1,2,2,"图库");
-        navigationView.getMenu().add(1,3,2,"上传");
+        navigationView.getMenu().add(1,1,2,"语音智能");//需要获取id的话，id就等于1；
+/*        navigationView.getMenu().add(1,2,2,"图库");
+        navigationView.getMenu().add(1,3,2,"上传");*/
 
         // 设置侧滑菜单监听
         navigationView.setNavigationItemSelectedListener(navigationListener);
@@ -141,11 +141,8 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             } else if (id.equalsIgnoreCase(R.id.video + "")) {
                 startActivity(new Intent(MainActivity.this, HomeActivity.class));
             } else if (id.equalsIgnoreCase("1")) {
-                Toast.makeText(MainActivity.this, "日记", Toast.LENGTH_SHORT).show();
-            } else if (id.equalsIgnoreCase("2")) {
-                Toast.makeText(MainActivity.this, "图库", Toast.LENGTH_SHORT).show();
-            } else if (id.equalsIgnoreCase("3")) {
-                Toast.makeText(MainActivity.this, "上传", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "智能语音机器人启动中", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(MainActivity.this, RobotsActivity.class));
             }
             item.setChecked(true);
 

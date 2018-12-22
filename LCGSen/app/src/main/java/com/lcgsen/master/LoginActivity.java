@@ -25,7 +25,6 @@ import java.net.URLEncoder;
 
 public class LoginActivity extends AppCompatActivity {
     public static LoginActivity instance = null;
-    private TextView tv_main_title;//标题
     private TextView tv_register, tv_find_psw;//显示的注册，找回密码
     private Button btn_login;//登录按钮
     private String userName, psw, spPsw;//获取的用户名，密码，加密密码
@@ -48,10 +47,6 @@ public class LoginActivity extends AppCompatActivity {
     }
     //获取界面控件
     private void init() {
-        //从main_title_bar中获取的id
-        tv_main_title = findViewById(R.id.tv_main_title);
-        tv_main_title.setText("登录");
-        //从activity_login.xml中获取的
         tv_register = findViewById(R.id.tv_register);
         tv_find_psw = findViewById(R.id.tv_find_psw);
         btn_login = findViewById(R.id.btn_login);
@@ -63,11 +58,9 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if ("立即注册".equalsIgnoreCase(tv_register.getText().toString())) {
-                    tv_main_title.setText("注册");
                     btn_login.setText("注册");
                     tv_register.setText("返回登陆");
                 } else {
-                    tv_main_title.setText("登录");
                     btn_login.setText("登录");
                     tv_register.setText("立即注册");
                 }
@@ -76,21 +69,23 @@ public class LoginActivity extends AppCompatActivity {
                 // startActivityForResult(intent, 1);
             }
         });
+
         //找回密码控件的点击事件
         tv_find_psw.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //跳转到找回密码界面（此页面暂未创建）
-                Toast.makeText(LoginActivity.this, "点击了忘记密码", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "QQ75037664", Toast.LENGTH_SHORT).show();
             }
         });
+
         //登录按钮的点击事件
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 if ("注册".equalsIgnoreCase(btn_login.getText().toString())) {
-                    Toast.makeText(LoginActivity.this, "抱歉,暂时不开放注册", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "抱歉,暂不开放注册", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
