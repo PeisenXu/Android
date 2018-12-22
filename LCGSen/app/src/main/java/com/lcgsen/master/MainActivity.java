@@ -37,7 +37,6 @@ import com.google.gson.reflect.TypeToken;
 import com.lcgsen.entity.AccountTask;
 import com.lcgsen.enums.DBServiceError;
 import com.lcgsen.master.adapter.MyRecyclerViewAdapter;
-import com.lcgsen.master.adapter.MyStaggeredRecyclerAdapter;
 import com.lcgsen.utils.HttpUtils;
 import com.lcgsen.utils.SharedUtils;
 import com.lcgsen.utils.ViewHelper;
@@ -53,7 +52,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     private ImageView home_left_img; // 首页左上角菜单图标
     private LinearLayout home_layout; // 首页主布局
     private CoordinatorLayout home_recycler_view; // 首页嵌入布局
-    private LinearLayout layout_home_pager_bar; // 首页标题栏布局
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,10 +137,11 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                     Toast.makeText(MainActivity.this, "请安装QQ客户端", Toast.LENGTH_SHORT).show();
                 }
             } else if (id.equalsIgnoreCase(R.id.video + "")) {
+                Toast.makeText(MainActivity.this, "播放时如果白屏, 请返回多试几次", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(MainActivity.this, HomeActivity.class));
             } else if (id.equalsIgnoreCase("1")) {
-                Toast.makeText(MainActivity.this, "智能语音机器人启动中", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(MainActivity.this, RobotsActivity.class));
+                Toast.makeText(MainActivity.this, "无访问权限", Toast.LENGTH_SHORT).show();
+                // startActivity(new Intent(MainActivity.this, RobotsActivity.class));
             }
             item.setChecked(true);
 
@@ -175,26 +174,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         setGestureListener();
     }
 
-    private void init3() {
-        home_recycler_view = (CoordinatorLayout) getLayoutInflater().inflate(R.layout.recycler_view, null);
-        home_layout.addView(home_recycler_view);
-
-        List<String> list = new ArrayList<>();
-        for (int i = 0; i < 100; i++) {
-            list.add("item" + i);
-        }
-
-        //设置RecyclerView管理器
-        mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL));
-        //初始化适配器
-        MyStaggeredRecyclerAdapter myStaggeredRecyclerAdapter = new MyStaggeredRecyclerAdapter(list);
-        //设置添加或删除item时的动画，这里使用默认动画
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        //设置适配器
-        mRecyclerView.setAdapter(myStaggeredRecyclerAdapter);
-    }
-
-
     private void initWindow() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             /** 修改状态栏为全透明开始 **/
@@ -206,11 +185,9 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             window.setNavigationBarColor(Color.TRANSPARENT);
             /** 修改状态栏为全透明结束 **/
 
-
             // 如果是高版本手机， 侧滑栏图标会被状态栏遮挡， 向下移动
             ImageView personImage = headerView.findViewById(R.id.person);
             ViewHelper.setMargins(personImage, 10, ViewHelper.getStatusBarHeight(MainActivity.this), 0, 0);
-
 
             boolean isLight = true;
             View decor = window.getDecorView();
@@ -227,7 +204,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
         // 设置侧滑菜单宽度
         ViewGroup.LayoutParams params = navigationView.getLayoutParams();
-        params.width = getResources().getDisplayMetrics().widthPixels * 1 / 2;
+        params.width = (int) (getResources().getDisplayMetrics().widthPixels * 0.5);
         navigationView.setLayoutParams(params);
         navigationView.setBackgroundColor(Color.argb(200, 200, 200, 200));
     }

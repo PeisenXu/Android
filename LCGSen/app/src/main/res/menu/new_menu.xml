@@ -10,10 +10,12 @@
             android:checkable="true"
             android:icon="@drawable/about"
             android:title="@string/about" />
+<!--
         <item
             android:id="@+id/navigation_setting"
             android:icon="@drawable/setting"
             android:title="@string/setting" />
+-->
 
         <item
             android:id="@+id/navigation_feedback"
