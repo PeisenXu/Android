@@ -6,19 +6,19 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <LinearLayout
+    <android.widget.LinearLayout
         android:id="@+id/main_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true">
 
-        <LinearLayout
+        <android.widget.LinearLayout
             android:id="@+id/home_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            <android.widget.LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/layout_home_pager_bar"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -41,9 +41,9 @@
                     android:gravity="center_vertical|left"
                     android:textSize="20sp"
                     android:text="@string/title" />
-            </LinearLayout>
-        </LinearLayout>
-    </LinearLayout>
+            </android.widget.LinearLayout>
+        </android.widget.LinearLayout>
+    </android.widget.LinearLayout>
 
 
     <android.support.design.widget.NavigationView xmlns:app="http://schemas.android.com/apk/res-auto"

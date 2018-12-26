@@ -9,8 +9,8 @@ android {
         applicationId "com.lcgsen.master"
         minSdkVersion 15
         targetSdkVersion 28
-        versionCode 5
-        versionName "2.1"
+        versionCode 1
+        versionName "2.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
@@ -48,6 +48,13 @@ dependencies {
     implementation 'com.android.volley:volley:1.1.0'
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    // SuperTextView 一款强大的android TextView
+    implementation 'com.github.lygttpod:SuperTextView:2.1.8'
+
+    // YLListView仿IOS弹簧效果的ListView
+    implementation 'com.a520wcf.yllistview:YLListView:1.0.1'
+
 }
 repositories {
     mavenCentral()
