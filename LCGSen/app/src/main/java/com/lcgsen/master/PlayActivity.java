@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.PixelFormat;
 import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
@@ -11,19 +12,16 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.webkit.JsResult;
-import android.webkit.SslErrorHandler;
-import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
-import android.widget.ImageView;
+import com.tencent.smtt.export.external.interfaces.JsResult;
+import com.tencent.smtt.export.external.interfaces.SslErrorHandler;
+import com.tencent.smtt.sdk.WebChromeClient;
+import com.tencent.smtt.sdk.WebSettings;
+import com.tencent.smtt.sdk.WebView;
+import com.tencent.smtt.sdk.WebViewClient;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -58,11 +56,6 @@ public class PlayActivity extends FragmentActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.video_play);
         initWindow();
-
-        // 设置横屏
-        if (getRequestedOrientation() != ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        }
 
         ButterKnife.bind(this);
         initView();
@@ -112,7 +105,6 @@ public class PlayActivity extends FragmentActivity {
 
     }
 
-
     @SuppressLint("JavascriptInterface")
     private void initView() {
         mUrl = getIntent().getStringExtra("url");
@@ -125,18 +117,18 @@ public class PlayActivity extends FragmentActivity {
         settings.setDomStorageEnabled(true);
         settings.setCacheMode(WebSettings.LOAD_NO_CACHE);//不使用缓存，只从网络获取数据.
         settings.setDomStorageEnabled(true);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
-        }
+        }*/
 
 
         //支持屏幕缩放
         settings.setSupportZoom(true);
         settings.setBuiltInZoomControls(true);
-
+        // app 自定义 UA 的说明
+        // settings.setUserAgentString(settings.getUserAgentString() + APP_NAME_UA);
 
     }
-
     //WebViewClient主要帮助WebView处理各种通知、请求事件
     private WebViewClient mWebViewClient = new WebViewClient() {
         @Override
@@ -160,14 +152,6 @@ public class PlayActivity extends FragmentActivity {
             }
             return super.shouldOverrideUrlLoading(view, url);
         }
-
-        @Override
-        public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-            handler.proceed();
-            super.onReceivedSslError(view, handler, error);
-        }
-
-
     };
 
     //WebChromeClient主要辅助WebView处理Javascript的对话框、网站图标、网站title、加载进度等
@@ -212,6 +196,16 @@ public class PlayActivity extends FragmentActivity {
     }
 
     private void initWindow() {
+        // 网页中的视频，上屏幕的时候，可能出现闪烁的情况，需要如下设置：Activity在onCreate时需要设置:
+        getWindow().setFormat(PixelFormat.TRANSLUCENT);
+        // 避免输入法界面弹出后遮挡输入光标的问题
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE | WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+
+        // 设置横屏
+        if (getRequestedOrientation() != ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             /** 修改状态栏为全透明开始 **/
             Window window = getWindow();
