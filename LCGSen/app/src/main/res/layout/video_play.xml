@@ -6,9 +6,10 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.tq.ckmove.View.activity.PlayActivity">
+    android:configChanges="orientation|screenSize|keyboardHidden"
+    tools:context=".PlayActivity">
 
-    <WebView
+    <com.tencent.smtt.sdk.WebView
         android:id="@+id/webView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
