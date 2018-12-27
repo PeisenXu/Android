@@ -9,7 +9,6 @@
         android:layout_marginLeft="15dp"
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
-        android:background="@drawable/selector_back"
         android:layout_width="22dp"
         android:layout_height="22dp"/>
     <TextView
