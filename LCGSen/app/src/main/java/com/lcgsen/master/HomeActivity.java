@@ -37,14 +37,14 @@ public class HomeActivity extends FragmentActivity {
         setContentView(R.layout.video_home);
         ButterKnife.bind(this);
         mTabBar.init(getSupportFragmentManager())
-                .setImgSize(50, 50)
-                .setFontSize(10)
-                .setTabPadding(4, 6, 10)
+                .setImgSize(0, 0)
+                .setFontSize(20)
+                .setTabPadding(6, 6, 10)
                 .setChangeColor(Color.RED, Color.DKGRAY)
-                .addTabItem("首页", R.mipmap.book, HomeFragment.class)
-                .addTabItem("电影", R.mipmap.book, MoveFragment.class)
-                .addTabItem("电视剧", R.mipmap.book, TVplayFragment.class)
-                .addTabItem("动漫", R.mipmap.book, CartoonFragment.class);
+                .addTabItem("首页", null, HomeFragment.class)
+                .addTabItem("电影", null, MoveFragment.class)
+                .addTabItem("电视剧", null, TVplayFragment.class)
+                .addTabItem("动漫", null, CartoonFragment.class);
     }
 
     private void initWindow() {
