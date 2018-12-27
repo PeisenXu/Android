@@ -7,7 +7,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -52,7 +51,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     private ImageView home_left_img; // 首页左上角菜单图标
     private LinearLayout home_layout; // 首页主布局
     private RelativeLayout homeListView; // 首页动态嵌入布局
-    private View topView; // 首页下拉图片
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -222,8 +220,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         Drawable drawable = null;
         try {
             // 可以在这里通过文件名来判断，是否本地有此图片
-            drawable = Drawable.createFromStream(
-                    new URL(imageUrl).openStream(), "image.jpg");
+            drawable = Drawable.createFromStream(new URL(imageUrl).openStream(), "image.jpg");
         } catch (IOException e) {
             Log.d("test", e.getMessage());
         }
@@ -242,10 +239,26 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
         final YLListView listView = (YLListView) findViewById(R.id.listView);
         // 不添加也有默认的头和底
-        topView = View.inflate(this, R.layout.home_top, null);
+        final View topView = View.inflate(this, R.layout.home_top, null);
 
-        // 加载主页下拉图片
-        new DownloadImageTask().execute("http://www.xupeisen.com/app/android/img/home_top.jpg");
+        // 设置首页列表下拉图片---发http请求是不能在主线程里面发
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                final Drawable drawable = loadImageFromNetwork("https://www.xupeisen.com/app/android/img/home_top.png");
+                // post() 特别关键，就是到UI主线程去更新图片
+                topView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        // TODO Auto-generated method stub
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                            topView.setBackground(drawable);
+                        }
+                    }
+                });
+            }
+        }).start();
+
 
         listView.addHeaderView(topView);
         // View bottomView=new View(getApplicationContext());
@@ -265,7 +278,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                     Gson gson = new Gson();
                     List<AccountTask> accountTasks = gson.fromJson(response, new TypeToken<List<AccountTask>>() {
                     }.getType());
-                    list = new ArrayList<>();
+                    list = new ArrayList<String>();
                     for (AccountTask accountTask : accountTasks) {
                         list.add(accountTask.getTitle());
                     }
@@ -294,19 +307,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             Toast.makeText(MainActivity.this, DBServiceError.DB_SERVICE_ERROR.getMsg(), Toast.LENGTH_SHORT).show();
         }
 
-    }
-
-    private class DownloadImageTask extends AsyncTask<String, Void, Drawable> {
-        protected Drawable doInBackground(String... urls) {
-            return loadImageFromNetwork(urls[0]);
-        }
-
-        protected void onPostExecute(Drawable result) {
-            // TODO Auto-generated method stub
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                topView.setBackground(result);
-            }
-        }
     }
 
     private void initWindow() {

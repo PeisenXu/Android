@@ -27,7 +27,7 @@ import butterknife.ButterKnife;
 
 public abstract class BaseFragment extends Fragment {
     private Map<Integer, Runnable> allowablePermissionRunnables = new HashMap<>();
-    private Map<Integer, Runnable> disalowablePermissionRunnables = new HashMap<>();
+    private Map<Integer, Runnable> disallowablePermissionRunnables = new HashMap<>();
 
 
     @Nullable
@@ -86,7 +86,7 @@ public abstract class BaseFragment extends Fragment {
 
         allowablePermissionRunnables.put(id, allowableRunnable);
         if (disallowableRunnable != null) {
-            disalowablePermissionRunnables.put(id, disallowableRunnable);
+            disallowablePermissionRunnables.put(id, disallowableRunnable);
         }
 
         //版本判断
@@ -113,7 +113,7 @@ public abstract class BaseFragment extends Fragment {
             Runnable allowRun = allowablePermissionRunnables.get(requestCode);
             allowRun.run();
         } else {
-            Runnable disallowRun = disalowablePermissionRunnables.get(requestCode);
+            Runnable disallowRun = disallowablePermissionRunnables.get(requestCode);
             disallowRun.run();
         }
     }
