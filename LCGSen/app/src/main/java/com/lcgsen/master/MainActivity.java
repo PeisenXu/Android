@@ -5,56 +5,69 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
+import android.util.DisplayMetrics;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.a520wcf.yllistview.YLListView;
-import com.allen.library.SuperTextView;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.lcgsen.entity.AccountTask;
-import com.lcgsen.enums.DBServiceError;
-import com.lcgsen.utils.HttpUtils;
+import com.lcgsen.master.adapter.PageFragmentAdapter;
+import com.lcgsen.master.fragment.NewsFragment;
 import com.lcgsen.utils.SharedUtils;
 import com.lcgsen.utils.ViewHelper;
-import com.lcgsen.utils.httpurlconnectionutil.HttpCallbackStringListener;
 
-import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends FragmentActivity implements View.OnClickListener {
+public class MainActivity extends FragmentActivity implements ViewPager.OnPageChangeListener {
     private DrawerLayout drawerLayout;
     private NavigationView navigationView; // 左滑动菜单
     private View headerView; // 左滑动菜单 --> 侧滑顶部布局
     private ImageView home_left_img; // 首页左上角菜单图标
-    private LinearLayout main_layout;
     private LinearLayout home_layout; // 首页主布局
     private RelativeLayout homeListView; // 首页动态嵌入布局
-    private View topView; // 首页下拉图片
+    private LinearLayout main_layout;
+
+    private long exitTime = 0; // 返回按钮连续点击时间
+
+    private HorizontalScrollView hvChannel; // 首页顶部Tab
+    private RadioGroup rgChannel; // 首页顶部Tab配套
+    private ViewPager viewPager;  // 首页顶部Tab滑动显示用的view
+    private List<Fragment> fragmentList = new ArrayList<Fragment>(); // 首页顶部TabFragment列表
+    private PageFragmentAdapter adapter = null; // 首页顶部TabFragment列表Adapter
+
+    private static List<String> channelList = new ArrayList<>();
+
+    static {
+        channelList.add("文字");
+        channelList.add("今天");
+        channelList.add("明天");
+        channelList.add("后天");
+    }
+
+    public static List<String> getSelectedChannel() {
+        return channelList;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +83,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         drawerLayout = findViewById(R.id.activity_na);
         home_left_img = findViewById(R.id.main_menu);
         home_layout = findViewById(R.id.home_layout);
-        main_layout = findViewById(R.id.main_layout);
 
         // 加载数据
         initWindow();
@@ -80,7 +92,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         userName.setText(SharedUtils.getParam(MainActivity.this, "USER_NAME", "未知登陆").toString());
         userCreateTime.setText(SharedUtils.getParam(MainActivity.this, "USER_CREATE_TIME", "加入时间:未来").toString());
 
-        navigationView.getMenu().add(1, 1, 2, "语音智能");//需要获取id的话，id就等于1；
+        navigationView.getMenu().add(1, 1, 2, "背景");//需要获取id的话，id就等于1；
 /*        navigationView.getMenu().add(1,2,2,"图库");
         navigationView.getMenu().add(1,3,2,"上传");*/
 
@@ -101,9 +113,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         home_left_img.setOnClickListener(onClickListener);
     }
 
-
-    private long exitTime = 0; // 返回按钮连续点击时间
-
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {//点击返回按钮
@@ -113,216 +122,60 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         return true;
     }
 
-    private void exit() {
-        if ((System.currentTimeMillis() - exitTime) > 2000) {
-            Toast.makeText(getApplicationContext(), "再按一次退出程序", Toast.LENGTH_SHORT).show();
-            exitTime = System.currentTimeMillis();
-        } else {
-            finish();
-            System.exit(0);
-        }
+    @Override
+    public void onPageScrolled(int i, float v, int i1) {
     }
 
-    private NavigationView.OnNavigationItemSelectedListener navigationListener = new NavigationView.OnNavigationItemSelectedListener() {
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            String id = item.getItemId() + "";
-            if (id.equalsIgnoreCase(R.id.navigation_login_out + "")) {
-                SharedUtils.clearLoginStatus(MainActivity.this, "ALL");
-                Toast.makeText(MainActivity.this, "退出成功", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(MainActivity.this, LoginActivity.class));
-            } else if (id.equalsIgnoreCase(R.id.navigation_about + "")) {
-                startActivity(new Intent(MainActivity.this, AboutActivity.class));
-            } else if (id.equalsIgnoreCase(R.id.action_qq + "")) {
-                if (isQQClientAvailable(MainActivity.this)) {
-                    final String qqUrl = "mqqwpa://im/chat?chat_type=wpa&uin=75037664&version=1";
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(qqUrl)));
-                } else {
-                    Toast.makeText(MainActivity.this, "请安装QQ客户端", Toast.LENGTH_SHORT).show();
-                }
-            } else if (id.equalsIgnoreCase(R.id.video + "")) {
-                Toast.makeText(MainActivity.this, "播放时如果白屏, 请返回多试几次", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(MainActivity.this, HomeActivity.class));
-            } else if (id.equalsIgnoreCase("1")) {
-                Toast.makeText(MainActivity.this, "无访问权限", Toast.LENGTH_SHORT).show();
-                // startActivity(new Intent(MainActivity.this, RobotsActivity.class));
-            }
-            item.setChecked(true);
-
-            drawerLayout.closeDrawer(navigationView);
-            return true;
-        }
-    };
-
-    /**
-     * 初始化数据
-     */
-
-    class DemoAdapter extends BaseAdapter {
-        @Override
-        public int getCount() {
-            return list.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return position;
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            // https://blog.csdn.net/u011622280/article/details/77159837
-
-            SuperTextView s = (SuperTextView) getLayoutInflater().inflate(R.layout.home_supertext_view, null);
-            s.setLeftTopString("")
-                    .setLeftString("")
-                    .setLeftBottomString("")
-                    .setCenterTopString("")
-                    .setCenterString(list.get(position))
-                    .setCenterBottomString("")
-                    .setRightTopString("")
-                    .setRightString("")
-                    .setRightBottomString("")
-                    .setLeftIcon(0)
-                    .setRightIcon(0)
-                    .setCbChecked(true)
-                    .setCbBackground(null)
-                    .setLeftTvDrawableLeft(null)
-                    .setLeftTvDrawableRight(null)
-                    .setCenterTvDrawableLeft(null)
-                    .setCenterTvDrawableRight(null)
-                    .setRightTvDrawableLeft(null)
-                    .setRightTvDrawableRight(null);
-
-            s.setShapeCornersRadius(20)
-                    .setShapeCornersTopLeftRadius(40)
-                    .setShapeCornersBottomLeftRadius(20)
-                    .setShapeCornersTopRightRadius(20)
-                    .setShapeCornersBottomRightRadius(20)
-                    .setShapeStrokeColor(getResources().getColor(R.color.colorPrimary))
-                    .setShapeStrokeWidth(1)
-                    .setShapeSrokeDashWidth(1)
-                    .setShapeStrokeDashGap(5)
-                    .setShapeSolidColor(getResources().getColor(R.color.white))
-                    .setShapeSelectorNormalColor(getResources().getColor(R.color.white))
-                    .setShapeSelectorPressedColor(getResources().getColor(R.color.common_pressed))
-                    .useShape();//设置完各个参数之后这句调用才生效
-            return s;
-        }
-
+    @Override
+    public void onPageSelected(int i) {
     }
 
-    private List<String> list;
-
-
-    private Drawable loadImageFromNetwork(String imageUrl) {
-
-        Drawable drawable = null;
-        try {
-            // 可以在这里通过文件名来判断，是否本地有此图片
-            drawable = Drawable.createFromStream(
-                    new URL(imageUrl).openStream(), "image.jpg");
-        } catch (IOException e) {
-            Log.d("test", e.getMessage());
-        }
-        if (drawable == null) {
-            Log.d("test", "null drawable");
-        } else {
-            Log.d("test", "not null drawable");
-        }
-
-        return drawable;
+    @Override
+    public void onPageScrollStateChanged(int i) {
     }
 
     private void initHomeView() {
         String color = SharedUtils.getParam(MainActivity.this, "USER_COLOR", "").toString();
         if ("2".equals(color)) {
+            main_layout = findViewById(R.id.main_layout);
             main_layout.setBackgroundColor(MainActivity.this.getResources().getColor(R.color.about_github_color));
         }
 
         homeListView = (RelativeLayout) getLayoutInflater().inflate(R.layout.recycler_view, null);
         home_layout.addView(homeListView);
 
-        final YLListView listView = findViewById(R.id.listView);
-        // 不添加也有默认的头和底
-        topView = View.inflate(this, R.layout.home_top, null);
+        /** 设置头部滑动标签开始 **/
+        hvChannel = (HorizontalScrollView) findViewById(R.id.hvChannel);
+        rgChannel = (RadioGroup) findViewById(R.id.rgChannel);
+        viewPager = (ViewPager) findViewById(R.id.vpNewsList);
 
-        // 加载主页下拉图片
-        new DownloadImageTask().execute("http://www.xupeisen.com/app/android/img/home_top.jpg");
-
-        listView.addHeaderView(topView);
-        // View bottomView=new View(getApplicationContext());
-        // istView.addFooterView(bottomView);
-
-        // 顶部和底部也可以固定最终的高度 不固定就使用布局本身的高度
-        listView.setFinalBottomHeight(100);
-        listView.setFinalTopHeight(500);
-
-
-        //返回字符串
-        try {
-            String url = DBServiceError.DB_SERVICE_URL.getMsg() + "/app/driver/driver.select.php?select=SELECT%20*%20FROM%20account_task%20ORDER%20BY%20RAND()%20LIMIT%2020";
-            HttpUtils.doGet(MainActivity.this, url, new HttpCallbackStringListener() {
-                @Override
-                public void onFinish(String response) {
-                    Gson gson = new Gson();
-                    List<AccountTask> accountTasks = gson.fromJson(response, new TypeToken<List<AccountTask>>() {
-                    }.getType());
-                    list = new ArrayList<>();
-                    for (AccountTask accountTask : accountTasks) {
-                        list.add(accountTask.getTitle());
-                    }
-                    Toast.makeText(MainActivity.this, "加载成功", Toast.LENGTH_SHORT).show();
-
-                    // 数据获取成功后， 加载数据
-                    listView.setAdapter(new DemoAdapter());
-
-                    //YLListView默认有头和底  处理点击事件位置注意减去
-                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            String color = SharedUtils.getParam(MainActivity.this, "USER_COLOR", "").toString();
-                            if ("".equals(color) || "1".equals(color)) {
-                                SharedUtils.setParam(MainActivity.this, "USER_COLOR", "2");
-                                main_layout.setBackgroundColor(MainActivity.this.getResources().getColor(R.color.about_github_color));
-                            } else {
-                                SharedUtils.setParam(MainActivity.this, "USER_COLOR", "1");
-                                main_layout.setBackgroundColor(0);
-                            }
-                            //  position = position - listView.getHeaderViewsCount();
-                        }
-                    });
-                }
-
-                @Override
-                public void onError(Exception e) {
-                    Log.e("错误", e.toString());
-                    Toast.makeText(MainActivity.this, DBServiceError.DB_SERVICE_ERROR.getMsg(), Toast.LENGTH_SHORT).show();
-                }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-            Toast.makeText(MainActivity.this, DBServiceError.DB_SERVICE_ERROR.getMsg(), Toast.LENGTH_SHORT).show();
-        }
-
-    }
-
-    private class DownloadImageTask extends AsyncTask<String, Void, Drawable> {
-        protected Drawable doInBackground(String... urls) {
-            return loadImageFromNetwork(urls[0]);
-        }
-
-        protected void onPostExecute(Drawable result) {
-            // TODO Auto-generated method stub
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                topView.setBackground(result);
+        rgChannel.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                viewPager.setCurrentItem(checkedId);
             }
-        }
+        });
+
+        // 设置页面监听， 当页面切换后， 切换Tab选中
+        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                setTab(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        });
+
+        initTab();// 动态产生RadioButton
+        initViewPager();
+        rgChannel.check(0);
+        /** 设置头部滑动标签结束 **/
     }
 
     private void initWindow() {
@@ -374,8 +227,99 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         return false;
     }
 
-    @Override
-    public void onClick(View v) {
+
+    private void initTab() {
+        List<String> channelList = MainActivity.getSelectedChannel();
+        for (int i = 0; i < channelList.size(); i++) {
+            RadioButton rb = (RadioButton) LayoutInflater.from(this).inflate(R.layout.tb_rb, null);
+            rb.setId(i);
+            rb.setText(channelList.get(i));
+            RadioGroup.LayoutParams params = new RadioGroup.LayoutParams(RadioGroup.LayoutParams.WRAP_CONTENT, RadioGroup.LayoutParams.WRAP_CONTENT);
+            rgChannel.addView(rb, params);
+        }
 
     }
+
+    private void initViewPager() {
+        List<String> channelList = MainActivity.getSelectedChannel();
+        for (int i = 0; i < channelList.size(); i++) {
+            NewsFragment frag = new NewsFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("weburl", channelList.get(i));
+            bundle.putString("name", channelList.get(i));
+            frag.setArguments(bundle);     //向Fragment传入数据
+            fragmentList.add(frag);
+        }
+        adapter = new PageFragmentAdapter(super.getSupportFragmentManager(), fragmentList);
+        viewPager.setAdapter(adapter);
+        //viewPager.setOffscreenPageLimit(0);
+    }
+
+    /**
+     * 滑动ViewPager时调整ScroollView的位置以便显示按钮
+     *
+     * @param idx
+     */
+    private void setTab(int idx) {
+        RadioButton rb = (RadioButton) rgChannel.getChildAt(idx);
+        rb.setChecked(true);
+        int left = rb.getLeft();
+        int width = rb.getMeasuredWidth();
+        DisplayMetrics metrics = new DisplayMetrics();
+        super.getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        int screenWidth = metrics.widthPixels;
+        int len = left + width / 2 - screenWidth / 2;
+        hvChannel.smoothScrollTo(len, 0);//滑动ScroollView
+    }
+
+
+    private void exit() {
+        if ((System.currentTimeMillis() - exitTime) > 2000) {
+            Toast.makeText(getApplicationContext(), "再按一次退出程序", Toast.LENGTH_SHORT).show();
+            exitTime = System.currentTimeMillis();
+        } else {
+            finish();
+            System.exit(0);
+        }
+    }
+
+    private NavigationView.OnNavigationItemSelectedListener navigationListener = new NavigationView.OnNavigationItemSelectedListener() {
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            String id = item.getItemId() + "";
+            if (id.equalsIgnoreCase(R.id.navigation_login_out + "")) {
+                SharedUtils.clearLoginStatus(MainActivity.this, "ALL");
+                Toast.makeText(MainActivity.this, "退出成功", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(MainActivity.this, LoginActivity.class));
+            } else if (id.equalsIgnoreCase(R.id.navigation_about + "")) {
+                startActivity(new Intent(MainActivity.this, AboutActivity.class));
+            } else if (id.equalsIgnoreCase(R.id.action_qq + "")) {
+                if (isQQClientAvailable(MainActivity.this)) {
+                    final String qqUrl = "mqqwpa://im/chat?chat_type=wpa&uin=75037664&version=1";
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(qqUrl)));
+                } else {
+                    Toast.makeText(MainActivity.this, "请安装QQ客户端", Toast.LENGTH_SHORT).show();
+                }
+            } else if (id.equalsIgnoreCase(R.id.video + "")) {
+                Toast.makeText(MainActivity.this, "播放时如果白屏, 请返回多试几次", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(MainActivity.this, HomeActivity.class));
+            } else if (id.equalsIgnoreCase("1")) {
+                String color = SharedUtils.getParam(MainActivity.this, "USER_COLOR", "").toString();
+                if ("".equals(color) || "1".equals(color)) {
+                    SharedUtils.setParam(MainActivity.this, "USER_COLOR", "2");
+                    main_layout.setBackgroundColor(MainActivity.this.getResources().getColor(R.color.about_github_color));
+                } else {
+                    SharedUtils.setParam(MainActivity.this, "USER_COLOR", "1");
+                    main_layout.setBackgroundColor(0);
+                }
+                // Toast.makeText(MainActivity.this, "无访问权限", Toast.LENGTH_SHORT).show();
+                // startActivity(new Intent(MainActivity.this, RobotsActivity.class));
+            }
+            item.setChecked(true);
+
+            drawerLayout.closeDrawer(navigationView);
+            return true;
+        }
+    };
+
 }

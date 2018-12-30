@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RadioButton xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tab_top"
+    android:layout_width="wrap_content"
+    android:layout_height="30dp"
+    android:background="@drawable/tb_seleter"
+    android:button="@null"
+    android:paddingLeft="15dp"
+    android:paddingTop="10dp"
+    android:paddingRight="15dp"
+    android:paddingBottom="10dp"
+    android:text="今日" />
