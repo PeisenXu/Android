@@ -4,6 +4,7 @@
     <color name="tab_checked">#ED6A2C</color>
     <color name="tab_unchecked">#757575</color>
     <color name="ic_launcher_background">#E7EC4D</color>
+    <color name="about_an_hei_color">#333333</color>
 
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>

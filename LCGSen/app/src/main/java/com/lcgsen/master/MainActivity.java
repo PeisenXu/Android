@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -50,6 +51,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     private NavigationView navigationView; // 左滑动菜单
     private View headerView; // 左滑动菜单 --> 侧滑顶部布局
     private ImageView home_left_img; // 首页左上角菜单图标
+    private LinearLayout main_layout;
     private LinearLayout home_layout; // 首页主布局
     private RelativeLayout homeListView; // 首页动态嵌入布局
     private View topView; // 首页下拉图片
@@ -68,6 +70,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         drawerLayout = findViewById(R.id.activity_na);
         home_left_img = findViewById(R.id.main_menu);
         home_layout = findViewById(R.id.home_layout);
+        main_layout = findViewById(R.id.main_layout);
 
         // 加载数据
         initWindow();
@@ -237,10 +240,15 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     }
 
     private void initHomeView() {
+        String color = SharedUtils.getParam(MainActivity.this, "USER_COLOR", "").toString();
+        if ("2".equals(color)) {
+            main_layout.setBackgroundColor(MainActivity.this.getResources().getColor(R.color.about_github_color));
+        }
+
         homeListView = (RelativeLayout) getLayoutInflater().inflate(R.layout.recycler_view, null);
         home_layout.addView(homeListView);
 
-        final YLListView listView = (YLListView) findViewById(R.id.listView);
+        final YLListView listView = findViewById(R.id.listView);
         // 不添加也有默认的头和底
         topView = View.inflate(this, R.layout.home_top, null);
 
@@ -252,13 +260,13 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         // istView.addFooterView(bottomView);
 
         // 顶部和底部也可以固定最终的高度 不固定就使用布局本身的高度
-        // listView.setFinalBottomHeight(100);
-        listView.setFinalTopHeight(1);
+        listView.setFinalBottomHeight(100);
+        listView.setFinalTopHeight(500);
 
 
         //返回字符串
         try {
-            String url = DBServiceError.DB_SERVICE_URL.getMsg() + "/app/driver/driver.select.php?select=SELECT%20*%20FROM%20account_task%20ORDER%20BY%20RAND()%20LIMIT%208";
+            String url = DBServiceError.DB_SERVICE_URL.getMsg() + "/app/driver/driver.select.php?select=SELECT%20*%20FROM%20account_task%20ORDER%20BY%20RAND()%20LIMIT%2020";
             HttpUtils.doGet(MainActivity.this, url, new HttpCallbackStringListener() {
                 @Override
                 public void onFinish(String response) {
@@ -278,7 +286,15 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            position = position - listView.getHeaderViewsCount();
+                            String color = SharedUtils.getParam(MainActivity.this, "USER_COLOR", "").toString();
+                            if ("".equals(color) || "1".equals(color)) {
+                                SharedUtils.setParam(MainActivity.this, "USER_COLOR", "2");
+                                main_layout.setBackgroundColor(MainActivity.this.getResources().getColor(R.color.about_github_color));
+                            } else {
+                                SharedUtils.setParam(MainActivity.this, "USER_COLOR", "1");
+                                main_layout.setBackgroundColor(0);
+                            }
+                            //  position = position - listView.getHeaderViewsCount();
                         }
                     });
                 }

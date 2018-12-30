@@ -2,10 +2,6 @@ package com.lcgsen.master.fragment;
 
 import android.view.View;
 
-/**
- * Created by tq on 2018/8/9.
- */
-
 public class MoveFragment extends HomeFragment implements View.OnClickListener {
 
     @Override
@@ -14,7 +10,6 @@ public class MoveFragment extends HomeFragment implements View.OnClickListener {
         super.initView();
         mThisPage = 1;
         listType = "List_15_";
-        mTvThisPage.setVisibility(View.VISIBLE);
     }
 
     @Override

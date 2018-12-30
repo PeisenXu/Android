@@ -14,7 +14,6 @@ public class CartoonFragment extends HomeFragment{
         super.initView();
         mThisPage = 1;
         listType = "List_17_";
-        mTvThisPage.setVisibility(View.VISIBLE);
     }
 
     @Override

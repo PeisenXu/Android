@@ -2,10 +2,6 @@ package com.lcgsen.master.fragment;
 
 import android.view.View;
 
-/**
- * Created by tq on 2018/8/9.
- */
-
 public class TVplayFragment extends HomeFragment {
 
     @Override
@@ -14,8 +10,6 @@ public class TVplayFragment extends HomeFragment {
         super.initView();
         mThisPage = 1;
         listType = "List_16_";
-        mTvThisPage.setVisibility(View.VISIBLE);
-
     }
 
     @Override
