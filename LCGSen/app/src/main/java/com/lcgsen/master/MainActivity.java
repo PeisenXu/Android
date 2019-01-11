@@ -59,10 +59,10 @@ public class MainActivity extends FragmentActivity implements ViewPager.OnPageCh
     private static List<String> channelList = new ArrayList<>();
 
     static {
-        channelList.add("文字");
-        channelList.add("今天");
-        channelList.add("明天");
-        channelList.add("后天");
+        channelList.add("句子");
+        channelList.add("工具");
+        channelList.add("搜索");
+        channelList.add("动态");
     }
 
     public static List<String> getSelectedChannel() {
@@ -318,10 +318,10 @@ public class MainActivity extends FragmentActivity implements ViewPager.OnPageCh
                 // Toast.makeText(MainActivity.this, "无访问权限", Toast.LENGTH_SHORT).show();
                 // startActivity(new Intent(MainActivity.this, RobotsActivity.class));
             } else if (id.equalsIgnoreCase("2")) {
-                Boolean setNull = true;
+                /*Boolean setNull = true;
                 if (setNull) {
                     throw new NullPointerException();
-                }
+                }*/
             }
 
 

@@ -1,14 +1,11 @@
 package com.lcgsen.master.fragment;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -17,7 +14,6 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,9 +24,6 @@ import com.google.gson.reflect.TypeToken;
 import com.lcgsen.entity.AccountTask;
 import com.lcgsen.enums.DBServiceError;
 import com.lcgsen.master.R;
-import com.lcgsen.master.refresh.DefaultNegativeRefreshers.HorizontalLoadMore;
-import com.lcgsen.master.refresh.DefaultNegativeRefreshers.NegativeRefresherWithNodata;
-import com.lcgsen.master.refresh.DefaultPositiveRefreshers.PositiveRefresherWithText;
 import com.lcgsen.master.refresh.IRefreshListener;
 import com.lcgsen.master.refresh.RefreshRelativeLayout;
 import com.lcgsen.utils.HttpUtils;
@@ -62,7 +55,7 @@ public class NewsFragment extends Fragment {
 
             View returnView = new View(inflater.getContext());
 
-            if ("文字".equalsIgnoreCase(channelName)) {
+            if ("句子".equalsIgnoreCase(channelName)) {
 
                 listView = new YLListView(inflater.getContext());
 
@@ -111,7 +104,7 @@ public class NewsFragment extends Fragment {
                 // 该部分可通过xml文件设计Fragment界面，再通过LayoutInflater转换为View组件
                 // 这里通过代码为fragment添加一个TextView
                 TextView tvTitle = new TextView(getActivity());
-                tvTitle.setText(channelName);
+                tvTitle.setText("未登陆，无授权");
                 tvTitle.setTextSize(50);
                 tvTitle.setGravity(Gravity.CENTER);
                 tvTitle.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
