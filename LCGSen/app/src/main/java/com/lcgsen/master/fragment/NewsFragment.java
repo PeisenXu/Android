@@ -1,11 +1,14 @@
 package com.lcgsen.master.fragment;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -25,6 +28,11 @@ import com.google.gson.reflect.TypeToken;
 import com.lcgsen.entity.AccountTask;
 import com.lcgsen.enums.DBServiceError;
 import com.lcgsen.master.R;
+import com.lcgsen.master.refresh.DefaultNegativeRefreshers.HorizontalLoadMore;
+import com.lcgsen.master.refresh.DefaultNegativeRefreshers.NegativeRefresherWithNodata;
+import com.lcgsen.master.refresh.DefaultPositiveRefreshers.PositiveRefresherWithText;
+import com.lcgsen.master.refresh.IRefreshListener;
+import com.lcgsen.master.refresh.RefreshRelativeLayout;
 import com.lcgsen.utils.HttpUtils;
 import com.lcgsen.utils.httpurlconnectionutil.HttpCallbackStringListener;
 
@@ -39,6 +47,7 @@ public class NewsFragment extends Fragment {
     private List<String> list;
     private YLListView listView;
     private View topView;
+    private RefreshRelativeLayout refreshRelativeLayout;
 
     @Override
     public void onAttach(Activity activity) {
@@ -54,6 +63,7 @@ public class NewsFragment extends Fragment {
             View returnView = new View(inflater.getContext());
 
             if ("文字".equalsIgnoreCase(channelName)) {
+
                 listView = new YLListView(inflater.getContext());
 
                 // 不添加也有默认的头和底
@@ -71,49 +81,35 @@ public class NewsFragment extends Fragment {
                 listView.setFinalTopHeight(500);
                 listView.setPadding(0, 100, 0, 0);
 
-                //返回字符串
-                try {
-                    String url = DBServiceError.DB_SERVICE_URL.getMsg() + "/app/driver/driver.select.php?select=SELECT%20*%20FROM%20account_task%20ORDER%20BY%20RAND()%20LIMIT%2020";
-                    HttpUtils.doGet(inflater.getContext(), url, new HttpCallbackStringListener() {
-                        @Override
-                        public void onFinish(String response) {
-                            Gson gson = new Gson();
-                            List<AccountTask> accountTasks = gson.fromJson(response, new TypeToken<List<AccountTask>>() {
-                            }.getType());
-                            list = new ArrayList<>();
-                            for (AccountTask accountTask : accountTasks) {
-                                list.add(accountTask.getTitle());
-                            }
-                            Toast.makeText(inflater.getContext(), "加载成功", Toast.LENGTH_SHORT).show();
+                refreshData(inflater);
 
-                            // 数据获取成功后， 加载数据
-                            listView.setAdapter(new DemoAdapter());
+                refreshRelativeLayout = new RefreshRelativeLayout(inflater.getContext());
 
-                            //YLListView默认有头和底  处理点击事件位置注意减去
-                            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                @Override
-                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                    //  position = position - listView.getHeaderViewsCount();
-                                    Toast.makeText(inflater.getContext(), "别点了", Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                        }
+/*                refreshRelativeLayout.setPositiveRefresher(new PositiveRefresherWithText(false));
+                refreshRelativeLayout.setNegativeRefresher(new NegativeRefresherWithNodata(false));
+                refreshRelativeLayout.setNegativeOverlayUsed(true);
+                refreshRelativeLayout.setPositiveOverlayUsed(false);*/
 
-                        @Override
-                        public void onError(Exception e) {
-                            Log.e("错误", e.toString());
-                            Toast.makeText(inflater.getContext(), DBServiceError.DB_SERVICE_ERROR.getMsg(), Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Toast.makeText(inflater.getContext(), DBServiceError.DB_SERVICE_ERROR.getMsg(), Toast.LENGTH_SHORT).show();
-                }
 
-                returnView = listView;
+                refreshRelativeLayout.addRefreshListener(new IRefreshListener() {
+                    @Override
+                    public void onPositiveRefresh() {
+                        positiveRefresh(inflater);
+                    }
+
+                    @Override
+                    public void onNegativeRefresh() {
+                        negativeRefresh(inflater);
+                    }
+                });
+
+                refreshRelativeLayout.addView(listView);
+                refreshRelativeLayout.startPositiveRefresh();
+
+                returnView = refreshRelativeLayout;
             } else {
-                //该部分可通过xml文件设计Fragment界面，再通过LayoutInflater转换为View组件
-                //这里通过代码为fragment添加一个TextView
+                // 该部分可通过xml文件设计Fragment界面，再通过LayoutInflater转换为View组件
+                // 这里通过代码为fragment添加一个TextView
                 TextView tvTitle = new TextView(getActivity());
                 tvTitle.setText(channelName);
                 tvTitle.setTextSize(50);
@@ -124,7 +120,7 @@ public class NewsFragment extends Fragment {
             view = returnView;
         }
         ViewGroup parent = (ViewGroup) view.getParent();
-        if (parent != null) {//如果View已经添加到容器中，要进行删除，负责会报错
+        if (parent != null) { // 如果View已经添加到容器中，要进行删除，否则会报错
             parent.removeView(view);
         }
         return view;
@@ -228,5 +224,76 @@ public class NewsFragment extends Fragment {
             return s;
         }
 
+    }
+
+    public void refreshData(final LayoutInflater inflater) {
+        //返回字符串
+        try {
+            String url = DBServiceError.DB_SERVICE_URL.getMsg() + "/app/driver/driver.select.php?select=SELECT%20*%20FROM%20account_task%20ORDER%20BY%20RAND()%20LIMIT%2020";
+            HttpUtils.doGet(inflater.getContext(), url, new HttpCallbackStringListener() {
+                @Override
+                public void onFinish(String response) {
+                    Gson gson = new Gson();
+                    List<AccountTask> accountTasks = new ArrayList<>();
+                    try {
+                        accountTasks = gson.fromJson(response, new TypeToken<List<AccountTask>>() {
+                        }.getType());
+                    } catch (Exception e) {
+                        Log.e("错误", e.toString());
+                        Toast.makeText(inflater.getContext(), DBServiceError.DB_SERVICE_ERROR.getMsg(), Toast.LENGTH_SHORT).show();
+                    }
+                    list = new ArrayList<>();
+                    for (AccountTask accountTask : accountTasks) {
+                        list.add(accountTask.getTitle());
+                    }
+
+                    // 数据获取成功后， 加载数据
+                    listView.setAdapter(new DemoAdapter());
+
+                    //YLListView默认有头和底  处理点击事件位置注意减去
+                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            //  position = position - listView.getHeaderViewsCount();
+                            Toast.makeText(inflater.getContext(), "别点了", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+
+                @Override
+                public void onError(Exception e) {
+                    Log.e("错误", e.toString());
+                    Toast.makeText(inflater.getContext(), DBServiceError.DB_SERVICE_ERROR.getMsg(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        } catch (Exception e) {
+            Log.e("错误", e.toString());
+            Toast.makeText(inflater.getContext(), DBServiceError.DB_SERVICE_ERROR.getMsg(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void positiveRefresh(final LayoutInflater inflater) {
+        listView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // listView.removeAllViews();
+                refreshRelativeLayout.positiveRefreshComplete();
+                addViewsToTarget(inflater);
+            }
+        }, 1000);
+    }
+
+    private void negativeRefresh(final LayoutInflater inflater) {
+        listView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                refreshRelativeLayout.negativeRefreshComplete();
+                addViewsToTarget(inflater);
+            }
+        }, 1000);
+    }
+
+    private void addViewsToTarget(LayoutInflater inflater) {
+        refreshData(inflater);
     }
 }

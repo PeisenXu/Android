@@ -23,12 +23,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1">
-<!--
-        <com.a520wcf.yllistview.YLListView
-            android:id="@+id/listView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:divider="@android:color/transparent" />-->
+        <!--
+                <com.a520wcf.yllistview.YLListView
+                    android:id="@+id/listView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:divider="@android:color/transparent" />-->
     </android.support.v4.view.ViewPager>
+
 
 </RelativeLayout>

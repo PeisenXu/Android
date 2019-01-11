@@ -92,7 +92,8 @@ public class MainActivity extends FragmentActivity implements ViewPager.OnPageCh
         userName.setText(SharedUtils.getParam(MainActivity.this, "USER_NAME", "未知登陆").toString());
         userCreateTime.setText(SharedUtils.getParam(MainActivity.this, "USER_CREATE_TIME", "加入时间:未来").toString());
 
-        navigationView.getMenu().add(1, 1, 2, "背景");//需要获取id的话，id就等于1；
+        navigationView.getMenu().add(1, 1, 1, "背景");//需要获取id的话，id就等于1；
+        navigationView.getMenu().add(1, 2, 2, "报错");//需要获取id的话，id就等于1；
 /*        navigationView.getMenu().add(1,2,2,"图库");
         navigationView.getMenu().add(1,3,2,"上传");*/
 
@@ -269,7 +270,9 @@ public class MainActivity extends FragmentActivity implements ViewPager.OnPageCh
         super.getWindowManager().getDefaultDisplay().getMetrics(metrics);
         int screenWidth = metrics.widthPixels;
         int len = left + width / 2 - screenWidth / 2;
-        hvChannel.smoothScrollTo(len, 0);//滑动ScroollView
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.CUPCAKE) {
+            hvChannel.smoothScrollTo(len, 0);//滑动ScroollView
+        }
     }
 
 
@@ -314,7 +317,14 @@ public class MainActivity extends FragmentActivity implements ViewPager.OnPageCh
                 }
                 // Toast.makeText(MainActivity.this, "无访问权限", Toast.LENGTH_SHORT).show();
                 // startActivity(new Intent(MainActivity.this, RobotsActivity.class));
+            } else if (id.equalsIgnoreCase("2")) {
+                Boolean setNull = true;
+                if (setNull) {
+                    throw new NullPointerException();
+                }
             }
+
+
             item.setChecked(true);
 
             drawerLayout.closeDrawer(navigationView);

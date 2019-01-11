@@ -11,4 +11,55 @@
         <item name="colorAccent">@color/colorTextLine</item>
         <!-- Customize your theme here. -->
     </style>
+    <declare-styleable name="RefreshRelativeLayout">
+        <attr name="refreshOrientation">
+            <enum name="horizontal" value="0"/>
+            <enum name="vertical" value="1"/>
+        </attr>
+        <attr name="positiveDragEnable" format="boolean"/>
+        <attr name="negativeDragEnable" format="boolean"/>
+        <attr name="positiveEnable" format="boolean"/>
+        <attr name="negativeEnable" format="boolean"/>
+        <attr name="isPositiveOverlay" format="boolean"/>
+        <attr name="isNegativeOverlay" format="boolean"/>
+        <attr name="positive_refresher_type">
+            <enum name="PROGRESSOR" value="0"/>
+            <enum name="ARROW_WITH_WHITETEXT" value="1"/>
+            <enum name="ARROW_WITH_GRAYTEXT" value="2"/>
+            <enum name="HORIZONTAL_PROGRESSOR" value="3"/>
+        </attr>
+        <attr name="negative_refresher_type">
+            <enum name="PROGRESS_WITH_NODATA" value="0"/>
+            <enum name="PROGRESS_WITH_NODATA_OVERLAY" value="1"/>
+            <enum name="HORIZONTAL_PROGRESSOR" value="2"/>
+            <enum name="HORIZONTAL_LOADMORE" value="3"/>
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="BezierRefreshView">
+        <attr name="Rect_Width" format="dimension"/>
+        <attr name="Oval_Width" format="dimension"/>
+        <attr name="Back_Color" format="color"/>
+    </declare-styleable>
+
+    <style name="alert_dialog" parent="android:Theme.Dialog">
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:windowAnimationStyle">@null</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:backgroundDimAmount">0.4</item>
+    </style>
+
+    <style name="dialog_blue_button" parent="android:Widget.Button">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">31dp</item>
+        <item name="android:background">@drawable/blue_button_background</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:paddingLeft">21dp</item>
+        <item name="android:paddingRight">21dp</item>
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
 </resources>
