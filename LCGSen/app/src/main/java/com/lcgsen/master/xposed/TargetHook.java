@@ -22,7 +22,7 @@ public class TargetHook implements IXposedHookLoadPackage {
     /**
      * 当前Xposed模块的包名,方便寻找apk文件
      */
-    private final String modulePackage = "com.xxx.plugin";
+    private final String modulePackage = "com.lcgsen.master";
     /**
      * 宿主程序的包名(允许多个),过滤无意义的包名,防止无意义的apk文件加载
      */
@@ -44,8 +44,16 @@ public class TargetHook implements IXposedHookLoadPackage {
 
     @Override
     public void handleLoadPackage(final XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
+        XposedBridge.log(lpparam.packageName);
+        XposedBridge.log("load alipay----");
+        XposedBridge.log("load alipay----");
+        XposedBridge.log("load alipay----");
+        XposedBridge.log("load alipay----");
+        XposedBridge.log("load alipay----");
+        XposedBridge.log("load alipay----");
+        XposedBridge.log("load alipay----");
         if (hostAppPackages.contains(lpparam.packageName)) {
-            XposedBridge.log("load alipay");
+            XposedBridge.log("load alipay----");
             ClassLoader classLoader = lpparam.classLoader;
             Class<?> aClass = classLoader.loadClass("com.alipay.android.render.engine.viewbiz.AssetsHeaderV2View");
             Class<?> aClass2 = classLoader.loadClass("com.alipay.android.render.engine.model.AssetsCardModel");
