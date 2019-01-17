@@ -43,6 +43,15 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/alert_dialog" />
-    </application>
 
+        <meta-data
+            android:name="xposeddescription"
+            android:value="插件描述" />
+        <meta-data
+            android:name="xposedmodule"
+            android:value="true" />
+        <meta-data
+            android:name="xposedminversion"
+            android:value="54" />
+    </application>
 </manifest>

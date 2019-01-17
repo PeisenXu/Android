@@ -50,7 +50,9 @@ dependencies {
     implementation 'com.github.lygttpod:SuperTextView:2.1.8'
     // YLListView仿IOS弹簧效果的ListView
     implementation 'com.a520wcf.yllistview:YLListView:1.0.1'
-    implementation files('libs/tbs_sdk_thirdapp_v3.2.0.1104_43200_sharewithdownload_withfilereader_withoutGame_obfs_20170609_115346.jar')
+    // 作为xpo插件用到的Jar
+    compileOnly 'de.robv.android.xposed:api:82'
+    compileOnly 'de.robv.android.xposed:api:82:sources'
 }
 repositories {
     mavenCentral()
