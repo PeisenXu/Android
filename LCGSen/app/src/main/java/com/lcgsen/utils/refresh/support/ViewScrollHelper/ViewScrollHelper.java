@@ -1,4 +1,4 @@
-package com.lcgsen.master.refresh.support.ViewScrollHelper;
+package com.lcgsen.utils.refresh.support.ViewScrollHelper;
 
 import android.view.MotionEvent;
 import android.view.View;

@@ -1,4 +1,4 @@
-package com.lcgsen.master.refresh.DefaultNegativeRefreshers;
+package com.lcgsen.utils.refresh.DefaultNegativeRefreshers;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.lcgsen.master.R;
-import com.lcgsen.master.refresh.IRefresher;
+import com.lcgsen.utils.refresh.IRefresher;
 
 public class NegativeRefresherWithNodata implements IRefresher {
     private View contentView;

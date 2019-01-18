@@ -1,4 +1,4 @@
-package com.lcgsen.master.refresh.DefaultPositiveRefreshers;
+package com.lcgsen.utils.refresh.DefaultPositiveRefreshers;
 
 public class HorizontalProgressWithArrow extends OverlayProgressWithArrow {
 

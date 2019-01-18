@@ -1,4 +1,4 @@
-package com.lcgsen.master.refresh.DefaultNegativeRefreshers;
+package com.lcgsen.utils.refresh.DefaultNegativeRefreshers;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,7 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.lcgsen.master.R;
-import com.lcgsen.master.refresh.IRefresher;
+import com.lcgsen.utils.refresh.IRefresher;
 
 public class HorizontalLoadMore implements IRefresher {
 

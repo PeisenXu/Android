@@ -1,4 +1,4 @@
-package com.lcgsen.master.refresh.DefaultPositiveRefreshers;
+package com.lcgsen.utils.refresh.DefaultPositiveRefreshers;
 
 
 import android.content.Context;
@@ -7,9 +7,9 @@ import android.os.Build;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.lcgsen.master.refresh.IRefresher;
-import com.lcgsen.master.refresh.Views.CircleImageView;
-import com.lcgsen.master.refresh.Views.MaterialProgressDrawable;
+import com.lcgsen.utils.refresh.IRefresher;
+import com.lcgsen.utils.refresh.Views.CircleImageView;
+import com.lcgsen.utils.refresh.Views.MaterialProgressDrawable;
 
 public class OverlayProgressWithArrow implements IRefresher {
 

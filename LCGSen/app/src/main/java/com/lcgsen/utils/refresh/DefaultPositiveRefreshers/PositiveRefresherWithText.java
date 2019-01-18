@@ -1,4 +1,4 @@
-package com.lcgsen.master.refresh.DefaultPositiveRefreshers;
+package com.lcgsen.utils.refresh.DefaultPositiveRefreshers;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.lcgsen.master.R;
-import com.lcgsen.master.refresh.IRefresher;
+import com.lcgsen.utils.refresh.IRefresher;
 
 /**
  * Created by Administrator on 2017/3/22.

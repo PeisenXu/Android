@@ -24,8 +24,8 @@ import com.google.gson.reflect.TypeToken;
 import com.lcgsen.entity.AccountTask;
 import com.lcgsen.enums.DBServiceError;
 import com.lcgsen.master.R;
-import com.lcgsen.master.refresh.IRefreshListener;
-import com.lcgsen.master.refresh.RefreshRelativeLayout;
+import com.lcgsen.utils.refresh.IRefreshListener;
+import com.lcgsen.utils.refresh.RefreshRelativeLayout;
 import com.lcgsen.utils.HttpUtils;
 import com.lcgsen.utils.httpurlconnectionutil.HttpCallbackStringListener;
 

@@ -1,11 +1,11 @@
-package com.lcgsen.master.refresh.support;
+package com.lcgsen.utils.refresh.support;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 
-import com.lcgsen.master.refresh.IRefresher;
+import com.lcgsen.utils.refresh.IRefresher;
 
 public class ViewAnimateHelper {
     private int ANIMATE_DURATION = 200;

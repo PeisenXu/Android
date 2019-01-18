@@ -1,4 +1,4 @@
-package com.lcgsen.master.refresh.DefaultNegativeRefreshers;
+package com.lcgsen.utils.refresh.DefaultNegativeRefreshers;
 
 import android.content.Context;
 import android.content.res.TypedArray;

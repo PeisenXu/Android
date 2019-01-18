@@ -4,7 +4,7 @@
     android:layout_width="200dp"
     android:layout_height="match_parent">
 
-    <com.lcgsen.master.refresh.DefaultNegativeRefreshers.BezierRefreshView
+    <com.lcgsen.utils.refresh.DefaultNegativeRefreshers.BezierRefreshView
         android:id="@+id/bezier_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

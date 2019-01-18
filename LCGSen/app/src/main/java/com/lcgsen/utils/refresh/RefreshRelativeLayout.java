@@ -1,4 +1,4 @@
-package com.lcgsen.master.refresh;
+package com.lcgsen.utils.refresh;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -17,14 +17,14 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.lcgsen.master.R;
-import com.lcgsen.master.refresh.DefaultNegativeRefreshers.HorizontalLoadMore;
-import com.lcgsen.master.refresh.DefaultNegativeRefreshers.NegativeRefresherWithNodata;
-import com.lcgsen.master.refresh.DefaultPositiveRefreshers.HorizontalProgressWithArrow;
-import com.lcgsen.master.refresh.DefaultPositiveRefreshers.OverlayProgressWithArrow;
-import com.lcgsen.master.refresh.DefaultPositiveRefreshers.PositiveRefresherWithText;
-import com.lcgsen.master.refresh.support.ViewAnimateHelper;
-import com.lcgsen.master.refresh.support.ViewScrollHelper.IViewScrollHelper;
-import com.lcgsen.master.refresh.support.ViewScrollHelper.ViewScrollHelper;
+import com.lcgsen.utils.refresh.DefaultNegativeRefreshers.HorizontalLoadMore;
+import com.lcgsen.utils.refresh.DefaultNegativeRefreshers.NegativeRefresherWithNodata;
+import com.lcgsen.utils.refresh.DefaultPositiveRefreshers.HorizontalProgressWithArrow;
+import com.lcgsen.utils.refresh.DefaultPositiveRefreshers.OverlayProgressWithArrow;
+import com.lcgsen.utils.refresh.DefaultPositiveRefreshers.PositiveRefresherWithText;
+import com.lcgsen.utils.refresh.support.ViewAnimateHelper;
+import com.lcgsen.utils.refresh.support.ViewScrollHelper.IViewScrollHelper;
+import com.lcgsen.utils.refresh.support.ViewScrollHelper.ViewScrollHelper;
 
 import java.util.ArrayList;
 import java.util.List;

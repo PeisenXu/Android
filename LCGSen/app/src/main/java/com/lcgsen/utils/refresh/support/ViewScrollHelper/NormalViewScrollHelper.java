@@ -1,4 +1,4 @@
-package com.lcgsen.master.refresh.support.ViewScrollHelper;
+package com.lcgsen.utils.refresh.support.ViewScrollHelper;
 
 import android.os.Build;
 import android.support.v4.view.ViewCompat;

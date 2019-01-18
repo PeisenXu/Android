@@ -1,4 +1,4 @@
-package com.lcgsen.master.refresh;
+package com.lcgsen.utils.refresh;
 
 /**
  * Created by Administrator on 2017/3/19.
