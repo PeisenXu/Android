@@ -60,9 +60,8 @@ public class MainActivity extends FragmentActivity implements ViewPager.OnPageCh
 
     static {
         channelList.add("句子");
+        channelList.add("Xposed");
         channelList.add("工具");
-        channelList.add("搜索");
-        channelList.add("动态");
     }
 
     public static List<String> getSelectedChannel() {

@@ -100,6 +100,13 @@ public class NewsFragment extends Fragment {
                 refreshRelativeLayout.startPositiveRefresh();
 
                 returnView = refreshRelativeLayout;
+            } else if("Xposed".equalsIgnoreCase(channelName)){
+                TextView tvTitle = new TextView(getActivity());
+                tvTitle.setText("支付宝默认修改财富页面余额为981210.00\n修改支付宝付款页面等级为钻石会员");
+                tvTitle.setTextSize(50);
+                tvTitle.setGravity(Gravity.CENTER);
+                tvTitle.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+                returnView = tvTitle;
             } else {
                 // 该部分可通过xml文件设计Fragment界面，再通过LayoutInflater转换为View组件
                 // 这里通过代码为fragment添加一个TextView
