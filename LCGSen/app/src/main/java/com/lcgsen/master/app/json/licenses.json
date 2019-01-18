@@ -1,0 +1,94 @@
+{
+  "errorCode":0,
+  "errorMsg":"",
+  "data":[
+    {
+      "thumb":"https://avatars0.githubusercontent.com/u/82592?s=200&v=4",
+      "name":"okhttp",
+      "author":"square",
+      "desc":"An HTTP+HTTP/2 client for Android and Java applications. ",
+      "link":"https://github.com/square/okhttp",
+      "license":"Apache-2.0"
+    },
+    {
+      "thumb":"https://avatars0.githubusercontent.com/u/16447251?s=400&v=4",
+      "name":"XMVP",
+      "author":"xujiaji",
+      "desc":"This is a mvp framework to help you easily achieve mvp structure.",
+      "link":"https://github.com/xujiaji/XMVP",
+      "license":"Apache-2.0"
+    },
+    {
+      "thumb":"https://avatars0.githubusercontent.com/u/16447251?s=400&v=4",
+      "name":"RippleCheckBox",
+      "author":"xujiaji",
+      "desc":"简洁，舒服，波纹动画，勾选动画，高度可控的波纹CheckBox",
+      "link":"https://github.com/xujiaji/RippleCheckBox",
+      "license":"Apache-2.0"
+    },
+    {
+      "thumb":"https://avatars0.githubusercontent.com/u/16447251?s=400&v=4",
+      "name":"HappyBubble",
+      "author":"xujiaji",
+      "desc":"\uD83D\uDCADBubbleLayout随意变化的气泡布局，BubbleDialog根据点击View的位置定位它的位置，BubbleDialog可定制方向等！(BubbleLayout changes freely,BubbleDialog click on the location of View positioning its location,BubbleDialog can be customized directions.)",
+      "link":"https://github.com/xujiaji/HappyBubble",
+      "license":"Apache-2.0"
+    },
+    {
+      "thumb":"https://avatars1.githubusercontent.com/u/7698209?s=400&v=4",
+      "name":"BaseRecyclerViewAdapterHelper",
+      "author":"CymChad",
+      "desc":"BRVAH:Powerful and flexible RecyclerAdapter",
+      "link":"https://github.com/CymChad/BaseRecyclerViewAdapterHelper",
+      "license":"Apache-2.0"
+    },
+    {
+      "thumb":"https://avatars1.githubusercontent.com/u/423539?s=200&v=4",
+      "name":"glide",
+      "author":"bumptech",
+      "desc":"An image loading and caching library for Android focused on smooth scrolling",
+      "link":"https://github.com/bumptech/glide",
+      "license":"BSD, part MIT and Apache 2.0."
+    },
+    {
+      "thumb":"https://avatars0.githubusercontent.com/u/8654362?s=400&v=4",
+      "name":"Toasty",
+      "author":"GrenderG",
+      "desc":"The usual Toast, but with steroids",
+      "link":"https://github.com/GrenderG/Toasty",
+      "license":"LGPL-3.0"
+    },
+    {
+      "thumb":"https://avatars0.githubusercontent.com/u/82592?s=200&v=4",
+      "name":"retrofit2",
+      "author":"square",
+      "desc":"Type-safe HTTP client for Android and Java by Square, Inc.",
+      "link":"https://github.com/square/retrofit",
+      "license":"Apache-2.0"
+    },
+    {
+      "thumb":"https://avatars0.githubusercontent.com/u/4082929?s=200&v=4",
+      "name":"RePlugin",
+      "author":"Qihoo360",
+      "desc":"RePlugin - A flexible, stable, easy-to-use Android Plug-in Framework",
+      "link":"https://github.com/Qihoo360/RePlugin",
+      "license":"Apache-2.0"
+    },
+    {
+      "thumb":"https://avatars1.githubusercontent.com/u/2565372?s=200&v=4",
+      "name":"DateTimePicker",
+      "author":"Doist",
+      "desc":"Port of Android API 22 date and time pickers for 16+ APIs",
+      "link":"https://github.com/Doist/DateTimePicker",
+      "license":""
+    },
+    {
+      "thumb":"https://avatars1.githubusercontent.com/u/10682312?s=400&v=4",
+      "name":"AppUpdate",
+      "author":"WVector",
+      "desc":"🚀 Android 版本更新 🚀 a library for android version update 🚀",
+      "link":"https://github.com/WVector/AppUpdate",
+      "license":"Apache-2.0"
+    }
+  ]
+}

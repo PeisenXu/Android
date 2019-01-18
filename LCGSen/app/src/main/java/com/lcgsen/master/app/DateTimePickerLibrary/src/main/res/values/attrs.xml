@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- The TimePicker style. -->
+    <attr name="timePickerStyle" format="reference" />
+
+    <!-- The TimePicker dialog theme. -->
+    <attr name="timePickerDialogTheme" format="reference" />
+
+    <!-- The DatePicker style. -->
+    <attr name="datePickerStyle" format="reference" />
+
+    <!-- The DatePicker dialog theme. -->
+    <attr name="datePickerDialogTheme" format="reference" />
+
+    <attr name="minTextSize" format="dimension" />
+
+    <attr name="maxTextSize" format="dimension" />
+
+    <!--<declare-styleable name="TextAppearance">-->
+        <!--&lt;!&ndash;&lt;!&ndash; Text color. &ndash;&gt;&ndash;&gt;-->
+        <!--&lt;!&ndash;<attr name="android:textColor" />&ndash;&gt;-->
+        <!--&lt;!&ndash;&lt;!&ndash; Size of the text. Recommended dimension type for text is "sp" for scaled-pixels (example: 15sp). &ndash;&gt;&ndash;&gt;-->
+        <!--&lt;!&ndash;<attr name="android:textSize" />&ndash;&gt;-->
+        <!--&lt;!&ndash;&lt;!&ndash; Style (bold, italic, bolditalic) for the text. &ndash;&gt;&ndash;&gt;-->
+        <!--&lt;!&ndash;<attr name="android:textStyle" />&ndash;&gt;-->
+        <!--&lt;!&ndash;&lt;!&ndash; Typeface (normal, sans, serif, monospace) for the text. &ndash;&gt;&ndash;&gt;-->
+        <!--&lt;!&ndash;<attr name="android:typeface" />&ndash;&gt;-->
+        <!--&lt;!&ndash;&lt;!&ndash; Font family (named by string) for the text. &ndash;&gt;&ndash;&gt;-->
+        <!--&lt;!&ndash;<attr name="android:fontFamily" />&ndash;&gt;-->
+        <!--&lt;!&ndash; Color of the text selection highlight. &ndash;&gt;-->
+        <!--<attr name="android:textColorHighlight" />-->
+        <!--&lt;!&ndash;&lt;!&ndash; Color of the hint text. &ndash;&gt;&ndash;&gt;-->
+        <!--&lt;!&ndash;<attr name="android:textColorHint" />&ndash;&gt;-->
+        <!--&lt;!&ndash;&lt;!&ndash; Color of the links. &ndash;&gt;&ndash;&gt;-->
+        <!--&lt;!&ndash;<attr name="android:textColorLink" />&ndash;&gt;-->
+        <!--&lt;!&ndash; Present the text in ALL CAPS. This may use a small-caps form when available. &ndash;&gt;-->
+        <!--<attr name="android:textAllCaps" />-->
+        <!--&lt;!&ndash;&lt;!&ndash; Place a blurred shadow of text underneath the text, drawn with the&ndash;&gt;-->
+             <!--&lt;!&ndash;specified color. The text shadow produced does not interact with&ndash;&gt;-->
+             <!--&lt;!&ndash;properties on View that are responsible for real time shadows,&ndash;&gt;-->
+             <!--&lt;!&ndash;{@link android.R.styleable#View_elevation elevation} and&ndash;&gt;-->
+             <!--&lt;!&ndash;{@link android.R.styleable#View_translationZ translationZ}. &ndash;&gt;&ndash;&gt;-->
+        <!--&lt;!&ndash;<attr name="android:shadowColor" />&ndash;&gt;-->
+        <!--&lt;!&ndash; Horizontal offset of the text shadow. &ndash;&gt;-->
+        <!--&lt;!&ndash;<attr name="android:shadowDx" />&ndash;&gt;-->
+        <!--&lt;!&ndash;&lt;!&ndash; Vertical offset of the text shadow. &ndash;&gt;&ndash;&gt;-->
+        <!--&lt;!&ndash;<attr name="android:shadowDy" />&ndash;&gt;-->
+        <!--&lt;!&ndash;&lt;!&ndash; Blur radius of the text shadow. &ndash;&gt;&ndash;&gt;-->
+        <!--&lt;!&ndash;<attr name="android:shadowRadius" />&ndash;&gt;-->
+        <!--&lt;!&ndash; Elegant text height, especially for less compacted complex script text. &ndash;&gt;-->
+        <!--<attr name="android:elegantTextHeight" />-->
+        <!--&lt;!&ndash; Text letter-spacing. &ndash;&gt;-->
+        <!--<attr name="android:letterSpacing" />-->
+        <!--&lt;!&ndash; Font feature settings. &ndash;&gt;-->
+        <!--<attr name="android:fontFeatureSettings" />-->
+    <!--</declare-styleable>-->
+
+    <declare-styleable name="TimePicker">
+        <!-- The layout of the time picker. -->
+        <attr name="layout" />
+        <!-- The text appearance for the AM/PM header. -->
+        <attr name="headerAmPmTextAppearance" format="reference" />
+        <!-- The text appearance for the time header. -->
+        <attr name="headerTimeTextAppearance" format="reference" />
+        <!-- The text color for selected time header of the TimePicker.
+             This will override the value from the text appearance if it does
+             not explicitly have a color set for the selected state. -->
+        <attr name="headerSelectedTextColor" format="color" />
+        <!-- The background for the header containing the currently selected time. -->
+        <attr name="headerBackground" format="color|reference" />
+        <!-- The color for the hours/minutes numbers. -->
+        <attr name="numbersTextColor" format="color" />
+        <!-- The background color for the hours/minutes numbers. -->
+        <attr name="numbersBackgroundColor" format="color" />
+        <!-- The color for the AM/PM selectors. -->
+        <attr name="amPmTextColor" format="color" />
+        <!-- The background color state list for the AM/PM selectors. -->
+        <attr name="amPmBackgroundColor" format="color" />
+        <!-- @hide The background color for the AM/PM selectors of the
+             TimePicker when selected. Used if the background color does not
+             explicitly have a color set for the selected state. -->
+        <attr name="amPmSelectedBackgroundColor" format="color" />
+        <!-- The color for the hours/minutes selector. -->
+        <attr name="numbersSelectorColor" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="DatePicker">
+        <!-- The first year (inclusive), for example "1940".
+             {@deprecated Use minDate instead.} -->
+        <attr name="startYear" format="integer" />
+        <!-- The last year (inclusive), for example "2010".
+             {@deprecated Use maxDate instead.} -->
+        <attr name="endYear" format="integer" />
+        <!-- The minimal date shown by this calendar view in mm/dd/yyyy format. -->
+        <attr name="minDate" format="string" />
+        <!-- The maximal date shown by this calendar view in mm/dd/yyyy format. -->
+        <attr name="maxDate" format="string" />
+        <!-- The first day of week according to {@link java.util.Calendar}. -->
+        <attr name="firstDayOfWeek" format="integer" />
+        <!-- The layout of the date picker. -->
+        <attr name="layout" />
+        <!-- The background color for the date selector 's day of week. -->
+        <attr name="dayOfWeekBackground" format="color|reference" />
+        <!-- The text color for the date selector's day of week. -->
+        <attr name="dayOfWeekTextAppearance" format="reference" />
+        <!-- The month's text appearance in the date selector. -->
+        <attr name="headerMonthTextAppearance" format="reference" />
+        <!-- The day of month's text appearance in the date selector. -->
+        <attr name="headerDayOfMonthTextAppearance" format="reference" />
+        <!-- The year's text appearance in the date selector. -->
+        <attr name="headerYearTextAppearance" format="reference" />
+        <!-- The background for the date selector. -->
+        <attr name="headerBackground" />
+        <!-- The selected text color for the date selector. Used as a
+             backup if the text appearance does not explicitly have a color
+             set for the selected state. -->
+        <attr name="headerSelectedTextColor" />
+        <!-- The list year's text appearance in the list. -->
+        <attr name="yearListItemTextAppearance" format="reference" />
+        <!-- The list year's selected circle color in the list. -->
+        <attr name="yearListSelectorColor" format="color" />
+        <!-- The text color list of the calendar. -->
+        <attr name="calendarTextColor" format="color" />
+        <!-- The selected text color for the calendar. Used as a backup
+             if the text color does not explicitly have a color set for the
+             selected state. -->
+        <attr name="calendarSelectedTextColor" format="color" />
+    </declare-styleable>
+</resources>
