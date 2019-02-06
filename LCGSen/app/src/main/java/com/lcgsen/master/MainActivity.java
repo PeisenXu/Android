@@ -60,8 +60,8 @@ public class MainActivity extends FragmentActivity implements ViewPager.OnPageCh
 
     static {
         channelList.add("句子");
-        channelList.add("Xposed");
-        channelList.add("工具");
+        // channelList.add("Xposed");
+        // channelList.add("工具");
     }
 
     public static List<String> getSelectedChannel() {
@@ -92,7 +92,7 @@ public class MainActivity extends FragmentActivity implements ViewPager.OnPageCh
         userCreateTime.setText(SharedUtils.getParam(MainActivity.this, "USER_CREATE_TIME", "加入时间:未来").toString());
 
         navigationView.getMenu().add(1, 1, 1, "背景");//需要获取id的话，id就等于1；
-        navigationView.getMenu().add(1, 2, 2, "报错");//需要获取id的话，id就等于1；
+        // navigationView.getMenu().add(1, 2, 2, "报错");//需要获取id的话，id就等于1；
 /*        navigationView.getMenu().add(1,2,2,"图库");
         navigationView.getMenu().add(1,3,2,"上传");*/
 

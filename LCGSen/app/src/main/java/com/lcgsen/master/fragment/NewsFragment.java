@@ -63,7 +63,7 @@ public class NewsFragment extends Fragment {
                 topView = View.inflate(inflater.getContext(), R.layout.home_top, null);
 
                 // 加载主页下拉图片
-                new DownloadImageTask().execute("http://www.xupeisen.com/app/android/img/home_top.jpg");
+                // new DownloadImageTask().execute("http://www.xupeisen.com/app/android/img/home_top.jpg");
 
                 listView.addHeaderView(topView);
                 // View bottomView=new View(getApplicationContext());
@@ -71,7 +71,7 @@ public class NewsFragment extends Fragment {
 
                 // 顶部和底部也可以固定最终的高度 不固定就使用布局本身的高度
                 listView.setFinalBottomHeight(0);
-                listView.setFinalTopHeight(500);
+                listView.setFinalTopHeight(0);
                 listView.setPadding(0, 100, 0, 0);
 
                 refreshData(inflater);

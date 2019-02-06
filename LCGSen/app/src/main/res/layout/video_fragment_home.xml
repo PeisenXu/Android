@@ -8,7 +8,7 @@
         android:layout_marginTop="8dp"
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_weight="10"
+        android:layout_weight="20"
         android:layout_height="0dp"/>
 
     <LinearLayout
@@ -17,6 +17,7 @@
         android:layout_height="0dp"
         android:layout_gravity="center"
         android:layout_weight="1"
+        android:background="#50FFFFFF"
         android:orientation="horizontal">
         <Button
             android:id="@+id/home_page"
