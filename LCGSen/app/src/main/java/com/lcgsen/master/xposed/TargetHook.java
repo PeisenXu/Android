@@ -47,7 +47,7 @@ public class TargetHook implements IXposedHookLoadPackage {
                         Object arg = param.args[0];
                         try {
                             Log.w("czc", arg.getClass().getField("latestTotalView").get(arg).toString());
-                            arg.getClass().getField("latestTotalView").set(arg, "981210.00");
+                            arg.getClass().getField("latestTotalView").set(arg, "1981210.00");
                         } catch (IllegalAccessException e) {
                             e.printStackTrace();
                         } catch (IllegalArgumentException e) {
