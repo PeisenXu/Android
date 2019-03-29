@@ -302,9 +302,6 @@ public class MainActivity extends FragmentActivity implements ViewPager.OnPageCh
                 } else {
                     Toast.makeText(MainActivity.this, "请安装QQ客户端", Toast.LENGTH_SHORT).show();
                 }
-            } else if (id.equalsIgnoreCase(R.id.video + "")) {
-                Toast.makeText(MainActivity.this, "播放时如果白屏, 请返回多试几次", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(MainActivity.this, HomeActivity.class));
             } else if (id.equalsIgnoreCase("1")) {
                 String color = SharedUtils.getParam(MainActivity.this, "USER_COLOR", "").toString();
                 if ("".equals(color) || "1".equals(color)) {

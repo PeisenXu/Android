@@ -1,13 +1,11 @@
 apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 // apply plugin: 'android-apt'
 
 android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.lcgsen.master"
-        minSdkVersion 15
+        minSdkVersion 17
         targetSdkVersion 28
         versionCode 11
         versionName "3.1"
@@ -21,6 +19,10 @@ android {
         }
     }
     buildToolsVersion '27.0.3'
+    compileOptions {
+        sourceCompatibility = '1.8'
+        targetCompatibility = '1.8'
+    }
 }
 
 dependencies {
@@ -34,18 +36,11 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation 'com.android.support:design:28.0.0-alpha3'
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation files('libs/gson-1.5.jar')
-    // 视图View注解
-    implementation 'com.jakewharton:butterknife:8.8.1'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     // 底部导航
     implementation 'com.hjm:BottomTabBar:1.1.1'
     // 图片处理
     implementation 'com.squareup.picasso:picasso:2.5.2'
-    // Volley适合进行数据量不大，但通信频繁的网络操作
-    implementation 'com.android.volley:volley:1.1.0'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     // SuperTextView 一款强大的android TextView
     implementation 'com.github.lygttpod:SuperTextView:2.1.8'
     // YLListView仿IOS弹簧效果的ListView
@@ -53,6 +48,8 @@ dependencies {
     // 作为xpo插件用到的Jar
     compileOnly 'de.robv.android.xposed:api:82'
     // 包含源码的compileOnly 'de.robv.android.xposed:api:82:sources'
+    implementation 'com.wei.android.lib:fingerprintidentify:1.2.1'
+
 }
 repositories {
     mavenCentral()

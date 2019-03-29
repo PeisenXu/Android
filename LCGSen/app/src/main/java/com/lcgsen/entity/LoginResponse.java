@@ -1,7 +1,5 @@
 package com.lcgsen.entity;
 
-import com.lcgsen.entity.User;
-
 import java.util.List;
 
 public class LoginResponse {

@@ -33,10 +33,6 @@
         <activity android:name=".LoginActivity"></activity>
         <activity android:name=".AboutActivity"></activity>
         <activity android:name=".MainActivity" />
-        <activity android:name=".HomeActivity" />
-        <activity android:name=".DetailsActivity" />
-        <activity android:name=".PlayActivity" />
-        <activity android:name=".RobotsActivity"></activity>
         <activity
             android:name="com.lcgsen.utils.CrashDialog"
             android:configChanges="orientation|screenSize|smallestScreenSize|keyboard|keyboardHidden|navigation"
